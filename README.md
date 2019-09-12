@@ -1,9 +1,21 @@
 # ARLAS-wui-hub
 
+## Description
+
 Configurable portal to access multiples applications
 
-## Configuration
- 
+## How to use it
+
+### 1. Download the dist.zip
+
+You can find it in [release section](https://github.com/gisaia/ARLAS-wui-hub/releases) (take the last)
+
+### 2. Unzip and customize
+
+After unzip it, edit the `config.json` file.
+
+See below for more details :
+
 ```json
 {
   "header": {
@@ -11,12 +23,12 @@ Configurable portal to access multiples applications
     "subtitle": "[APP_SUBTITLE]",
     "logo": "[path or url to logo]",
     "logo_alt": "[alternative text for logo]",
-    "color": "[header text color]",                 // Use like a CSS property
-    "background_color": "[header background color]" // Use like a CSS property
+    "color": "[header text color]",                 
+    "background_color": "[header background color]" 
   },
   "footer":{
-    "color": "[footer text color]",                 // Use like a CSS property
-    "background_color": "[footer background color]" // Use like a CSS property
+    "color": "[footer text color]",                 
+    "background_color": "[footer background color]" 
   },
   "cards" : [
     {
@@ -31,5 +43,50 @@ Configurable portal to access multiples applications
     ...
   ]
 }
+```
+
+> **NOTE** : 
+>
+> - Use `color` and `background_color` like CSS properties
+> - Add assets in the `assets` folder (images, logo, favicon, ...)
+
+### 3. Deploy
+
+Deploy the folder on any web serveur and enjoy !
+
+## Build
+
+To build the project you need to have installed
+- [Node](https://nodejs.org/en/) version >= 8.0.0 
+- [npm](https://github.com/npm/npm) version >= 5.2.0
+- [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6
 
 ```
+$ npm install -g @angular/cli@7.3.6
+```
+
+Then, clone the project
+
+```shell
+$ git clone https://github.com/gisaia/ARLAS-wui-hub
+```
+
+Move to the folder
+
+```shell
+$ cd ARLAS-wui-hub
+```
+
+Install all the project's dependencies
+
+```shell
+$ npm install
+```
+
+Build the project :
+
+```shell
+$ npm run build
+```
+
+The build artifacts will be generated in the `dist/` directory.
