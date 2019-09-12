@@ -1,63 +1,32 @@
 <div class="content">
-  <div class="header">
-    <img class="header-logo" src="../assets/arlas-logo.png" alt="[Logo Arlas]" />
+  <div class="header" [ngStyle]="{'background-color': header.background_color}">
+    <img class="header-logo" src="{{header.logo}}" alt="[{{header.logo_alt}}]" />
     <div class="header-text">
-      <div class="header-title">ARLAS</div>
-      <div class="header-subtitle">Demo</div>
+      <div class="header-title" [ngStyle]="{'color': header.color}">{{header.title}}</div>
+      <div class="header-subtitle" [ngStyle]="{'color': header.color}">{{header.subtitle}}</div>
     </div>
   </div>
   <div class="grid">
-    <mat-card class="grid-card">
-      <mat-card-header>
-        <mat-card-title>Navigation</mat-card-title>
-        <mat-card-subtitle>AIS positions</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="../assets/card_ais.png" alt="Photo of arlas wui AIS">
-      <mat-card-content>
-        <p>
-          Explore more than 45 millions boats AIS positions emitted around Denmark between April 4th, 2018 and April 8th, 2018.
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="navigate('ais')">TRY IT</button>
-      </mat-card-actions>
-    </mat-card>
-    <mat-card class="grid-card">
-      <mat-card-header>
-        <mat-card-title>Sport</mat-card-title>
-        <mat-card-subtitle>Soccer</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="../assets/card_soccer.png" alt="Photo of arlas-wui soccer">
-      <mat-card-content>
-        <p>
-          Discover the actions of french league players that are provided by l’Ecole Polytechnique and the PSG Club for the Sports Analytics Challenge
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="navigate('soccer')">TRY IT</button>
-      </mat-card-actions>
-    </mat-card>
-    <mat-card class="grid-card">
-      <mat-card-header>
-        <mat-card-title>Pollution</mat-card-title>
-        <mat-card-subtitle>Open AQ</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="../assets/card_openaq.png" alt="Photo of arlas-wui pollution">
-      <mat-card-content>
-        <p>
-          Check if your city is polluted thanks to the data accessed from the OpenAQ Platform. Switch between visualisation of various pollutants (µg/m³).
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="navigate('pollution')" >TRY IT</button>
-      </mat-card-actions>
-    </mat-card>
-
+      <mat-card class="grid-card" *ngFor="let card of cards">
+          <mat-card-header>
+            <mat-card-title>{{card.title}}</mat-card-title>
+            <mat-card-subtitle>{{card.subtitle}}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="{{card.img}}" alt="{{card.img_alt}}">
+          <mat-card-content>
+            <p>
+                {{card.description}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="navigate(card.url)">{{card.url_label}}</button>
+          </mat-card-actions>
+        </mat-card>
   </div>
-  <div class="footer">
+  <div class="footer" [ngStyle]="{'background-color': footer.background_color}">
     <ul class="footer-list">
-      <li>Gisaïa &copy; 2018</li>
-      <li><a href="mailto:contact@gisaia.com">Contact</a></li>
+      <li [ngStyle]="{'color': footer.color}">Gisaïa &copy; 2018</li>
+      <li ><a [ngStyle]="{'color': footer.color}" href="mailto:contact@gisaia.com">Contact</a></li>
     </ul>
   </div>
 </div>

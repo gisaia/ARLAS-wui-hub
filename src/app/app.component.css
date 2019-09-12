@@ -5,7 +5,6 @@
 
 .footer{
   height: 30px;
-  background-color: white;
   width: 100%;
   position: fixed;
   bottom: 0;
@@ -20,13 +19,11 @@
 .footer-list li{
   float: right;
   list-style-type: none;
-  color: #fe3366;
   font-size: 15px;
   padding: 5px 10px;
 }
 
 .footer-list li a{
-  color: #fe3366;
   text-decoration: none;
 }
 
@@ -35,7 +32,6 @@
 }
 
 .header{
-  background-color: white;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -49,12 +45,10 @@
 
 .header-title{
   font-size: 40px;
-  color: #fe3366;
 }
 
 .header-subtitle{
   font-size: 20px;
-  color: #fe3366;
   margin-top: -12px;
 }
 

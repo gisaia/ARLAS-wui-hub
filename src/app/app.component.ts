@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoadService } from './services/load.service';
 
 @Component({
   selector: 'app-root',
@@ -6,21 +7,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
 
-  public navigate(type: string) {
-    let url: string;
-    switch (type) {
-      case 'ais':
-        url = 'http://demo.arlas.io/arlaswui-ais/';
-        break;
-      case 'soccer':
-        url = 'http://demo.arlas.io/arlaswui-soccer/?extend=-0.6555999803812824,-0.1317739929292543,1.0967193555630672,0.7649621970677316';
-        break;
-      case 'pollution':
-        url = 'http://demo.arlas.io/arlaswui-openaq';
-        break;
-    }
+  public cards: any;
+  public header: any;
+  public footer: any;
+
+  constructor(private loadService: LoadService){
+    this.header = this.loadService.appData.header;
+    this.footer = this.loadService.appData.footer;
+    this.cards = this.loadService.appData.cards;
+  }
+
+  public navigate(url: string) {
     window.open(url, '_blank');
   }
 

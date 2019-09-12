@@ -1,0 +1,43 @@
+{
+  "header": {
+    "title": "ARLAS",
+    "subtitle": "Demo",
+    "logo": "assets/arlas-logo.png",
+    "logo_alt": "Logo Arlas",
+    "color": "#fe3366",
+    "background_color": "white"
+  },
+  "footer":{
+    "color":"#fe3366",
+    "background_color": "white"
+  },
+  "cards" : [
+    {
+      "title": "Navigation",
+      "subtitle": "AIS positions",
+      "description": "Explore more than 45 millions boats AIS positions emitted around Denmark between April 4th, 2018 and April 8th, 2018.",
+      "url": "http://demo.arlas.io/arlaswui-ais/",
+      "url_label": "TRY IT",
+      "img": "assets/card_ais.png",
+      "img_alt": "Tanker leaving port"
+    },
+    {
+      "title": "Sport",
+      "subtitle": "Soccer",
+      "description": "Discover the actions of french league players that are provided by l’Ecole Polytechnique and the PSG Club for the Sports Analytics Challenge",
+      "url": "http://demo.arlas.io/arlaswui-soccer/?extend=-0.6555999803812824,-0.1317739929292543,1.0967193555630672,0.7649621970677316",
+      "url_label": "TRY IT",
+      "img": "assets/card_soccer.png",
+      "img_alt": "Soccer ball on grass"
+    },
+    {
+      "title": "Pollution",
+      "subtitle": "Open AQ",
+      "description": "Check if your city is polluted thanks to the data accessed from the OpenAQ Platform. Switch between visualisation of various pollutants (µg/m³).",
+      "url": "http://demo.arlas.io/arlaswui-openaq",
+      "url_label": "TRY IT",
+      "img": "assets/card_openaq.png",
+      "img_alt": "Aerial view of a city"
+    }
+  ]
+}
