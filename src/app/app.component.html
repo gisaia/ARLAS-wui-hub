@@ -25,8 +25,10 @@
   </div>
   <div class="footer" [ngStyle]="{'background-color': footer.background_color}">
     <ul class="footer-list">
-      <li [ngStyle]="{'color': footer.color}">Gisaïa &copy; 2018</li>
-      <li ><a [ngStyle]="{'color': footer.color}" href="mailto:contact@gisaia.com">Contact</a></li>
+      <ng-container *ngFor="let item of items">
+          <li *ngIf="item.type === 'label'" [ngStyle]="{'color': footer.color}">{{item.label}}</li>
+          <li *ngIf="item.type === 'link'"><a [ngStyle]="{'color': footer.color}" href="{{item.url}}">{{item.label}}</a></li>
+      </ng-container>
     </ul>
   </div>
 </div>

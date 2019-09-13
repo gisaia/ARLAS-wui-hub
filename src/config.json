@@ -9,7 +9,18 @@
   },
   "footer":{
     "color":"#fe3366",
-    "background_color": "white"
+    "background_color": "white",
+    "items": [
+      {
+        "type": "label",
+        "label": "Gisaïa © 2018"
+      },
+      {
+        "type": "link",
+        "label": "Contact",
+        "url": "mailto:contact@gisaia.com"
+      }
+    ]
   },
   "cards" : [
     {
