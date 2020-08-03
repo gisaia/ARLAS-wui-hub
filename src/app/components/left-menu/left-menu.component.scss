@@ -1,0 +1,11 @@
+@import "variables.scss";
+
+
+.sidenav_container {
+    min-width: 60px;
+    height: calc(100vh - 160px);
+}
+
+a.active-page{
+    color: $primaryColor;
+}
