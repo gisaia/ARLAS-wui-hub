@@ -22,11 +22,7 @@
     "@angular/platform-browser": "~8.2.10",
     "@angular/platform-browser-dynamic": "~8.2.10",
     "@angular/router": "~8.2.10",
-<<<<<<< HEAD
-    "arlas-wui-toolkit": "14.0.0-beta.7",
-=======
-    "arlas-wui-toolkit": "14.0.0-beta.2",
->>>>>>> 0383246... WIP
+    "arlas-wui-toolkit": "14.0.0-beta.4",
     "rxjs": "~6.5.3",
     "zone.js": "^0.9.1"
   },
