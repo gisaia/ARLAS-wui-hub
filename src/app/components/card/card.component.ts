@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, AfterViewInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
 
@@ -11,9 +11,9 @@ export enum Action {
   SHARE
 }
 
-export  interface CardAction{
+export interface CardAction {
   card: Card;
-  action: Action
+  action: Action;
 }
 
 @Component({
@@ -21,19 +21,30 @@ export  interface CardAction{
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent {
+export class CardComponent implements AfterViewInit {
 
-  
+
   @Input() public card: Card;
   @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
-  public action=Action;
-  constructor() { }
+  public action = Action;
+  constructor() {
+  }
 
-  public clickOnAction(action:Action){
-      this.actionOnCard.next({
-        card: this.card,
-        action: action
-      })
+  public ngAfterViewInit() {
+    const c = Object.assign(this.card.actions);
+    this.card.actions = new Array();
+    this.card.actions = c;
+  }
+
+  public clickOnAction(action: Action) {
+    this.actionOnCard.next({
+      card: this.card,
+      action: action
+    });
+  }
+
+  public afterAction() {
+    this.actionOnCard.next();
   }
 }

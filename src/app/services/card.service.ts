@@ -1,10 +1,9 @@
-import { LoadService } from './load.service';
-import { from, Observable, throwError } from 'rxjs';
-import { map, filter, flatMap } from 'rxjs/operators';
-
-import { Configuration, DataResource, DataWithLinks, PersistApi } from 'arlas-persistence-api';
-import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { PersistenceService } from 'arlas-wui-toolkit/services/persistence/persistence.service'
+import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+import { ConfigAction, ConfigActionEnum } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
+import { DataResource, DataWithLinks } from 'arlas-persistence-api';
+import { Injectable } from '@angular/core';
+import { PersistenceService } from 'arlas-wui-toolkit/services/persistence/persistence.service';
 
 
 
@@ -15,6 +14,7 @@ export interface Card {
   writers: string[];
   updatable: boolean;
   last_update_date: Date;
+  actions: Array<ConfigAction>;
 }
 
 @Injectable({
@@ -31,27 +31,44 @@ export class CardService {
       .pipe(filter(data => data.data !== undefined), map(data => [data.total, data.data.map(d => this.dataWithlinksToCards(d))]));
   }
 
-  public deleteCard(id: string): Observable<Card> {
-    return this.persistenceService.delete(id).pipe(map(d => this.dataWithlinksToCards(d)));
-  }
-
-  public duplicate(newName: string, id: string): Observable<DataWithLinks> {
-    console.log(newName);
-    console.log(id);
-
-    return this.persistenceService.get(id).pipe(flatMap(data => {
-      return this.persistenceService.create('config.json', newName, data.doc_value, data.doc_readers, data.doc_writers)
-    }))
-  }
-
   private dataWithlinksToCards(data: DataWithLinks): Card {
+    const actions: Array<ConfigAction> = new Array();
+    actions.push({
+      configId: data.id,
+      configIdParam: 'config_id',
+      type: ConfigActionEnum.VIEW,
+      name: data.doc_key
+    });
+    actions.push({
+      configId: data.id,
+      type: ConfigActionEnum.EDIT,
+      name: data.doc_key,
+      enabled: data.updatable
+    });
+    actions.push({
+      configId: data.id,
+      type: ConfigActionEnum.DUPLICATE,
+      name: data.doc_key
+    });
+    actions.push({
+      configId: data.id,
+      type: ConfigActionEnum.DELETE,
+      name: data.doc_key,
+      enabled: data.updatable
+    });
+    actions.push({
+      configId: data.id,
+      type: ConfigActionEnum.SHARE,
+      name: data.doc_key
+    });
     return {
       id: data.id,
       title: data.doc_key,
       readers: data.doc_readers,
       writers: data.doc_writers,
       updatable: data.updatable,
-      last_update_date: data.last_update_date
-    }
+      last_update_date: data.last_update_date,
+      actions
+    };
   }
 }

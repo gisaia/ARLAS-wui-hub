@@ -13,22 +13,22 @@ import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.compon
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './components/header/header.component';
 import { CardComponent } from './components/card/card.component';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { PersistenceService, GET_OPTIONS } from 'arlas-wui-toolkit/services/persistence/persistence.service'
+import { GET_OPTIONS } from 'arlas-wui-toolkit/services/persistence/persistence.service';
 import { AuthentificationService } from 'arlas-wui-toolkit/services/authentification/authentification.service';
-import { MatDialogModule } from "@angular/material/dialog";
-import { ActionModalComponent } from './components/action-modal/action-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { ArlasCollaborativesearchService } from 'arlas-wui-toolkit/services/startup/startup.service';
+import { ConfigMenuModule } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.module';
 import { ArlasConfigurationUpdaterService } from 'arlas-wui-toolkit/services/configuration-updater/configurationUpdater.service';
 import { FETCH_OPTIONS, CONFIG_UPDATER } from 'arlas-wui-toolkit/services/startup/startup.service';
 import { configUpdaterFactory, getOptionsFactory, auhtentServiceFactory } from 'arlas-wui-toolkit/app.module';
 import { ArlasStartupService } from 'arlas-wui-toolkit';
+import { ErrorModalModule } from 'arlas-wui-toolkit/components/errormodal/errormodal.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
@@ -46,17 +46,24 @@ export function loadServiceFactory(loadService: LoadService) {
     StaticHubComponent,
     DynamicHubComponent,
     HeaderComponent,
-    CardComponent,
-    ActionModalComponent
-    
+    CardComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatIconModule,
+    MatInputModule,
+    MatSidenavModule,
+    MatPaginatorModule,
+    MatListModule,
     MatTooltipModule,
     HttpClientModule,
+    ConfigMenuModule,
+    ErrorModalModule,
     ReactiveFormsModule,
     FormsModule,
     TranslateModule.forRoot({
@@ -67,10 +74,6 @@ export function loadServiceFactory(loadService: LoadService) {
       }
     }),
     OAuthModule.forRoot()
-
-  ],
-  entryComponents: [
-    ActionModalComponent
 
   ],
   providers: [

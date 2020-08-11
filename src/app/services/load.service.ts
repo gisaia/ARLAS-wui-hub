@@ -10,7 +10,6 @@ export class LoadService {
   constructor(
       private arlasStartupService: ArlasStartupService,
       private https: HttpClient) {
-
     }
 
   public load(config: string): Promise<any> {

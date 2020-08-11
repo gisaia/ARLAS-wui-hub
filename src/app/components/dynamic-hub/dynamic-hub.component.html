@@ -1,7 +1,8 @@
 <div style="display:flex" >
-        <app-card *ngFor="let card of cards" (actionOnCard)="onClickToAction($event)" [card]=card ></app-card>
+        <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards()" [card]=card ></app-card>
 </div>
 
 
 <mat-paginator [length]="resultsLength" [pageSize]="this.pageSize" (page)="pageChange($event)" [pageSizeOptions]="[2, 4, 6]"></mat-paginator>
 
+<arlas-tool-errormodal></arlas-tool-errormodal>

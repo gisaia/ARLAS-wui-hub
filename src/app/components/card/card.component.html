@@ -4,31 +4,5 @@
             <mat-icon style="margin-right:5px" (click)="clickOnAction(action.VIEW)">launch</mat-icon>
             {{card.title}}</mat-card-title>
     </mat-card-header>
-    <mat-card-actions style="text-align:right">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="clickOnAction(action.VIEW)">
-                <mat-icon>launch</mat-icon>
-                <span>View</span>
-            </button>
-            <button mat-menu-item *ngIf="true" (click)="clickOnAction(action.SHARE)">
-                <mat-icon>share</mat-icon>
-                <span>Share</span>
-            </button>
-            <button mat-menu-item [disabled]="!card.updatable" (click)="clickOnAction(action.EDIT)">
-                <mat-icon>create</mat-icon>
-                <span>Edit</span>
-            </button>
-            <button mat-menu-item (click)="clickOnAction(action.DUPLICATE)">
-                <mat-icon>filter_none</mat-icon>
-                <span>Duplicate</span>
-            </button>
-            <button mat-menu-item [disabled]="!card.updatable" (click)="clickOnAction(action.DELETE)">
-                <mat-icon>delete</mat-icon>
-                <span>Delete</span>
-            </button>
-        </mat-menu>
-    </mat-card-actions>
+    <arlas-config-menu [zone]="'config.json'" [actions]="card?.actions" (actionExecutedEmitter)="afterAction()" ></arlas-config-menu>
 </mat-card>
