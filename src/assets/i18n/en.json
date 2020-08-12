@@ -1,0 +1,14 @@
+{
+    "Log Out":"Log Out",
+    "Log In":"Log In",
+    "User info": "User info",
+    "View":"View",
+    "Share":"Share",
+    "Edit":"Edit",
+    "Duplicate":"Duplicate",
+    "Delete":"Delete",
+    "ITEMS_PER_PAGE_LABEL":"Items per page",
+    "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}"
+
+}
+

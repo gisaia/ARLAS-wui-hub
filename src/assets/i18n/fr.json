@@ -1,0 +1,12 @@
+{
+    "Log Out":"Déconnexion",
+    "Log In":"Connexion",
+    "User info": "Infos utilisateur",
+    "View":"Visualiser",
+    "Share":"Partager",
+    "Edit":"Editer",
+    "Duplicate":"Dupliquer",
+    "Delete":"Supprimer",
+    "ITEMS_PER_PAGE_LABEL":"Items par page",
+    "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} sur {{length}}"
+}

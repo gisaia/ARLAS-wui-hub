@@ -21,17 +21,24 @@ export class LeftMenuComponent implements OnInit {
   public sideNavState = false;
   public linkText = false;
   public connected:boolean;
-  public pages: Page[]= [
-    { name: 'Arlas WUI Builder', link: '/redirect', icon: 'build_circle', disabled: false }
-  ];
+  public pages: Page[]= [];
+  public name:string;
+  public avatar:string;
 
   constructor(private authentService: AuthentificationService, private router:Router) { }
 
   public ngOnInit() {
+    const claims = this.authentService.identityClaims as any;
     this.authentService.canActivateProtectedRoutes.subscribe(isConnected => {
         this.connected=isConnected;
-    })
-    
+        if(isConnected){
+          this.name = claims.nickname;
+          this.avatar = claims.picture;
+        }else{
+          this.name = '';
+          this.avatar='';
+        }
+    })    
   }
 
   public connect(){
@@ -42,11 +49,17 @@ export class LeftMenuComponent implements OnInit {
     }
   }
 
+  public getUserInfos(){
+    this.authentService.loadUserInfo().subscribe(data=>console.log(data));
+  }
+  
   public onSidenavToggle() {
     this.sideNavState = !this.sideNavState;
-
     setTimeout(() => {
       this.linkText = this.sideNavState;
     }, 200);
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
   }
 }

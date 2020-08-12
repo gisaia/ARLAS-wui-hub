@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
-import { ConfigAction, ConfigActionEnum, Config } from 'arlas-wui-toolkit';
+import { map, filter, flatMap } from 'rxjs/operators';
+import { ConfigAction, ConfigActionEnum, Config } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
 import { PersistenceService } from 'arlas-wui-toolkit/services/persistence/persistence.service';
+import { ArlasColorGeneratorLoader } from 'arlas-wui-toolkit/services/color-generator-loader/color-generator-loader.service';
 
 
 
@@ -14,7 +15,9 @@ export interface Card {
   writers: string[];
   updatable: boolean;
   last_update_date: Date;
+  tabs?: string[];
   actions: Array<ConfigAction>;
+  color:string;
 }
 
 @Injectable({
@@ -22,14 +25,36 @@ export interface Card {
 })
 export class CardService {
 
-  constructor(private persistenceService: PersistenceService) {
-
+  constructor(private persistenceService: PersistenceService, 
+    private arlasColorGeneratorLoader:ArlasColorGeneratorLoader){
   }
 
   public cardList(size: number, page: number): Observable<[number, Card[]]> {
     return (this.persistenceService.list('config.json', size, page, 'asc') as Observable<DataResource>)
-      .pipe(filter(data => data.data !== undefined), map(data => [data.total, data.data.map(d => this.dataWithlinksToCards(d))]));
+      .pipe(map(data => {
+        if(data.data !== undefined){
+          return  [data.total, data.data.map(d => this.dataWithlinksToCards(d))]
+        }else{
+          return [data.total, []]
+        }
+      }));
   }
+
+  public deleteCard(id: string): Observable<Card> {
+    return this.persistenceService.delete(id).pipe(map(d => this.dataWithlinksToCards(d)));
+  }
+
+  public createEmpty(name: string): Observable<DataWithLinks> {
+    return this.persistenceService.create('config.json', name, '{}');
+  }
+
+  public duplicate(newName: string, id: string): Observable<DataWithLinks> {
+    return this.persistenceService.get(id)
+      .pipe(flatMap(data => {
+        return this.persistenceService.create('config.json', newName, data.doc_value, data.doc_readers, data.doc_writers)
+      }))
+  }
+
 
   private dataWithlinksToCards(data: DataWithLinks): Card {
     const actions: Array<ConfigAction> = new Array();
@@ -59,12 +84,12 @@ export class CardService {
     });
     actions.push({
       config,
-      type: ConfigActionEnum.DELETE,
-      enabled: data.updatable
+      type: ConfigActionEnum.SHARE
     });
     actions.push({
       config,
-      type: ConfigActionEnum.SHARE
+      type: ConfigActionEnum.DELETE,
+      enabled: data.updatable
     });
     return {
       id: data.id,
@@ -73,7 +98,22 @@ export class CardService {
       writers: data.doc_writers,
       updatable: data.updatable,
       last_update_date: data.last_update_date,
-      actions
-    };
+      tabs: this.getTabs(data.doc_value),
+      actions: actions,
+      color : this.arlasColorGeneratorLoader.getColor(data.id.concat(data.doc_key))
+    }
   }
+
+  private getTabs(value: string): string[] {
+    const config: any = JSON.parse(value);
+    if (config.arlas !== undefined &&
+      config.arlas.web !== undefined &&
+      config.arlas.web.analytics !== undefined) {
+      return config.arlas.web.analytics
+        .filter(a => a.tabs !== undefined).map(a => a.tabs)
+    } else {
+      return [];
+    }
+  };
+
 }

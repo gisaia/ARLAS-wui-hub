@@ -9,24 +9,12 @@ import { AuthentificationService } from 'arlas-wui-toolkit/services/authentifica
 })
 export class HeaderComponent implements OnInit {
 
-  public email;
-  public avatar;
 
   @Input() public sidenav: MatSidenav;
 
   constructor(private authentService: AuthentificationService) { }
 
   public ngOnInit(): void {
-    const claims = this.authentService.identityClaims as any;
-    this.authentService.canActivateProtectedRoutes.subscribe(data => {
-      if (data) {
-        this.email = claims.name;
-        this.avatar = claims.picture;
-      } else {
-        this.email = '';
-        this.avatar = '';
-      }
-    });
   }
 
 }

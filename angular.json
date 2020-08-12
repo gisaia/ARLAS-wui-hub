@@ -7,6 +7,11 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -18,12 +23,14 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
+              "src/settings.yaml",
+              "src/silent-refresh.html",
               "src/favicon.ico",
               "src/config.json"
             ],
             "styles": [
-              "src/styles.css"
-            ],
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.scss"            ],
             "scripts": []
           },
           "configurations": {
@@ -72,10 +79,12 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "src/styles.css"
-            ],
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss"            ],
             "assets": [
               "src/assets",
+              "src/settings.yaml",
+              "src/silent-refresh.html",
               "src/favicon.ico",
               "src/config.json"
             ]
@@ -130,5 +139,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
