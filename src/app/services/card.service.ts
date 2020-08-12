@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
-import { ConfigAction, ConfigActionEnum } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
+import { ConfigAction, ConfigActionEnum, Config } from 'arlas-wui-toolkit';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
 import { PersistenceService } from 'arlas-wui-toolkit/services/persistence/persistence.service';
@@ -33,33 +33,38 @@ export class CardService {
 
   private dataWithlinksToCards(data: DataWithLinks): Card {
     const actions: Array<ConfigAction> = new Array();
+    const config: Config = {
+      id: data.id,
+      name: data.doc_key,
+      value: data.doc_value,
+      readers: data.doc_readers,
+      writers: data.doc_writers,
+      lastUpdate: +data.last_update_date,
+      zone: data.doc_zone
+    };
     actions.push({
-      configId: data.id,
+      config,
       configIdParam: 'config_id',
-      type: ConfigActionEnum.VIEW,
-      name: data.doc_key
+      type: ConfigActionEnum.VIEW
     });
     actions.push({
-      configId: data.id,
+      config,
       type: ConfigActionEnum.EDIT,
-      name: data.doc_key,
       enabled: data.updatable
     });
     actions.push({
-      configId: data.id,
+      config,
       type: ConfigActionEnum.DUPLICATE,
       name: data.doc_key
     });
     actions.push({
-      configId: data.id,
+      config,
       type: ConfigActionEnum.DELETE,
-      name: data.doc_key,
       enabled: data.updatable
     });
     actions.push({
-      configId: data.id,
-      type: ConfigActionEnum.SHARE,
-      name: data.doc_key
+      config,
+      type: ConfigActionEnum.SHARE
     });
     return {
       id: data.id,
