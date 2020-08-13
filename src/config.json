@@ -1,6 +1,4 @@
 {
-  "arlas_wui_url": "http://localhost:4200",
-  "arlas_wui_builder_url": "http://localhost:4200",
   "static":false,
   "header": {
     "title": "ARLAS",

@@ -22,3 +22,5 @@ authentication:
   logout_url: https://arlas-cloud-abc.eu.auth0.com/v2/logout?returnTo=http://localhost:4200
 persistence:
   url: 'http://localhost:9997/arlas_persistence_server'
+arlas_wui_url: "http://localhost:4200",
+arlas_wui_builder_url: "http://localhost:4200",
