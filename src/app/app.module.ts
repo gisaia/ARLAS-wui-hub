@@ -42,6 +42,7 @@ import { MatPaginatorIntl } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { ArlasColorGeneratorLoader } from 'arlas-wui-toolkit/services/color-generator-loader/color-generator-loader.service';
 import { PaginatorI18n } from 'arlas-wui-toolkit/tools/paginatori18n';
+import { UserInfosComponent } from 'arlas-wui-toolkit//components/user-infos/user-infos.component';
 
 
 export function loadServiceFactory(loadService: LoadService) {
@@ -60,7 +61,8 @@ export function createTranslateLoader(http: HttpClient) {
     StaticHubComponent,
     DynamicHubComponent,
     HeaderComponent,
-    CardComponent
+    CardComponent,
+    UserInfosComponent
   ],
   imports: [
     AppRoutingModule,
@@ -95,7 +97,8 @@ export function createTranslateLoader(http: HttpClient) {
 
   ],
   entryComponents: [
-    ActionModalComponent
+    ActionModalComponent,
+    UserInfosComponent
   ],
   providers: [
     SidenavService,

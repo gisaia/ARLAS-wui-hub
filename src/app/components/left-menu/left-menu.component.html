@@ -14,27 +14,27 @@
         <mat-nav-list>
           <mat-list-item *ngIf="connected" matTooltip="{{'User info' | translate}}" (click)="getUserInfos()">
             <button mat-icon-button>
-              <img src="{{avatar}}"  style="vertical-align: middle; height:26px" class="user_info_img">
-              <span [@animateText]="linkText ? 'show' : 'hide'">{{name}}</span>
+              <img src="{{avatar}}"  class="user_info_img">
+              <span  class="label-user-name" [@animateText]="linkText ? 'show' : 'hide'">{{name}}</span>
             </button>
           </mat-list-item>
           <mat-list-item *ngIf="!connected" matTooltip="{{'Log In' | translate}}" (click)="connect()" >
               <button mat-icon-button>
                 <mat-icon>account_circle</mat-icon>
-                <span [@animateText]="linkText ? 'show' : 'hide'">{{'Log In' | translate}}</span>
+                <span [@animateText]="linkText ? 'show' : 'hide'" >{{'Log In' | translate}}</span>
               </button>
             </mat-list-item>
           <mat-list-item  *ngIf="connected" matTooltip="{{'Log Out' | translate}}" (click)="connect()" >
             <button mat-icon-button>
               <mat-icon>lock_open</mat-icon>
-              <span [@animateText]="linkText ? 'show' : 'hide'"> {{'Log Out' | translate}}</span>
+              <span class="label-action" [@animateText]="linkText ? 'show' : 'hide'"> {{'Log Out' | translate}}</span>
             </button>
           </mat-list-item>
         </mat-nav-list>
       </div>
       <div class="toggler">
         <button mat-icon-button (click)="onSidenavToggle()"
-          [matTooltip]="sideNavState? 'reduce' : 'expand'">
+          [matTooltip]="sideNavState? reduce : expand">
           <mat-icon>{{ sideNavState ? 'arrow_left' : 'arrow_right' }}</mat-icon>
         </button>
       </div>

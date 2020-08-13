@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { onSideNavChange, animateText } from './animations';
 import { AuthentificationService } from 'arlas-wui-toolkit/services/authentification/authentification.service';
 import { Router } from '@angular/router';
+import { UserInfosComponent } from 'arlas-wui-toolkit//components/user-infos/user-infos.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { SidenavService } from '../../services/sidenav.service';
 
 interface Page {
   link: string;
@@ -24,8 +28,15 @@ export class LeftMenuComponent implements OnInit {
   public pages: Page[]= [];
   public name:string;
   public avatar:string;
+  public reduce:string;
+  public expand:string;
 
-  constructor(private authentService: AuthentificationService, private router:Router) { }
+  constructor(private authentService: AuthentificationService, private router:Router,
+    private dialog: MatDialog, private translate: TranslateService,private sidenavService: SidenavService) { 
+      this.reduce = this.translate.instant('reduce');
+      this.expand = this.translate.instant('expand');
+
+    }
 
   public ngOnInit() {
     const claims = this.authentService.identityClaims as any;
@@ -50,11 +61,12 @@ export class LeftMenuComponent implements OnInit {
   }
 
   public getUserInfos(){
-    this.authentService.loadUserInfo().subscribe(data=>console.log(data));
+    this.dialog.open(UserInfosComponent);
   }
   
   public onSidenavToggle() {
     this.sideNavState = !this.sideNavState;
+    this.sidenavService.sideNavState.next(this.sideNavState);
     setTimeout(() => {
       this.linkText = this.sideNavState;
     }, 200);
