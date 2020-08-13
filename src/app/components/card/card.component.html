@@ -1,8 +1,8 @@
 <mat-card class="card" [style.background-color]="card.color">
     <mat-card-header style="display:inline-flex">
         <mat-card-title style="display:inline-flex">
-            <mat-icon style="margin-right:5px" (click)="clickOnAction(action.VIEW)">launch</mat-icon>
+            <mat-icon style="margin-right:5px; cursor:pointer" matTooltip="{{'View' | translate}}" (click)="clickOnAction(action.VIEW)">launch</mat-icon>
             {{card.title}}</mat-card-title>
     </mat-card-header>
-    <arlas-config-menu [zone]="'config.json'" [actions]="card?.actions" (actionExecutedEmitter)="afterAction()" ></arlas-config-menu>
+    <arlas-config-menu  matTooltip="{{'Menu' | translate}}" [zone]="'config.json'" [actions]="card?.actions" (actionExecutedEmitter)="afterAction()" ></arlas-config-menu>
 </mat-card>
