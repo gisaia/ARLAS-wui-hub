@@ -8,7 +8,26 @@
     "Duplicate":"Duplicate",
     "Delete":"Delete",
     "ITEMS_PER_PAGE_LABEL":"Items per page",
-    "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}"
+    "NEXT_PAGE_LABEL":"Next page",
+    "PREVIOUS_PAGE_LABEL":"Previous page",
+    "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}",
+    "FIRST_PAGE_LABEL": "First page",
+    "LAST_PAGE_LABEL": "Last page",
+    "Create new configuration":"Create new configuration",
+    "reduce":"Reduce",
+    "expand":"Expand",
+    "Hide menu":"Hide menu",
+    "Cancel":"Cancel",
+    "New name":"New name",
+    "Name":"Name",
+    "Add a new configuration":"Create new configuration",
+    "Create":"Create",
+    "Share configuration":"Share configuration",
+    "group":"Groups",
+    "reading":"Right to read",
+    "writing":"Right to write",
+    "This will delete":"This will delete ",
+    "element and cannot be undone.":"element and cannot be undone."
 
 }
 
