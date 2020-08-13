@@ -30,7 +30,7 @@ export class CardService {
   }
 
   public cardList(size: number, page: number): Observable<[number, Card[]]> {
-    return (this.persistenceService.list('config.json', size, page, 'asc') as Observable<DataResource>)
+    return (this.persistenceService.list('config.json', size, page, 'desc') as Observable<DataResource>)
       .pipe(map(data => {
         if(data.data !== undefined){
           return  [data.total, data.data.map(d => this.dataWithlinksToCards(d))]
@@ -39,22 +39,6 @@ export class CardService {
         }
       }));
   }
-
-  public deleteCard(id: string): Observable<Card> {
-    return this.persistenceService.delete(id).pipe(map(d => this.dataWithlinksToCards(d)));
-  }
-
-  public createEmpty(name: string): Observable<DataWithLinks> {
-    return this.persistenceService.create('config.json', name, '{}');
-  }
-
-  public duplicate(newName: string, id: string): Observable<DataWithLinks> {
-    return this.persistenceService.get(id)
-      .pipe(flatMap(data => {
-        return this.persistenceService.create('config.json', newName, data.doc_value, data.doc_readers, data.doc_writers)
-      }))
-  }
-
 
   private dataWithlinksToCards(data: DataWithLinks): Card {
     const actions: Array<ConfigAction> = new Array();
@@ -68,26 +52,28 @@ export class CardService {
       zone: data.doc_zone
     };
     actions.push({
-      config,
+      config:config,
       configIdParam: 'config_id',
       type: ConfigActionEnum.VIEW
     });
     actions.push({
-      config,
+      config:config,
       type: ConfigActionEnum.EDIT,
       enabled: data.updatable
     });
     actions.push({
-      config,
+      config:config,
       type: ConfigActionEnum.DUPLICATE,
       name: data.doc_key
     });
     actions.push({
-      config,
-      type: ConfigActionEnum.SHARE
+      config:config,
+      type: ConfigActionEnum.SHARE,
+      enabled: data.updatable
+
     });
     actions.push({
-      config,
+      config:config,
       type: ConfigActionEnum.DELETE,
       enabled: data.updatable
     });
