@@ -61,8 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
     StaticHubComponent,
     DynamicHubComponent,
     HeaderComponent,
-    CardComponent,
-    UserInfosComponent
+    CardComponent
   ],
   imports: [
     AppRoutingModule,
