@@ -45,6 +45,7 @@ export class DynamicHubComponent implements OnInit {
       config:null
     }
     const dialogRef = this.dialog.open(ActionModalComponent, {
+      disableClose:true,
       data: {
         name: action.name,
         type: action.type
