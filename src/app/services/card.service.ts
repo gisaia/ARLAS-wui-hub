@@ -8,16 +8,21 @@ import { ArlasColorGeneratorLoader } from 'arlas-wui-toolkit/services/color-gene
 
 
 
+export interface Group {
+  fullname: string;
+  name: string;
+  color: string;
+}
 export interface Card {
   id: string;
   title: string;
-  readers: string[];
-  writers: string[];
+  readers: Group[];
+  writers: Group[];
   updatable: boolean;
   last_update_date: Date;
   tabs?: string[];
   actions: Array<ConfigAction>;
-  color:string;
+  color: string;
 }
 
 @Injectable({
@@ -25,17 +30,17 @@ export interface Card {
 })
 export class CardService {
 
-  constructor(private persistenceService: PersistenceService, 
-    private arlasColorGeneratorLoader:ArlasColorGeneratorLoader){
+  constructor(private persistenceService: PersistenceService,
+    private arlasColorGeneratorLoader: ArlasColorGeneratorLoader) {
   }
 
   public cardList(size: number, page: number): Observable<[number, Card[]]> {
     return (this.persistenceService.list('config.json', size, page, 'desc') as Observable<DataResource>)
       .pipe(map(data => {
-        if(data.data !== undefined){
-          return  [data.total, data.data.map(d => this.dataWithlinksToCards(d))]
-        }else{
-          return [data.total, []]
+        if (data.data !== undefined) {
+          return [data.total, data.data.map(d => this.dataWithlinksToCards(d))];
+        } else {
+          return [data.total, []];
         }
       }));
   }
@@ -52,54 +57,79 @@ export class CardService {
       zone: data.doc_zone
     };
     actions.push({
-      config:config,
+      config: config,
       configIdParam: 'config_id',
       type: ConfigActionEnum.VIEW
     });
     actions.push({
-      config:config,
+      config: config,
       type: ConfigActionEnum.EDIT,
       enabled: data.updatable
     });
     actions.push({
-      config:config,
+      config: config,
       type: ConfigActionEnum.DUPLICATE,
       name: data.doc_key
     });
     actions.push({
-      config:config,
+      config: config,
       type: ConfigActionEnum.SHARE,
       enabled: data.updatable
 
     });
     actions.push({
-      config:config,
+      config: config,
       type: ConfigActionEnum.DELETE,
       enabled: data.updatable
     });
+    const readers = new Array<Group>();
+    if (data.doc_readers) {
+      data.doc_readers.forEach(r => {
+        const reader: Group = {
+          fullname: r,
+          name: r.split('/')[r.split('/').length - 1],
+          color: this.arlasColorGeneratorLoader.getColor(r)
+        };
+        readers.push(reader);
+      });
+    }
+    const writers = new Array<Group>();
+    if (data.doc_writers) {
+      data.doc_writers.forEach(r => {
+        const writer: Group = {
+          fullname: r,
+          name: r.split('/')[r.split('/').length - 1],
+          color: this.arlasColorGeneratorLoader.getColor(r)
+        };
+        writers.push(writer);
+      });
+    }
     return {
       id: data.id,
       title: data.doc_key,
-      readers: data.doc_readers,
-      writers: data.doc_writers,
+      readers,
+      writers,
       updatable: data.updatable,
       last_update_date: data.last_update_date,
       tabs: this.getTabs(data.doc_value),
       actions: actions,
-      color : this.arlasColorGeneratorLoader.getColor(data.id.concat(data.doc_key))
-    }
+      color: this.arlasColorGeneratorLoader.getColor(data.id.concat(data.doc_key))
+    };
   }
 
   private getTabs(value: string): string[] {
     const config: any = JSON.parse(value);
+    console.log(config.arlas.web)
     if (config.arlas !== undefined &&
       config.arlas.web !== undefined &&
       config.arlas.web.analytics !== undefined) {
+        console.log( config.arlas.web.analytics
+          .filter(a => a.tab !== undefined))
       return config.arlas.web.analytics
-        .filter(a => a.tabs !== undefined).map(a => a.tabs)
+        .filter(a => a.tab !== undefined).map(a => a.tab);
     } else {
       return [];
     }
-  };
+  }
 
 }
