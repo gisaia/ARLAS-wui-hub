@@ -24,46 +24,46 @@ export class LeftMenuComponent implements OnInit {
 
   public sideNavState = false;
   public linkText = false;
-  public connected:boolean;
-  public pages: Page[]= [];
-  public name:string;
-  public avatar:string;
-  public reduce:string;
-  public expand:string;
+  public connected: boolean;
+  public pages: Page[] = [];
+  public name: string;
+  public avatar: string;
+  public reduce: string;
+  public expand: string;
 
-  constructor(private authentService: AuthentificationService, private router:Router,
-    private dialog: MatDialog, private translate: TranslateService,private sidenavService: SidenavService) { 
-      this.reduce = this.translate.instant('reduce');
-      this.expand = this.translate.instant('expand');
+  constructor(private authentService: AuthentificationService, private router: Router,
+    private dialog: MatDialog, private translate: TranslateService, private sidenavService: SidenavService) {
+    this.reduce = this.translate.instant('reduce');
+    this.expand = this.translate.instant('expand');
 
-    }
+  }
 
   public ngOnInit() {
     const claims = this.authentService.identityClaims as any;
     this.authentService.canActivateProtectedRoutes.subscribe(isConnected => {
-        this.connected=isConnected;
-        if(isConnected){
-          this.name = claims.nickname;
-          this.avatar = claims.picture;
-        }else{
-          this.name = '';
-          this.avatar='';
-        }
-    })    
+      this.connected = isConnected;
+      if (isConnected) {
+        this.name = claims.nickname;
+        this.avatar = claims.picture;
+      } else {
+        this.name = '';
+        this.avatar = '';
+      }
+    })
   }
 
-  public connect(){
-    if(this.connected){
+  public connect() {
+    if (this.connected) {
       this.authentService.logout();
-    }else{
+    } else {
       this.authentService.login();
     }
   }
 
-  public getUserInfos(){
+  public getUserInfos() {
     this.dialog.open(UserInfosComponent);
   }
-  
+
   public onSidenavToggle() {
     this.sideNavState = !this.sideNavState;
     this.sidenavService.sideNavState.next(this.sideNavState);

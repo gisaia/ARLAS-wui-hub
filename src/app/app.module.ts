@@ -17,7 +17,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './components/header/header.component';
 import { CardComponent } from './components/card/card.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { PersistenceService, GET_OPTIONS } from 'arlas-wui-toolkit/services/persistence/persistence.service'
+import { GET_OPTIONS } from 'arlas-wui-toolkit/services/persistence/persistence.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuthentificationService } from 'arlas-wui-toolkit/services/authentification/authentification.service';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -43,6 +43,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ArlasColorGeneratorLoader } from 'arlas-wui-toolkit/services/color-generator-loader/color-generator-loader.service';
 import { PaginatorI18n } from 'arlas-wui-toolkit/tools/paginatori18n';
 import { UserInfosComponent } from 'arlas-wui-toolkit//components/user-infos/user-infos.component';
+import { ArlasToolkitSharedModule } from 'arlas-wui-toolkit';
 
 
 export function loadServiceFactory(loadService: LoadService) {
@@ -73,6 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatCardModule,
     MatDialogModule,
     MatDividerModule,
+    MatTooltipModule,
     MatIconModule,
     MatInputModule,
     MatMenuModule,
@@ -83,6 +85,7 @@ export function createTranslateLoader(http: HttpClient) {
     HttpClientModule,
     ConfigMenuModule,
     ErrorModalModule,
+    ArlasToolkitSharedModule,
     ReactiveFormsModule,
     FormsModule,
     TranslateModule.forRoot({
@@ -127,7 +130,7 @@ export function createTranslateLoader(http: HttpClient) {
       useValue: configUpdaterFactory
     },
     {
-      provide: MatPaginatorIntl, 
+      provide: MatPaginatorIntl,
       deps: [TranslateService],
       useFactory: (translateService: TranslateService) => new PaginatorI18n(translateService).getPaginatorIntl()
     },
