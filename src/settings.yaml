@@ -13,7 +13,7 @@ authentication:
   require_https: true
   response_type: "id_token token"
   silent_refresh_timeout: 10000
-  timeout_factor: 4
+  timeout_factor: 0.75
   session_checks_enabled: true
   clear_hash_after_login: true
   disable_at_hash_check: false
