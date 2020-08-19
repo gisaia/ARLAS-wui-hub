@@ -1,0 +1,22 @@
+.add-card{
+    max-width: 400px;
+    min-width: 200px;
+    border: 1px dashed #999;;
+    color: black;
+    margin:0 10px;
+    min-height: 50px;
+
+}
+.add-card-content{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+.add-card-icon{
+    font-size: xxx-large;
+    height: 48px;
+    size: 48px;
+    width: 48px;
+    font-weight: bolder;
+    cursor: pointer;
+}

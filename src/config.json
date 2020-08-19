@@ -1,4 +1,5 @@
 {
+  "static":false,
   "header": {
     "title": "ARLAS",
     "subtitle": "Demo",

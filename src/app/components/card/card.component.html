@@ -1,0 +1,28 @@
+<mat-card class="card" [style.borderTopColor]="card.color" style="border-top: 6px solid;">
+    <mat-card-header class="config-header">
+        <mat-card-title style="display:inline-flex">
+            <mat-icon style="margin-right:5px; cursor:pointer" matTooltip="{{'View' | translate}}" (click)="clickOnAction(action.VIEW)">launch</mat-icon>
+            {{card.title}}
+        </mat-card-title>
+        <arlas-config-menu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'" [actions]="card?.actions" (actionExecutedEmitter)="afterAction()" ></arlas-config-menu>
+    </mat-card-header>
+    <div class="config-groups">
+      <div class="config-readers">
+        <div>{{ 'Readers' | translate}}</div>
+        <div *ngIf="card.readers.length === 0" class="group-none"> {{'None' | translate }}</div>
+        <div *ngFor="let reader of card.readers" class="group-circle" [style.background-color]="reader.color" [matTooltip]="reader.name" ></div>
+      </div>
+      <div class="config-writers">
+        <div>{{ 'Writers' | translate}}</div>
+        <div *ngIf="card.writers.length === 0" class="group-none"> {{'None' | translate }}</div>
+        <div *ngFor="let writer of card.writers" class="group-circle" [style.background-color]="writer.color" [matTooltip]="writer.name"></div>
+      </div>
+    </div>
+    <div class="config-highlights">
+      <div>{{ 'Highlights' | translate}}</div>
+      <div *ngIf="card.tabs.length === 0" class="group-none"> {{'None' | translate }}</div>
+      <div *ngFor="let tab of card.tabs" class="highlight" >
+        - {{tab}}
+      </div>
+    </div>
+</mat-card>

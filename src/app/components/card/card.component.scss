@@ -1,0 +1,49 @@
+.card {
+  max-width: 400px;
+  min-width: 200px;
+
+  color: black;
+  margin: 0 10px;
+  min-height: 50px;
+}
+
+.group-circle {
+  min-width: 6px;
+  border-radius: 50%;
+  border: none;
+  width: 15px;
+  height: 15px;
+  display: inline-flex;
+  margin-right: 3px;
+}
+
+.group-none {
+  color: #666;
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+.config-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.config-groups {
+  margin-bottom: 5px;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  padding: 5px 0;
+}
+
+.config-menu {
+  margin-top: -8px;
+}
+
+.highlight {
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+::ng-deep .config-header .mat-card-header-text {
+  margin: 0;
+}

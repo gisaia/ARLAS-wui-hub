@@ -1,0 +1,10 @@
+<div style="display:flex">
+        <mat-card class="add-card">
+                <mat-card-content class="add-card-content">
+                        <mat-icon matTooltip="{{'Create new configuration' | translate}}" class="add-card-icon" (click)="add()">add</mat-icon>
+                </mat-card-content>
+        </mat-card>
+        <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]=card></app-card>
+</div>
+<mat-paginator [length]="resultsLength" [pageSize]="this.pageSize" [showFirstLastButtons]=true (page)="pageChange($event)"></mat-paginator>
+<arlas-tool-errormodal></arlas-tool-errormodal>
