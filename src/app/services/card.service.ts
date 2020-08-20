@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { map, filter, flatMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ConfigAction, ConfigActionEnum, Config } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
@@ -119,12 +119,9 @@ export class CardService {
 
   private getTabs(value: string): string[] {
     const config: any = JSON.parse(value);
-    console.log(config.arlas.web)
     if (config.arlas !== undefined &&
       config.arlas.web !== undefined &&
       config.arlas.web.analytics !== undefined) {
-        console.log( config.arlas.web.analytics
-          .filter(a => a.tab !== undefined))
       return config.arlas.web.analytics
         .filter(a => a.tab !== undefined).map(a => a.tab);
     } else {
