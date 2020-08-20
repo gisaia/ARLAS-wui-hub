@@ -23,7 +23,11 @@ FROM nginx:1.13.3-alpine
 
 RUN apk add --update bash jq netcat-openbsd curl && rm -rf /var/cache/apk/*
 
-### TODO NGINX CONFIG
+## Copy our default nginx config
+COPY nginx/default.conf /etc/nginx/conf.d/
+
+## Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
 
 ## From 'hub' stage copy over the artifacts in dist folder to default nginx public folder
 COPY --from=hub /ng-app/dist/ARLAS-wui-hub /usr/share/nginx/html

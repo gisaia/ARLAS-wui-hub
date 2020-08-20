@@ -1,5 +1,10 @@
 #!/bin/sh
 
+fetchSettings(){
+  echo "Download the Hub settings file from \"${ARLAS_SETTINGS_URL}\" ..."
+  curl ${ARLAS_SETTINGS_URL} -o /usr/share/nginx/html/settings.yaml && echo "settings.yaml file downloaded with success." || (echo "Failed to download the settings.yaml file."; exit 1)
+}
+
 fetchConfiguration(){
   echo "Download the Hub configuration file from \"${ARLAS_HUB_CONFIGURATION_URL}\" ..."
   curl ${ARLAS_HUB_CONFIGURATION_URL} -o /usr/share/nginx/html/config.json && echo "Configuration file downloaded with success." || (echo "Failed to download the configuration file."; exit 1)
@@ -14,6 +19,13 @@ fetchI18nFRContent(){
   echo "Download the fr.json file from \"${ARLAS_HUB_I18N_FR_URL}\" ..."
   curl ${ARLAS_HUB_I18N_FR_URL} -o "/usr/share/nginx/html/assets/i18n/fr.json" && echo "'FR language' file downloaded with success." || (echo "Failed to download the 'FR language' file."; exit 1)
 }
+
+### URL to HUB SETTINGS
+if [ -z "${ARLAS_SETTINGS_URL}" ]; then
+  echo "The default hub container settings.yaml file is used"
+else
+  fetchSettings;
+fi
 
 ### URL to HUB CONFIGURATION
 if [ -z "${ARLAS_HUB_CONFIGURATION_URL}" ]; then
@@ -310,8 +322,19 @@ else
   echo ${ARLAS_HUB_BASE_HREF}  "is used as app base href "
 fi
 
+# Set App base path
+if [ -z "${ARLAS_HUB_APP_PATH}" ]; then
+  ARLAS_HUB_APP_PATH=""
+  export ARLAS_HUB_APP_PATH
+  echo "No specific path for the app"
+else
+  echo ${ARLAS_HUB_APP_PATH}  "is used as app base path "
+fi
+
 envsubst '$ARLAS_HUB_BASE_HREF' < /usr/share/nginx/html/index.html > /usr/share/nginx/html/index.html.tmp
 mv /usr/share/nginx/html/index.html.tmp /usr/share/nginx/html/index.html
 
+envsubst '$ARLAS_HUB_APP_PATH' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf.tmp
+mv /etc/nginx/conf.d/default.conf.tmp /etc/nginx/conf.d/default.conf
 
 nginx -g "daemon off;"
