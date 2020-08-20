@@ -310,8 +310,19 @@ else
   echo ${ARLAS_HUB_BASE_HREF}  "is used as app base href "
 fi
 
+# Set App base path
+if [ -z "${ARLAS_HUB_APP_PATH}" ]; then
+  ARLAS_HUB_APP_PATH=""
+  export ARLAS_HUB_APP_PATH
+  echo "No specific path for the app"
+else
+  echo ${ARLAS_HUB_APP_PATH}  "is used as app base path "
+fi
+
 envsubst '$ARLAS_HUB_BASE_HREF' < /usr/share/nginx/html/index.html > /usr/share/nginx/html/index.html.tmp
 mv /usr/share/nginx/html/index.html.tmp /usr/share/nginx/html/index.html
 
+envsubst '$ARLAS_HUB_APP_PATH' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf.tmp
+mv /etc/nginx/conf.d/default.conf.tmp /etc/nginx/conf.d/default.conf
 
 nginx -g "daemon off;"
