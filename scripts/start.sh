@@ -48,13 +48,36 @@ else
   fetchI18nFRContent;
 fi
 
+### URL to ARLAS-wui
+if [ -z "${ARLAS_WUI_URL}" ]; then
+  ARLAS_WUI_URL="https://arlas.stack/wui"
+  export ARLAS_WUI_URL
+  echo "The default ARLAS-wui url '${ARLAS_WUI_URL}' is used"
+else
+  echo ${ARLAS_WUI_URL} "is used for 'arlas_wui_builder' in settings.yaml file"
+fi
+envsubst '$ARLAS_WUI_URL' < /usr/share/nginx/html/settings.yaml > /usr/share/nginx/html/settings.yaml.tmp
+mv /usr/share/nginx/html/settings.yaml.tmp /usr/share/nginx/html/settings.yaml
+
+### URL to ARLAS-wui-builder
+if [ -z "${ARLAS_BUILDER_URL}" ]; then
+  ARLAS_BUILDER_URL="https://arlas.stack/builder"
+  export ARLAS_BUILDER_URL
+  echo "The default ARLAS-wui-builder url '${ARLAS_BUILDER_URL}' is used"
+else
+  echo ${ARLAS_BUILDER_URL} "is used for 'arlas_builder_url' in settings.yaml file"
+fi
+envsubst '$ARLAS_BUILDER_URL' < /usr/share/nginx/html/settings.yaml > /usr/share/nginx/html/settings.yaml.tmp
+mv /usr/share/nginx/html/settings.yaml.tmp /usr/share/nginx/html/settings.yaml
+
+
 ### URL to ARLAS-persistence
 if [ -z "${ARLAS_PERSISTENCE_URL}" ]; then
   ARLAS_PERSISTENCE_URL="'http://localhost:19997/arlas_persistence_server'"
   export ARLAS_PERSISTENCE_URL
   echo "The default ARLAS-persistence url '${ARLAS_PERSISTENCE_URL}' is used"
 else
-  echo ${ARLAS_PERSISTENCE_URL} "is used for 'arlas.persistence-server.url'"
+  echo ${ARLAS_PERSISTENCE_URL} "is used for 'persistence.url' in settings.yaml file"
 fi
 envsubst '$ARLAS_PERSISTENCE_URL' < /usr/share/nginx/html/settings.yaml > /usr/share/nginx/html/settings.yaml.tmp
 mv /usr/share/nginx/html/settings.yaml.tmp /usr/share/nginx/html/settings.yaml

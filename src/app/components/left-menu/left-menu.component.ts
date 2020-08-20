@@ -49,7 +49,7 @@ export class LeftMenuComponent implements OnInit {
         this.name = '';
         this.avatar = '';
       }
-    })
+    });
   }
 
   public connect() {

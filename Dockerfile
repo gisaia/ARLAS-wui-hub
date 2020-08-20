@@ -30,7 +30,7 @@ COPY nginx/default.conf /etc/nginx/conf.d/
 RUN rm -rf /usr/share/nginx/html/*
 
 ## From 'hub' stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=hub /ng-app/dist/ARLAS-wui-hub /usr/share/nginx/html
+COPY --from=hub /ng-app/dist/ /usr/share/nginx/html
 COPY --from=hub /ng-app/start.sh /usr/share/nginx/
 
 HEALTHCHECK CMD curl --fail http://localhost:80/ || exit 1
