@@ -3,7 +3,6 @@
 </div>
 
 <div *ngIf="!useStatic">
-  <app-header [sidenav]="leftSidenav"></app-header>
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #leftSidenav mode="side" opened>
       <app-left-menu></app-left-menu>
@@ -17,8 +16,3 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
-
-<!-- <ngx-spinner bdOpacity="0.2" bdColor="rgba(51,51,51,0.6)" size="medium" color="#fff" type="ball-climbing-dot"
-  fullScreen="true">
-  <p style="color: white">{{'Loading'}}...</p>
-</ngx-spinner> -->

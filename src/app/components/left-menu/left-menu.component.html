@@ -1,42 +1,46 @@
-<div class="menu_container"  [@onSideNavChange]="sideNavState ? 'open' : 'close'">
-    <div>
-      <mat-nav-list>
-        <mat-list-item *ngFor="let page of pages" [matTooltip]="page?.tooltip" [routerLink]="page?.link" queryParamsHandling="preserve">
-          <button mat-icon-button [disabled]="!page?.enabled" routerLinkActive="mat-accent">
-            <span [@animateText]="linkText ? 'show' : 'hide'">{{ page?.name }} </span>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
+<div class="menu_container" [class.hide-label]="!isLabelDisplayed">
+    <div class="logo">
+        <img src="assets/logo-only.png" />
+        <span>ARLAS HuB</span>
     </div>
-  
     <div>
-      <div class="action-list">
         <mat-nav-list>
-          <mat-list-item *ngIf="connected" matTooltip="{{'User info' | translate}}" (click)="getUserInfos()">
-            <button mat-icon-button>
-              <img src="{{avatar}}"  class="user_info_img">
-              <span  class="label-user-name" [@animateText]="linkText ? 'show' : 'hide'">{{name}}</span>
-            </button>
-          </mat-list-item>
-          <mat-list-item *ngIf="!connected" matTooltip="{{'Log In' | translate}}" (click)="connect()" >
-              <button mat-icon-button>
-                <mat-icon>account_circle</mat-icon>
-                <span [@animateText]="linkText ? 'show' : 'hide'" >{{'Log In' | translate}}</span>
-              </button>
+            <mat-list-item *ngFor="let page of pages" [matTooltip]="page?.tooltip" [routerLink]="page?.link"
+                queryParamsHandling="preserve">
+                <button mat-icon-button [disabled]="!page?.enabled" routerLinkActive="mat-accent">
+                    <span>{{ page?.name }} </span>
+                </button>
             </mat-list-item>
-          <mat-list-item  *ngIf="connected" matTooltip="{{'Log Out' | translate}}" (click)="connect()" >
-            <button mat-icon-button>
-              <mat-icon>lock_open</mat-icon>
-              <span class="label-action" [@animateText]="linkText ? 'show' : 'hide'"> {{'Log Out' | translate}}</span>
-            </button>
-          </mat-list-item>
         </mat-nav-list>
-      </div>
-      <div class="toggler">
-        <button mat-icon-button (click)="onSidenavToggle()"
-          [matTooltip]="sideNavState? reduce : expand">
-          <mat-icon>{{ sideNavState ? 'arrow_left' : 'arrow_right' }}</mat-icon>
-        </button>
-      </div>
     </div>
-  </div>
+
+    <div>
+        <div class="action-list">
+            <mat-nav-list>
+                <mat-list-item *ngIf="connected" matTooltip="{{'User info' | translate}}" (click)="getUserInfos()">
+                    <button mat-icon-button>
+                        <img src="{{avatar}}" class="user_avatar">
+                        <span class="user_name">{{name}}</span>
+                    </button>
+                </mat-list-item>
+                <mat-list-item *ngIf="!connected" matTooltip="{{'Log In' | translate}}" (click)="connect()">
+                    <button mat-icon-button>
+                        <mat-icon>account_circle</mat-icon>
+                        <span>{{'Log In' | translate}}</span>
+                    </button>
+                </mat-list-item>
+                <mat-list-item *ngIf="connected" matTooltip="{{'Log Out' | translate}}" (click)="connect()">
+                    <button mat-icon-button>
+                        <mat-icon>lock_open</mat-icon>
+                        <span >{{'Log Out' | translate}}</span>
+                    </button>
+                </mat-list-item>
+            </mat-nav-list>
+        </div>
+        <div class="toggler">
+            <button mat-icon-button (click)="expandMenu()" [matTooltip]="isLabelDisplayed? reduce : expand">
+                <mat-icon>{{ isLabelDisplayed ? 'arrow_left' : 'arrow_right' }}</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
