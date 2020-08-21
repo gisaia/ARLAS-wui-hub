@@ -44,8 +44,6 @@ import { ArlasColorGeneratorLoader } from 'arlas-wui-toolkit/services/color-gene
 import { PaginatorI18n } from 'arlas-wui-toolkit/tools/paginatori18n';
 import { UserInfosComponent } from 'arlas-wui-toolkit//components/user-infos/user-infos.component';
 import { ArlasToolkitSharedModule } from 'arlas-wui-toolkit';
-
-
 export function loadServiceFactory(loadService: LoadService) {
   const load = () => loadService.init('config.json?' + Date.now());
   return load;
@@ -97,10 +95,6 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     OAuthModule.forRoot()
 
-  ],
-  entryComponents: [
-    ActionModalComponent,
-    UserInfosComponent
   ],
   providers: [
     SidenavService,
