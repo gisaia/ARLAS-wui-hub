@@ -20,7 +20,7 @@ import { ArlasSettingsService } from 'arlas-wui-toolkit/services/settings/arlas.
 export class DynamicHubComponent implements OnInit {
 
   public action = Action;
-  public pageSize = 11;
+  public pageSize = 20;
   public pageNumber = 0;
   public isLoading = false;
   public resultsLength = 0;

@@ -30,6 +30,7 @@ export class LeftMenuComponent implements OnInit {
   public avatar: string;
   public reduce: string;
   public expand: string;
+  public isLabelDisplayed = false;
 
   constructor(private authentService: AuthentificationService, private router: Router,
     private dialog: MatDialog, private translate: TranslateService, private sidenavService: SidenavService) {
@@ -64,12 +65,8 @@ export class LeftMenuComponent implements OnInit {
     this.dialog.open(UserInfosComponent);
   }
 
-  public onSidenavToggle() {
-    this.sideNavState = !this.sideNavState;
-    this.sidenavService.sideNavState.next(this.sideNavState);
-    setTimeout(() => {
-      this.linkText = this.sideNavState;
-    }, 200);
+  public expandMenu() {
+    this.isLabelDisplayed = !this.isLabelDisplayed;
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
     }, 100);
