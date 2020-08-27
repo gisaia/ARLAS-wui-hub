@@ -13,7 +13,7 @@ export class StaticHubComponent {
   public footer: any;
   public items: any;
 
-  constructor(private loadService: LoadService){
+  constructor(private loadService: LoadService) {
     this.header = this.loadService.appData.header;
     this.footer = this.loadService.appData.footer;
     this.cards = this.loadService.appData.cards;
