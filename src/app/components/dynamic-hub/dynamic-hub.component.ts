@@ -33,10 +33,10 @@ export class DynamicHubComponent implements OnInit {
     private arlasSettingsService: ArlasSettingsService) { }
 
   public ngOnInit(): void {
+    this.fetchCards();
     this.authentService.canActivateProtectedRoutes.subscribe(data => {
       this.fetchCards();
     });
-
   }
 
   public add() {

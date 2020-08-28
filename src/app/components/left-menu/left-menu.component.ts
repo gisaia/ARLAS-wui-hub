@@ -24,7 +24,8 @@ export class LeftMenuComponent implements OnInit {
 
   public sideNavState = false;
   public linkText = false;
-  public connected: boolean;
+  public connected;
+  public isAuthentActivated;
   public pages: Page[] = [];
   public name: string;
   public avatar: string;
@@ -36,7 +37,7 @@ export class LeftMenuComponent implements OnInit {
     private dialog: MatDialog, private translate: TranslateService, private sidenavService: SidenavService) {
     this.reduce = this.translate.instant('reduce');
     this.expand = this.translate.instant('expand');
-
+    this.isAuthentActivated = !!this.authentService.authConfigValue && !!this.authentService.authConfigValue.use_authent;
   }
 
   public ngOnInit() {
