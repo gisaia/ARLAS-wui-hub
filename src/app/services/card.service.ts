@@ -122,8 +122,9 @@ export class CardService {
         if (config.arlas !== undefined &&
             config.arlas.web !== undefined &&
             config.arlas.web.analytics !== undefined) {
-            return config.arlas.web.analytics
-                .filter(a => a.tab !== undefined).map(a => a.tab);
+            const tabs: Set<string> = new Set(config.arlas.web.analytics
+                .filter(a => a.tab !== undefined).map(a => a.tab));
+            return Array.from(tabs);
         } else {
             return [];
         }
