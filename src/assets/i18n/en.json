@@ -33,7 +33,12 @@
     "Connection":"Connection",
     "Continue":"Continue",
     "Unauthorized action":"Unauthorized action",
-    "You are not authorized to access at this ressource.":"You are not authorized to access at this ressource."
+    "You are not authorized to access at this ressource.":"You are not authorized to access at this ressource.",
+    "Create a new configuration":"Create a new configuration",
+    "Readers":"Readers",
+    "Writers":"Writers",
+    "Highlights":"Highlights",
+    "None":"None"
 
 }
 
