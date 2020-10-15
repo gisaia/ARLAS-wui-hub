@@ -34,8 +34,12 @@
     "Connection":"Connexion",
     "Continue":"Continuer",
     "Unauthorized action":"Action non autorisée",
-    "You are not authorized to access at this ressource.":"Vous n'êtes pas autorisé à accéder à cette ressource."
-
+    "You are not authorized to access at this ressource.":"Vous n'êtes pas autorisé à accéder à cette ressource.",
+    "Create a new configuration":"Créer une nouvelle configuration",
+    "Readers":"Droit de lecture",
+    "Writers":"Droit d'écriture",
+    "Highlights":"Points forts",
+    "None":"Aucun"
 
 
 }
