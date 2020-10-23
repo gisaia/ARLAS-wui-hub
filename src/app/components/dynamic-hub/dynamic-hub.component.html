@@ -3,7 +3,7 @@
     {{'Create a new configuration' | translate}}
 </button>
 <div class="cards">
-    <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]=card></app-card>
+    <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card"></app-card>
 
 </div>
 <mat-paginator *ngIf="resultsLength > pageSize" class="paginator" [length]="resultsLength" [pageSize]="this.pageSize" [showFirstLastButtons]=true
