@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, AfterViewInit, ViewChild } from '@angular/core';
+import { ConfigMenuComponent, ConfigActionEnum } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
 
@@ -23,7 +24,7 @@ export interface CardAction {
 })
 export class CardComponent implements AfterViewInit {
 
-
+  @ViewChild('configMenu', {static: false}) configMenu: ConfigMenuComponent;
   @Input() public card: Card;
   @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
@@ -38,10 +39,7 @@ export class CardComponent implements AfterViewInit {
   }
 
   public clickOnAction(action: Action) {
-    this.actionOnCard.next({
-      card: this.card,
-      action: action
-    });
+    this.configMenu.onActionClick(this.card.actions.find(a => a.type === ConfigActionEnum.VIEW));
   }
 
   public afterAction() {
