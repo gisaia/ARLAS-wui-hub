@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { onSideNavChange, animateText } from './animations';
 import { AuthentificationService } from 'arlas-wui-toolkit/services/authentification/authentification.service';
 import { Router } from '@angular/router';
 import { UserInfosComponent } from 'arlas-wui-toolkit//components/user-infos/user-infos.component';
@@ -17,8 +16,7 @@ interface Page {
 @Component({
   selector: 'app-left-menu',
   templateUrl: './left-menu.component.html',
-  styleUrls: ['./left-menu.component.scss'],
-  animations: [onSideNavChange, animateText]
+  styleUrls: ['./left-menu.component.scss']
 })
 export class LeftMenuComponent implements OnInit {
 

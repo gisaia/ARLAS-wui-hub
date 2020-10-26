@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
-import { onMainContentChange } from './components/left-menu/animations';
 
 @Component({
-  animations: [onMainContentChange],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
