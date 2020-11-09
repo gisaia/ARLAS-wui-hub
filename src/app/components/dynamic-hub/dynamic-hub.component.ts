@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Action, CardAction } from '../card/card.component';
+import { Action } from '../card/card.component';
 import { Card } from '../../services/card.service';
 import { CardService } from '../../services/card.service';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs/operators';
-import { LoadService } from '../../services/load.service';
 import { AuthentificationService } from 'arlas-wui-toolkit/services/authentification/authentification.service';
-import { ConfigActionEnum, ConfigAction } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
 import { ActionModalComponent } from 'arlas-wui-toolkit/components/config-manager/action-modal/action-modal.component';
 import { ArlasSettingsService } from 'arlas-wui-toolkit/services/settings/arlas.settings.service';
+import { ConfigAction, ConfigActionEnum } from 'arlas-wui-toolkit';
 
 
 @Component({
