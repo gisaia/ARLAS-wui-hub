@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ConfigAction, ConfigActionEnum, Config } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
 import { PersistenceService } from 'arlas-wui-toolkit/services/persistence/persistence.service';
 import { ArlasColorGeneratorLoader } from 'arlas-wui-toolkit/services/color-generator-loader/color-generator-loader.service';
+import { Config, ConfigAction, ConfigActionEnum } from 'arlas-wui-toolkit';
 
 
 
