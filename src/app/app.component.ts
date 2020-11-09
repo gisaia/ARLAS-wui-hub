@@ -1,27 +1,22 @@
 import { Component } from '@angular/core';
 import { LoadService } from './services/load.service';
+import { SidenavService } from './services/sidenav.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
-  public cards: any;
-  public header: any;
-  public footer: any;
-  public items: any;
+  public onSideNavChange: boolean;
+  public useStatic: boolean;
 
-  constructor(private loadService: LoadService){
-    this.header = this.loadService.appData.header;
-    this.footer = this.loadService.appData.footer;
-    this.cards = this.loadService.appData.cards;
-    this.items = this.footer.items;
+  constructor(private loadService: LoadService,
+    private sidenavService: SidenavService) {
+    this.useStatic = this.loadService.appData.static;
+    this.sidenavService.sideNavState.subscribe(res => {
+      this.onSideNavChange = res;
+    });
   }
-
-  public navigate(url: string) {
-    window.open(url, '_blank');
-  }
-
 }

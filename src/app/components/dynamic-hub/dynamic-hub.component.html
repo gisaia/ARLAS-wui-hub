@@ -1,0 +1,11 @@
+<button class="add-button" mat-raised-button color="primary" (click)="add()" [matTooltip]="'Create a new configuration' | translate">
+    <mat-icon>add</mat-icon>
+    {{'Create a new configuration' | translate}}
+</button>
+<div class="cards">
+    <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card"></app-card>
+
+</div>
+<mat-paginator *ngIf="resultsLength > pageSize" class="paginator" [length]="resultsLength" [pageSize]="this.pageSize" [showFirstLastButtons]=true
+    (page)="pageChange($event)"></mat-paginator>
+<arlas-tool-errormodal></arlas-tool-errormodal>
