@@ -62,11 +62,6 @@ echo "==> Set version"
 npm --no-git-tag-version version ${VERSION}
 git add package.json
 
-echo "==> Build (the artifact will be stored in the 'dist' directory)"
-npm install
-ng lint
-npm run build
-
 echo "  -- Create and push tag"
 git tag -a v${VERSION} -m "Release prod version ${VERSION}"
 git push origin v${VERSION}

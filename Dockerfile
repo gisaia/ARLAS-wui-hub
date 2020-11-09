@@ -6,7 +6,7 @@ FROM node:12.7-alpine as hub
 COPY package.json package-lock.json ./
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN export NODE_OPTIONS=--max_old_space_size=2048 && npm install && mkdir /ng-app && cp -R ./node_modules ./ng-app
+RUN export NODE_OPTIONS=--max_old_space_size=8192 && npm install && mkdir /ng-app && cp -R ./node_modules ./ng-app
 
 COPY ./scripts/start.sh ./ng-app
 
@@ -15,7 +15,7 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN export NODE_OPTIONS=--max_old_space_size=2048 && $(npm bin)/ng build --prod --aot --base-href='$ARLAS_HUB_BASE_HREF/'
+RUN export NODE_OPTIONS=--max_old_space_size=8192 && $(npm bin)/ng build --prod --aot --base-href='$ARLAS_HUB_BASE_HREF/'
 
 ### STAGE 2: Setup ###
 

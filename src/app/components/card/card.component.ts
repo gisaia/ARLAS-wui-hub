@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, AfterViewInit, ViewChild } from '@angular/core';
-import { ConfigMenuComponent, ConfigActionEnum } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
+import { Component, Input, Output, AfterViewInit, ViewChild } from '@angular/core';
+import { ConfigActionEnum } from 'arlas-wui-toolkit';
+import { ConfigMenuComponent } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
 
