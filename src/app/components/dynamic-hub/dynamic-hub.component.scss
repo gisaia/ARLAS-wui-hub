@@ -1,12 +1,14 @@
+@import 'variables.scss';
+
 .cards {
     display: flex;
-    align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
 }
 
 .add-button{
     margin-left: 10px;
+    color: $primaryColor;
 
     &:focus{
         background-color: transparent !important;
