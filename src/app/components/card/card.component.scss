@@ -1,10 +1,11 @@
 .card {
   max-width: 400px;
-  min-width: 200px;
+  min-width: 240px;
 
   color: black;
-  margin: 10px;
+  margin: 5px 8px;
   min-height: 50px;
+  height: calc(100% - 52px);
 }
 
 .group-circle {

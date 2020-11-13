@@ -113,7 +113,7 @@ export class CardService {
             last_update_date: data.last_update_date,
             tabs: this.getTabs(data.doc_value),
             actions: actions,
-            color: this.arlasColorGeneratorLoader.getColor(data.id.concat(data.doc_key))
+            color: '#3e6be3' // this.arlasColorGeneratorLoader.getColor(data.id.concat(data.doc_key))
         };
     }
 
