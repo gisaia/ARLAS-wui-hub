@@ -13,16 +13,14 @@
     "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}",
     "FIRST_PAGE_LABEL": "First page",
     "LAST_PAGE_LABEL": "Last page",
-    "Create new configuration":"Create new configuration",
+    "Create a new Exploration Dashboard":"Create a new Exploration Dashboard",
     "reduce":"Reduce",
     "expand":"Expand",
     "Hide menu":"Hide menu",
     "Cancel":"Cancel",
     "New name":"New name",
     "Name":"Name",
-    "Add a new configuration":"Create new configuration",
     "Create":"Create",
-    "Share configuration":"Share configuration",
     "group":"Groups",
     "reading":"Right to read",
     "writing":"Right to write",
@@ -34,11 +32,14 @@
     "Continue":"Continue",
     "Unauthorized action":"Unauthorized action",
     "You are not authorized to access at this ressource.":"You are not authorized to access at this ressource.",
-    "Create a new configuration":"Create a new configuration",
     "Readers":"Readers",
     "Writers":"Writers",
     "Highlights":"Highlights",
-    "None":"None"
-
+    "None":"None",
+    "Updated:": "Updated:",
+    "Private": "Private",
+    "Public": "Public",
+    "Shared": "Shared",
+    "Share configuration": "Share configuration"
 }
 
