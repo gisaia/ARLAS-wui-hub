@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Action } from '../card/card.component';
 import { Card } from '../../services/card.service';
@@ -18,12 +18,16 @@ import { ConfigAction, ConfigActionEnum } from 'arlas-wui-toolkit';
 })
 export class DynamicHubComponent implements OnInit {
 
+    @ViewChildren('checkBox') checkBox: QueryList<any>;
+
     public action = Action;
     public pageSize = 20;
     public pageNumber = 0;
     public isLoading = false;
     public resultsLength = 0;
     public cards: Card[];
+    public cardsRef: Card[];
+    public cardCollections: Map<string, string> = new Map<string, string>();
 
     constructor(
         private cardService: CardService,
@@ -67,6 +71,7 @@ export class DynamicHubComponent implements OnInit {
             this.pageNumber + 1
         ).subscribe(
             (result: [number, Card[]]) => {
+                this.cardCollections.clear();
                 this.resultsLength = result[0];
                 this.cards = Array.from(result[1]);
                 this.cards.forEach(c => {
@@ -74,7 +79,11 @@ export class DynamicHubComponent implements OnInit {
                         .map(a => a.url = this.arlasSettingsService.getArlasWuiUrl());
                     c.actions.filter(a => a.type === ConfigActionEnum.EDIT)
                         .map(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
+                    if (!this.cardCollections.has(c.collection)) {
+                        this.cardCollections.set(c.collection, c.color);
+                    }
                 });
+                this.cardsRef = this.cards;
             },
             error => {
                 console.error(error);
@@ -89,6 +98,12 @@ export class DynamicHubComponent implements OnInit {
         this.pageNumber = pageEvent.pageIndex;
         this.pageSize = pageEvent.pageSize;
         this.fetchCards();
+    }
+
+    public getCheckbox() {
+        this.cards = this.cardsRef;
+        const selectedCollection = this.checkBox.filter(checkbox => checkbox.checked);
+        this.cards = this.cards.filter( c => selectedCollection.map(collec => collec.value).includes(c.collection));
     }
 
 }

@@ -1,11 +1,26 @@
-<button class="add-button" mat-stroked-button (click)="add()" [matTooltip]="'Create a new configuration' | translate">
+<button class="add-button" mat-stroked-button (click)="add()" [matTooltip]="'Create a new Exploration Dashboard' | translate">
     <mat-icon>add</mat-icon>
-    {{'Create a new configuration' | translate}}
+    {{'Create a new Exploration Dashboard' | translate}}
 </button>
-<div class="cards">
-    <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card"></app-card>
-
+<div class="content">
+    <div class="dashboard">
+        <h2>{{'Dashboards' | translate}}</h2>
+        <div class="cards">
+            <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card"></app-card>
+        </div>
+    </div>
+    <div class="collection">
+        <h2>{{'Collections' | translate}}</h2>
+        <div class="cards">
+            <mat-card class="card" [style.borderLeftColor]="col.value" style="border-left: 6px solid;"
+                *ngFor="let col of cardCollections | keyvalue">
+                <mat-card-header>
+                    <mat-checkbox [checked]="true" [color]="'accent'" #checkBox [value]="col.key" (change)="getCheckbox()">{{col.key}}</mat-checkbox>
+                </mat-card-header>
+            </mat-card>
+        </div>
+    </div>
 </div>
-<mat-paginator *ngIf="resultsLength > pageSize" class="paginator" [length]="resultsLength" [pageSize]="this.pageSize" [showFirstLastButtons]=true
-    (page)="pageChange($event)"></mat-paginator>
+<mat-paginator *ngIf="resultsLength > pageSize" class="paginator" [length]="resultsLength" [pageSize]="this.pageSize"
+    [showFirstLastButtons]=true (page)="pageChange($event)"></mat-paginator>
 <arlas-tool-errormodal></arlas-tool-errormodal>

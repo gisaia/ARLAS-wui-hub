@@ -21,8 +21,10 @@ export interface Card {
     updatable: boolean;
     last_update_date: Date;
     tabs?: string[];
+    collection?: string;
     actions: Array<ConfigAction>;
     color: string;
+    owner: string;
 }
 
 @Injectable({
@@ -112,8 +114,10 @@ export class CardService {
             updatable: data.updatable,
             last_update_date: data.last_update_date,
             tabs: this.getTabs(data.doc_value),
+            collection: this.getCollection(data.doc_value),
             actions: actions,
-            color: '#3e6be3' // this.arlasColorGeneratorLoader.getColor(data.id.concat(data.doc_key))
+            color: this.arlasColorGeneratorLoader.getColor(this.getCollection(data.doc_value)),
+            owner: data.doc_owner
         };
     }
 
@@ -128,6 +132,15 @@ export class CardService {
         } else {
             return [];
         }
+    }
+
+    private getCollection(value: string): string {
+      const config: any = JSON.parse(value);
+      if (!!config.arlas && !!config.arlas.server && !!config.arlas.server.collection) {
+          return config.arlas.server.collection.name;
+      } else {
+          return null;
+      }
     }
 
 }
