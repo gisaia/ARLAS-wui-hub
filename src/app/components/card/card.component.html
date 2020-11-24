@@ -1,28 +1,36 @@
 <mat-card class="card" [style.borderTopColor]="card.color" style="border-top: 6px solid;">
-    <mat-card-header class="config-header">
+    <mat-card-header class="header">
         <mat-card-title style="display:inline-flex">
-
+            <mat-icon class="status" matTooltip="{{'Private' | translate}}" *ngIf="this.status === 'private'" >lock</mat-icon>
+            <mat-icon class="status" matTooltip="{{'Public' | translate}}" *ngIf="this.status === 'public'" >public</mat-icon>
+            <mat-icon class="status" matTooltip="{{'Shared' | translate}}" *ngIf="this.status === 'shared'" >groups</mat-icon>
             {{card.title}}
         </mat-card-title>
-        <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'" [actions]="card?.actions" (actionExecutedEmitter)="afterAction()" ></arlas-config-menu>
+        <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
+            [actions]="card?.actions" (actionExecutedEmitter)="afterAction()"></arlas-config-menu>
     </mat-card-header>
-    <div class="config-groups">
-      <div class="config-readers">
-        <div>{{ 'Readers' | translate}}</div>
-        <div *ngIf="card.readers.length === 0" class="group-none"> {{' -- ' | translate }}</div>
-        <div *ngFor="let reader of card.readers" class="group-none"> - {{reader.name}}</div>
-      </div>
-      <div class="config-writers">
-        <div>{{ 'Writers' | translate}}</div>
-        <div *ngIf="card.writers.length === 0" class="group-none"> {{' -- ' | translate }}</div>
-        <div *ngFor="let writer of card.writers" class="group-none">‘{{writer.name}}</div>
-      </div>
+    <div class="groups">
+        <div class="readers">
+            <div>{{ 'Readers' | translate}}</div>
+            <div *ngIf="card.readers.length === 0" class="group"> {{' -- ' | translate }}</div>
+            <div *ngFor="let reader of card.readers" class="group">{{reader.name}}</div>
+        </div>
+        <div class="writers">
+            <div>{{ 'Writers' | translate}}</div>
+            <div *ngIf="card.writers.length === 0" class="group"> {{' -- ' | translate }}</div>
+            <div *ngFor="let writer of card.writers" class="group">{{writer.name}}</div>
+        </div>
     </div>
-    <div class="config-highlights">
-      <div>{{ 'Highlights' | translate}}</div>
-      <div *ngIf="card.tabs.length === 0" class="group-none"> {{' -- ' | translate }}</div>
-      <div *ngFor="let tab of card.tabs" class="highlight" >
-        - {{tab}}
-      </div>
+    <div class="highlights">
+        <div>{{ 'Highlights' | translate}}</div>
+        <div *ngIf="card.tabs.length === 0" class="group"> {{' -- ' | translate }}</div>
+        <div *ngFor="let tab of card.tabs" class="highlight">
+            - {{tab}}
+        </div>
+    </div>
+    <div class="footer">
+        <div class="date">
+            {{ 'Updated:' }}&nbsp;{{ card.last_update_date | date}}
+        </div>
     </div>
 </mat-card>

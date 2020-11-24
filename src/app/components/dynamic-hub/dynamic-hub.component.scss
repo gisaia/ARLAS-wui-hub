@@ -1,20 +1,52 @@
-@import 'variables.scss';
+@import "variables.scss";
 
-.cards {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+h2 {
+    padding-left: 20px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-variant: small-caps;
+    font-weight: 400;
 }
 
-.add-button{
+.content {
+    display: flex;
+    .dashboard {
+        flex: 4;
+        .cards {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    }
+    .collection {
+        flex: 1;
+
+        .cards {
+            padding-top: 1px;
+            .card {
+                margin: 4px 5px;
+
+                ::ng-deep .mat-card-header-text{
+                    margin: 0;
+                }
+
+                ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background{
+                    background-color: #000;
+                }
+            }
+        }
+    }
+}
+
+.add-button {
     margin-left: 10px;
     color: $primaryColor;
+    background-color: white;
 
-    &:focus{
+    &:focus {
         background-color: transparent !important;
     }
 
-    .icon:hover{
+    .icon:hover {
         opacity: 0.5;
     }
 }

@@ -1,50 +1,70 @@
 .card {
-  max-width: 400px;
-  min-width: 240px;
+    max-width: 400px;
+    min-width: 240px;
 
-  color: black;
-  margin: 5px 8px;
-  min-height: 50px;
-  height: calc(100% - 52px);
-}
+    color: black;
+    margin: 5px 8px;
+    min-height: 50px;
+    height: calc(100% - 52px);
 
-.group-circle {
-  min-width: 6px;
-  border-radius: 50%;
-  border: none;
-  width: 15px;
-  height: 15px;
-  display: inline-flex;
-  margin-right: 3px;
-}
+    @mixin group() {
+        color: #666;
+        font-style: italic;
+        font-size: 0.8em;
+    }
 
-.group-none {
-  color: #666;
-  font-style: italic;
-  font-size: 0.8em;
-}
+    .header {
+        display: flex;
+        justify-content: space-between;
 
-.config-header {
-  display: flex;
-  justify-content: space-between;
-}
+        .status{
+            padding-right: 5px;
+        }
 
-.config-groups {
-  margin-bottom: 5px;
-  border-top: 1px solid #999;
-  border-bottom: 1px solid #999;
-  padding: 5px 0;
-}
+        ::ng-deep .mat-card-header-text {
+            margin: 0;
+        }
 
-.config-menu {
-  margin-top: -8px;
-}
+        .config-menu {
+            margin-top: -8px;
+        }
+    }
 
-.highlight {
-  font-style: italic;
-  font-size: 0.8em;
-}
+    .groups {
+        margin-bottom: 5px;
+        border-top: 1px solid #999;
+        border-bottom: 1px solid #999;
+        padding: 5px 0;
 
-::ng-deep .config-header .mat-card-header-text {
-  margin: 0;
+        .group {
+            @include group();
+        }
+    }
+
+    .highlights {
+        margin-bottom: 35px;
+        .group {
+            @include group();
+        }
+        .highlight {
+            font-style: italic;
+            font-size: 0.8em;
+        }
+    }
+
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 5px;
+        right: 0;
+
+        .date {
+            font-size: 0.75em;
+            color: rgba(0, 0, 0, 0.55);
+        }
+    }
 }
