@@ -15,7 +15,7 @@
             <mat-card class="card" [style.borderLeftColor]="col.value" style="border-left: 6px solid;"
                 *ngFor="let col of cardCollections | keyvalue">
                 <mat-card-header>
-                    <mat-checkbox [checked]="true" [color]="'accent'" #checkBox [value]="col.key" (change)="getCheckbox()">{{col.key}}</mat-checkbox>
+                    <mat-checkbox [checked]="true" [color]="'accent'" #checkBox [value]="col.key" (change)="getCheckbox()">{{col.key | translate}}</mat-checkbox>
                 </mat-card-header>
             </mat-card>
         </div>

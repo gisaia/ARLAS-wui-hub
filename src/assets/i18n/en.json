@@ -40,6 +40,7 @@
     "Private": "Private",
     "Public": "Public",
     "Shared": "Shared",
-    "Share configuration": "Share configuration"
+    "Share configuration": "Share configuration",
+    "no_collection": "Collection undefined"
 }
 
