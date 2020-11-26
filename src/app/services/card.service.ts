@@ -139,7 +139,7 @@ export class CardService {
       if (!!config.arlas && !!config.arlas.server && !!config.arlas.server.collection) {
           return config.arlas.server.collection.name;
       } else {
-          return null;
+          return 'no_collection';
       }
     }
 

@@ -43,8 +43,9 @@ export class CardComponent implements AfterViewInit, OnInit {
         this.readers = this.card.readers.map(g => g.name);
         this.writers = this.card.writers.map(g => g.name);
 
-        this.status = ((this.readers.length === 0 && this.writers.length === 0) || this.card.owner === 'anonymous') ? 'private' :
-            (this.readers.includes('public') || this.writers.includes('public')) ? 'public' : 'shared';
+        this.status = (this.card.owner === 'anonymous' || this.readers.includes('public') || this.writers.includes('public')) ? 'public'
+            : (this.readers.length === 0 && this.writers.length === 0) ? 'private'
+                : 'shared';
         this.collectionColor = this.arlasColorGeneratorLoader.getColor(this.card.collection);
     }
 

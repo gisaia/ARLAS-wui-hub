@@ -41,5 +41,6 @@
     "Private": "Privé",
     "Public": "Public",
     "Shared": "Partagé",
-    "Share configuration": "Partager le dashboard"
+    "Share configuration": "Partager le dashboard",
+    "no_collection": "Collection non définie"
 }
