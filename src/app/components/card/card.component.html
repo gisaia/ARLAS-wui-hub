@@ -12,18 +12,21 @@
     <div class="groups">
         <div class="readers">
             <div>{{ 'Readers' | translate}}</div>
-            <div *ngIf="card.readers.length === 0" class="group"> {{' -- ' | translate }}</div>
-            <div *ngFor="let reader of card.readers" class="group">{{reader.name}}</div>
+            <mat-chip-list>
+                <mat-chip *ngIf="card.readers.length === 0" class="group"> -- </mat-chip>
+                <mat-chip *ngFor="let reader of card.readers" class="group">{{reader.name}}</mat-chip>
+            </mat-chip-list>
         </div>
         <div class="writers">
             <div>{{ 'Writers' | translate}}</div>
-            <div *ngIf="card.writers.length === 0" class="group"> {{' -- ' | translate }}</div>
-            <div *ngFor="let writer of card.writers" class="group">{{writer.name}}</div>
+            <mat-chip-list>
+                <mat-chip *ngIf="card.writers.length === 0" class="group"> -- </mat-chip>
+                <mat-chip *ngFor="let reader of card.writers" class="group">{{reader.name}}</mat-chip>
+            </mat-chip-list>
         </div>
     </div>
-    <div class="highlights">
+    <div class="highlights" *ngIf="card.tabs.length === 0">
         <div>{{ 'Highlights' | translate}}</div>
-        <div *ngIf="card.tabs.length === 0" class="group"> {{' -- ' | translate }}</div>
         <div *ngFor="let tab of card.tabs" class="highlight">
             - {{tab}}
         </div>
