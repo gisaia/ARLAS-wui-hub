@@ -25,7 +25,7 @@
             </mat-chip-list>
         </div>
     </div>
-    <div class="highlights" *ngIf="card.tabs.length === 0">
+    <div class="highlights" *ngIf="card.tabs.length > 0">
         <div>{{ 'Highlights' | translate}}</div>
         <div *ngFor="let tab of card.tabs" class="highlight">
             - {{tab}}
