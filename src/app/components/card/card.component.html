@@ -4,7 +4,7 @@
         <mat-icon mat-card-avatar matTooltip="{{'Private' | translate}}" *ngIf="this.status === 'private'" >lock</mat-icon>
         <mat-icon mat-card-avatar matTooltip="{{'Public' | translate}}" *ngIf="this.status === 'public'" >public</mat-icon>
         <mat-icon mat-card-avatar matTooltip="{{'Shared' | translate}}" *ngIf="this.status === 'shared'" >groups</mat-icon>
-        <mat-card-title>
+        <mat-card-title (click)="clickOnAction(action.VIEW)" matTooltip="{{'View' | translate}}" [matTooltipPosition]="'above'">
             {{card.title}}
         </mat-card-title>
         <mat-card-subtitle class="subtitle">{{ 'Last update' | translate }} : {{card.last_update_date | date}}</mat-card-subtitle>
