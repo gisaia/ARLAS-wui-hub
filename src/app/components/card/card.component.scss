@@ -6,6 +6,7 @@
     margin: 5px 8px;
     min-height: 50px;
     height: calc(100% - 52px);
+    border-radius: 0px !important;
 
     @mixin group() {
         color: #666;
@@ -18,30 +19,39 @@
         display: flex;
         justify-content: space-between;
 
-        .status{
-            padding-right: 5px;
-        }
-
         ::ng-deep .mat-card-header-text {
             margin: 0;
         }
 
-        ::ng-deep .mat-card-title{
+        .mat-card-avatar{
+            font-size: 28px;
+        }
+
+        ::ng-deep .mat-card-title {
             font-weight: 400;
+        }
+
+        .subtitle {
+            font-variant: small-caps;
+            font-size: 0.75rem;
         }
 
         .config-menu {
             margin-top: -8px;
+            margin-right: -8px;
         }
+    }
+
+    .section_title{
+        font-variant: small-caps;
     }
 
     .groups {
         margin-bottom: 5px;
-        border-top: 1px solid #999;
         border-bottom: 1px solid #999;
         padding: 5px 0;
 
-        ::ng-deep .mat-chip-list-wrapper{
+        ::ng-deep .mat-chip-list-wrapper {
             margin: 0 -4px;
         }
 
@@ -51,7 +61,6 @@
     }
 
     .highlights {
-        margin-bottom: 35px;
         .group {
             @include group();
         }
