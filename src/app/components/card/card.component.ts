@@ -1,7 +1,8 @@
 import { Component, Input, Output, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import { ArlasColorGeneratorLoader } from 'arlas-wui-toolkit';
+import { ArlasColorGeneratorLoader, ConfigActionEnum } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
+import { ConfigMenuComponent } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
 
 
 export enum Action {
@@ -24,7 +25,7 @@ export interface CardAction {
 })
 export class CardComponent implements AfterViewInit, OnInit {
 
-
+    @ViewChild('configMenu', { static: false }) configMenu: ConfigMenuComponent;
     @Input() public card: Card;
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
@@ -57,5 +58,9 @@ export class CardComponent implements AfterViewInit, OnInit {
 
     public afterAction() {
         this.actionOnCard.next();
+    }
+
+    public clickOnAction(action: Action) {
+        this.configMenu.onActionClick(this.card.actions.find(a => a.type === ConfigActionEnum.VIEW));
     }
 }

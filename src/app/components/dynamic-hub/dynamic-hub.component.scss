@@ -24,18 +24,20 @@ h2 {
             padding-top: 1px;
             .card {
                 margin: 4px 5px;
+                border-radius: 0px;
+                padding: 8px 15px;
 
-                ::ng-deep .mat-card-header-text{
+                ::ng-deep .mat-card-header-text {
                     margin: 0;
                 }
 
-                ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background{
-                    background-color: #000;
+                ::ng-deep .mat-checkbox-inner-container {
+                    display: none;
                 }
 
-                &.disabled{
+                &.disabled {
                     border-color: whitesmoke !important;
-                    color: rgba(0,0,0,0.54);
+                    color: rgba(0, 0, 0, 0.54);
                 }
             }
         }

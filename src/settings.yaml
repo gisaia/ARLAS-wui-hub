@@ -21,6 +21,6 @@ authentication:
   logout_url: https://arlas-cloud-dev.eu.auth0.com/v2/logout?returnTo=http://localhost:4201
   storage: sessionstorage
 persistence:
-  url: 'http://localhost:19997/arlas_persistence_server'
+  url: 'http://localhost:19997/arlas-persistence-server'
 arlas_wui_url: "http://localhost:4201"
 arlas_builder_url: "http://localhost:4200"
