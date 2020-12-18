@@ -15,6 +15,8 @@
 
     <div>
         <div class="action-list">
+            <arlas-tool-link></arlas-tool-link>
+            <mat-divider></mat-divider>
             <mat-nav-list>
                 <mat-list-item *ngIf="connected && isAuthentActivated" matTooltip="{{'User info' | translate}}" (click)="getUserInfos()">
                     <button mat-icon-button>
