@@ -24,3 +24,4 @@ persistence:
   url: 'http://localhost:19997/arlas-persistence-server'
 arlas_wui_url: "http://localhost:4201"
 arlas_builder_url: "http://localhost:4200"
+links: [ { "icon": "lock", "name": "Google", "url": "http://www.google.com" }, { "icon": "public", "name": "Yahoo", "url": "http://www.yahoo.com" } ]
