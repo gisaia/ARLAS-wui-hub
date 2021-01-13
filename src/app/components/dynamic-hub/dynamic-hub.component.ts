@@ -6,9 +6,11 @@ import { CardService } from '../../services/card.service';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs/operators';
 import { AuthentificationService } from 'arlas-wui-toolkit/services/authentification/authentification.service';
+import { PermissionService } from 'arlas-wui-toolkit/services/permission/permission.service';
 import { ActionModalComponent } from 'arlas-wui-toolkit/components/config-manager/action-modal/action-modal.component';
 import { ArlasSettingsService } from 'arlas-wui-toolkit/services/settings/arlas.settings.service';
 import { ConfigAction, ConfigActionEnum } from 'arlas-wui-toolkit';
+import { Resource } from 'arlas-permissions-api';
 
 
 @Component({
@@ -28,14 +30,19 @@ export class DynamicHubComponent implements OnInit {
     public cards: Card[];
     public cardsRef: Card[];
     public cardCollections: Map<string, string> = new Map<string, string>();
+    public canCreateDashboard = false;
 
     constructor(
         private cardService: CardService,
         private dialog: MatDialog,
         private authentService: AuthentificationService,
-        private arlasSettingsService: ArlasSettingsService) { }
+        private arlasSettingsService: ArlasSettingsService,
+        private permissionService: PermissionService) { }
 
     public ngOnInit(): void {
+        this.permissionService.get('persist/resource/config.json').subscribe((resources: Resource[]) => {
+            this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
+        });
         this.fetchCards();
         this.authentService.canActivateProtectedRoutes.subscribe(data => {
             this.fetchCards();
@@ -103,7 +110,7 @@ export class DynamicHubComponent implements OnInit {
     public getCheckbox() {
         this.cards = this.cardsRef;
         const selectedCollection = this.checkBox.filter(checkbox => checkbox.checked);
-        this.cards = this.cards.filter( c => selectedCollection.map(collec => collec.value).includes(c.collection));
+        this.cards = this.cards.filter(c => selectedCollection.map(collec => collec.value).includes(c.collection));
     }
 
 }
