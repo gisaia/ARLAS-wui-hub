@@ -29,6 +29,8 @@ export class DynamicHubComponent implements OnInit {
     public cardsRef: Card[];
     public cardCollections: Map<string, string> = new Map<string, string>();
 
+    public userGroups: string[] = [];
+
     constructor(
         private cardService: CardService,
         private dialog: MatDialog,
@@ -39,6 +41,10 @@ export class DynamicHubComponent implements OnInit {
         this.fetchCards();
         this.authentService.canActivateProtectedRoutes.subscribe(data => {
             this.fetchCards();
+        });
+        this.authentService.loadUserInfo().subscribe(data => {
+            this.userGroups = data['http://arlas.io/roles'].filter(r => r.startsWith('group/'))
+                .map(r => r.split('/')[r.split('/').length - 1]);
         });
     }
 
@@ -103,7 +109,7 @@ export class DynamicHubComponent implements OnInit {
     public getCheckbox() {
         this.cards = this.cardsRef;
         const selectedCollection = this.checkBox.filter(checkbox => checkbox.checked);
-        this.cards = this.cards.filter( c => selectedCollection.map(collec => collec.value).includes(c.collection));
+        this.cards = this.cards.filter(c => selectedCollection.map(collec => collec.value).includes(c.collection));
     }
 
 }
