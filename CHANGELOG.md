@@ -1,5 +1,17 @@
 # Change Log
 
+## [v14.2.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.2.0) (2021-01-18)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.1.2...v14.2.0)
+
+**New stuff:**
+
+- Integrate arlas-permission to "Create new dahsboard" button [\#62](https://github.com/gisaia/ARLAS-wui-hub/issues/62)
+
+**Fixed bugs:**
+
+- Delete a configuration: i18n files not deleted [\#40](https://github.com/gisaia/ARLAS-wui-hub/issues/40)
+
 ## [v14.1.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.1.2) (2020-12-21)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.1.1...v14.1.2)
@@ -8,26 +20,28 @@
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.1.0...v14.1.1)
 
-**Miscellaneous:**
+**New stuff:**
 
 - Add direct link to view a dashbord [\#60](https://github.com/gisaia/ARLAS-wui-hub/issues/60)
-- Create a view of collections [\#9](https://github.com/gisaia/ARLAS-wui-hub/issues/9)
 
 ## [v14.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.1.0) (2020-12-07)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.0.0...v14.1.0)
 
-**Miscellaneous:**
+**New stuff:**
+
+- Customize card with colors [\#8](https://github.com/gisaia/ARLAS-wui-hub/issues/8)
+
+**Fixed bugs:**
 
 - Content under left menu when loading the app [\#56](https://github.com/gisaia/ARLAS-wui-hub/issues/56)
 - a part of the dashbords list is hidden under the left menu [\#54](https://github.com/gisaia/ARLAS-wui-hub/issues/54)
-- Customize card with colors [\#8](https://github.com/gisaia/ARLAS-wui-hub/issues/8)
 
 ## [v14.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.0.0) (2020-11-09)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v0.0.3-beta.2...v14.0.0)
 
-**Miscellaneous:**
+**Fixed bugs:**
 
 - If use\_authent=false, the get cards function is not called at init [\#26](https://github.com/gisaia/ARLAS-wui-hub/issues/26)
 - If   use\_authent: false in settings.yaml, hide login button [\#25](https://github.com/gisaia/ARLAS-wui-hub/issues/25)
@@ -36,7 +50,7 @@
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v0.0.3-beta.1...v0.0.3-beta.2)
 
-**Miscellaneous:**
+**New stuff:**
 
 - Open modal with login again message after 403 or silent-refresh error [\#17](https://github.com/gisaia/ARLAS-wui-hub/issues/17)
 - Organize 'config' by card [\#5](https://github.com/gisaia/ARLAS-wui-hub/issues/5)
@@ -45,14 +59,16 @@
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v0.0.2...v0.0.3-beta.1)
 
-**Miscellaneous:**
+**New stuff:**
 
-- TranslateHttpLoader use hardcoding /assets/i18n and doest not work with custum app base href [\#15](https://github.com/gisaia/ARLAS-wui-hub/issues/15)
-- Display card by zone [\#7](https://github.com/gisaia/ARLAS-wui-hub/issues/7)
 - Add a menu for each card [\#6](https://github.com/gisaia/ARLAS-wui-hub/issues/6)
 - Add a config file  [\#4](https://github.com/gisaia/ARLAS-wui-hub/issues/4)
 - Create a left navigation menu [\#3](https://github.com/gisaia/ARLAS-wui-hub/issues/3)
 - Add flip mode to card [\#2](https://github.com/gisaia/ARLAS-wui-hub/issues/2)
+
+**Fixed bugs:**
+
+- TranslateHttpLoader use hardcoding /assets/i18n and doest not work with custum app base href [\#15](https://github.com/gisaia/ARLAS-wui-hub/issues/15)
 
 ## [v0.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v0.0.2) (2019-09-13)
 
