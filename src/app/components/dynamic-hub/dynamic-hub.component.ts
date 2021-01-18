@@ -32,6 +32,8 @@ export class DynamicHubComponent implements OnInit {
     public cardCollections: Map<string, string> = new Map<string, string>();
     public canCreateDashboard = false;
 
+    public userGroups: string[] = [];
+
     constructor(
         private cardService: CardService,
         private dialog: MatDialog,
@@ -46,6 +48,10 @@ export class DynamicHubComponent implements OnInit {
         this.fetchCards();
         this.authentService.canActivateProtectedRoutes.subscribe(data => {
             this.fetchCards();
+        });
+        this.authentService.loadUserInfo().subscribe(data => {
+            this.userGroups = data['http://arlas.io/roles'].filter(r => r.startsWith('group/'))
+                .map(r => r.split('/')[r.split('/').length - 1]);
         });
     }
 
