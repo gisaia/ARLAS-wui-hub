@@ -68,7 +68,7 @@ git push origin v${VERSION}
 
 echo "==> Generate CHANGELOG"
 docker run -it --rm -v "$(pwd)":/usr/local/src/your-app gisaia/github-changelog-generator:latest github_changelog_generator \
-  -u gisaia -p ARLAS-wui-hub --token ca52ecd59d8d016cbb609ca5bc5d4e876c9d40d4 --no-pr-wo-labels --no-issues-wo-labels --no-unreleased \
+  -u gisaia -p ARLAS-wui-hub --token b39ba8db7cfd32fcb0f7f9cf94a86eef6a663774 --no-pr-wo-labels --no-issues-wo-labels --no-unreleased \
   --issue-line-labels conf,documentation \
   --exclude-labels type:duplicate,type:question,type:wontfix,type:invalid \
   --bug-labels type:bug --enhancement-labels type:enhancement --breaking-labels type:breaking \
