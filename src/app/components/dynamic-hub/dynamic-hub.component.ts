@@ -45,7 +45,11 @@ export class DynamicHubComponent implements OnInit {
         this.permissionService.get('persist/resource/config.json').subscribe((resources: Resource[]) => {
             this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
         });
-        this.fetchCards();
+        if (!!this.arlasSettingsService.getSettings().authentication
+            && this.arlasSettingsService.getSettings().authentication.force_connect === false
+        ) {
+            this.fetchCards();
+        }
         this.authentService.canActivateProtectedRoutes.subscribe(data => {
             this.fetchCards();
         });
