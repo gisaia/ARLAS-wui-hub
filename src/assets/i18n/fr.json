@@ -46,5 +46,9 @@
 	"You are not authorized to access at this ressource.": "Vous n'êtes pas autorisé à accéder à cette ressource.",
 	"None": "Aucun",
 	"Share configuration": "Partager le dashboard",
-	"no_collection": "Collection non définie"
+	"no_collection": "Collection non définie",
+	"Rename":"Renommer",
+	"A configuration with this name exists already, please choose another name":"Un autre dashboad existe déjà avec ce même nom, veuillez en choisir un autre.",
+	"Unauthorized to create a dashboard, you need to log in": "Impossible de créer ou modifier un dashboard, vous devez être connecté",
+	"Missing permissions to create a dashboard": "Vous n'avez pas les droits suffisants pour créer ou modifier un dashboard"
 }

@@ -45,5 +45,9 @@
 	"You are not authorized to access at this ressource.": "You are not authorized to access at this ressource.",
 	"None": "None",
 	"Share configuration": "Share configuration",
-	"no_collection": "Collection undefined"
+	"no_collection": "Collection undefined",
+	"Rename":"Rename",
+	"A configuration with this name exists already, please choose another name":"A dashboard with this name exists already, please choose another name",
+	"Unauthorized to create a dashboard, you need to log in": "Unauthorized to create or update a dashboard, you need to log in",
+	"Missing permissions to create a dashboard": "Missing permissions to create or update a dashboard"
 }
