@@ -1,6 +1,6 @@
 {
   "name": "arlas-home",
-  "version": "15.1.0-dev",
+  "version": "16.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
