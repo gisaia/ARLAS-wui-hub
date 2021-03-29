@@ -70,6 +70,12 @@ export class CardService {
         });
         actions.push({
             config: config,
+            type: ConfigActionEnum.RENAME,
+            name: data.doc_key,
+            enabled: data.updatable
+        });
+        actions.push({
+            config: config,
             type: ConfigActionEnum.DUPLICATE,
             name: data.doc_key
         });

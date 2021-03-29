@@ -377,6 +377,17 @@ else
   echo ${ARLAS_HUB_APP_PATH}  "is used as app base path "
 fi
 
+# Set Tab title name
+if [ -z "${ARLAS_TAB_NAME}" ]; then
+  ARLAS_TAB_NAME="ARLAS-wui-hub"
+  export ARLAS_TAB_NAME
+  echo "ARLAS-wui-hub id used as tab name for the app"
+else
+  echo ${ARLAS_TAB_NAME}  "is used as tab name "
+fi
+envsubst '$ARLAS_TAB_NAME' < /usr/share/nginx/html/settings.yaml > /usr/share/nginx/html/settings.yaml.tmp
+mv /usr/share/nginx/html/settings.yaml.tmp /usr/share/nginx/html/settings.yaml
+
 envsubst '$ARLAS_HUB_BASE_HREF' < /usr/share/nginx/html/index.html > /usr/share/nginx/html/index.html.tmp
 mv /usr/share/nginx/html/index.html.tmp /usr/share/nginx/html/index.html
 
