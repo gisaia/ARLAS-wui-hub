@@ -86,6 +86,12 @@ export class DynamicHubComponent implements OnInit {
             });
     }
 
+    public import() {
+        const url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+        const win = window.open(url, '_blank');
+        win.focus();
+    }
+
     public fetchCards() {
         this.isLoading = true;
         this.cardService.cardList(
