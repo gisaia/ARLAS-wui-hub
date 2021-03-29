@@ -2,6 +2,10 @@
     <mat-icon>add</mat-icon>
     {{'Create a new Exploration Dashboard' | translate}}
 </button>
+<button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="import()" [matTooltip]="'Import an Exploration Dashboard' | translate">
+    <mat-icon>file_upload</mat-icon>
+    {{'Import an Exploration Dashboard' | translate}}
+</button>
 <div class="content">
     <div class="dashboard">
         <h2>{{'Dashboards' | translate}}</h2>
