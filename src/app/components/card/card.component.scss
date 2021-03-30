@@ -21,15 +21,19 @@
 
         ::ng-deep .mat-card-header-text {
             margin: 0;
+            width: 175px;
         }
 
-        .mat-card-avatar{
+        .mat-card-avatar {
             font-size: 28px;
         }
 
         ::ng-deep .mat-card-title {
             font-weight: 400;
             cursor: pointer;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         ::ng-deep .mat-card-title:hover {
@@ -47,7 +51,7 @@
         }
     }
 
-    .section_title{
+    .section_title {
         font-variant: small-caps;
     }
 
@@ -63,7 +67,7 @@
         .group {
             @include group();
 
-            &.mygroup{
+            &.mygroup {
                 background-color: #959595;
                 color: white;
             }
