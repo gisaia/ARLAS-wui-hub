@@ -1,5 +1,13 @@
 # Change Log
 
+## [v16.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v16.1.0) (2021-04-21)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v16.0.0...v16.1.0)
+
+**Fixed bugs:**
+
+- If the dashboard title is too long, the action menu is out of the card [\#82](https://github.com/gisaia/ARLAS-wui-hub/issues/82)
+
 ## [v16.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v16.0.0) (2021-03-29)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v15.0.0...v16.0.0)
@@ -34,15 +42,15 @@
 
 ## [14.2.1](https://github.com/gisaia/ARLAS-wui-hub/tree/14.2.1) (2021-01-18)
 
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.1...14.2.1)
-
-## [v14.2.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.2.1) (2021-01-18)
-
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.0...v14.2.1)
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.0...14.2.1)
 
 ## [v14.2.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.2.0) (2021-01-18)
 
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.1.2...v14.2.0)
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.1...v14.2.0)
+
+## [v14.2.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.2.1) (2021-01-18)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.1.2...v14.2.1)
 
 **New stuff:**
 
