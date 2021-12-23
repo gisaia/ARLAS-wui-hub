@@ -1,11 +1,11 @@
 <div *ngIf="useStatic">
-  <app-static-hub></app-static-hub>
+  <arlas-static-hub></arlas-static-hub>
 </div>
 
 <div *ngIf="!useStatic">
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #leftSidenav mode="side" class="sidenav" opened>
-      <app-left-menu></app-left-menu>
+      <arlas-left-menu></arlas-left-menu>
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">
       <div class="main_content">

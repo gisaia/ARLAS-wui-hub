@@ -1,13 +1,13 @@
-<mat-card class="card" [style.borderTopColor]="card.color" style="border-top: 3px solid;">
+<mat-card class="card" [style.borderTopColor]="card?.color" style="border-top: 3px solid;">
     <mat-card-header class="header">
 
         <mat-icon mat-card-avatar matTooltip="{{'Private' | translate}}" *ngIf="this.status === 'private'" >lock</mat-icon>
         <mat-icon mat-card-avatar matTooltip="{{'Public' | translate}}" *ngIf="this.status === 'public'" >public</mat-icon>
         <mat-icon mat-card-avatar matTooltip="{{'Shared' | translate}}" *ngIf="this.status === 'shared'" >groups</mat-icon>
-        <mat-card-title (click)="clickOnAction(action.VIEW)" matTooltip="{{'View' | translate}}&nbsp;{{card.title}}" [matTooltipPosition]="'above'">
-            {{card.title}}
+        <mat-card-title (click)="clickOnAction(action.VIEW)" matTooltip="{{'View' | translate}}&nbsp;{{card?.title}}" [matTooltipPosition]="'above'">
+            {{card?.title}}
         </mat-card-title>
-        <mat-card-subtitle class="subtitle">{{ 'Last update' | translate }} : {{card.last_update_date | date}}</mat-card-subtitle>
+        <mat-card-subtitle class="subtitle">{{ 'Last update' | translate }} : {{card?.last_update_date | date}}</mat-card-subtitle>
         <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
             [actions]="card?.actions" (actionExecutedEmitter)="afterAction()"></arlas-config-menu>
     </mat-card-header>
@@ -15,21 +15,21 @@
         <div class="readers">
             <div class="section_title">{{ 'Readers' | translate}}</div>
             <mat-chip-list>
-                <mat-chip *ngIf="card.readers.length === 0" class="group"> -- </mat-chip>
+                <mat-chip *ngIf="card?.readers.length === 0" class="group"> -- </mat-chip>
                 <mat-chip *ngFor="let reader of readers" class="group" [class.mygroup]="reader.in">{{reader.name}}</mat-chip>
             </mat-chip-list>
         </div>
         <div class="writers">
             <div class="section_title">{{ 'Writers' | translate}}</div>
             <mat-chip-list>
-                <mat-chip *ngIf="card.writers.length === 0" class="group"> -- </mat-chip>
+                <mat-chip *ngIf="card?.writers.length === 0" class="group"> -- </mat-chip>
                 <mat-chip *ngFor="let writer of writers" class="group" [class.mygroup]="writer.in">{{writer.name}}</mat-chip>
             </mat-chip-list>
         </div>
     </div>
-    <div class="highlights" *ngIf="card.tabs.length > 0">
+    <div class="highlights" *ngIf="card?.tabs.length > 0">
         <div class="section_title">{{ 'Highlights' | translate}}</div>
-        <div *ngFor="let tab of card.tabs" class="highlight">
+        <div *ngFor="let tab of card?.tabs" class="highlight">
             - {{tab}}
         </div>
     </div>
