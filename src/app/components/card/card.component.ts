@@ -1,79 +1,96 @@
+/*
+Licensed to Gisaïa under one or more contributor
+license agreements. See the NOTICE.txt file distributed with
+this work for additional information regarding copyright
+ownership. Gisaïa licenses this file to you under
+the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+*/
 import { Component, Input, Output, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import { ArlasColorGeneratorLoader, ConfigActionEnum } from 'arlas-wui-toolkit';
+import { ArlasColorGeneratorLoader, ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
-import { ConfigMenuComponent } from 'arlas-wui-toolkit/components/config-manager/config-menu/config-menu.component';
-import { AuthentificationService } from 'arlas-wui-toolkit/services/authentification/authentification.service';
 
 
 export enum Action {
-    VIEW,
-    DELETE,
-    EDIT,
-    DUPLICATE,
-    SHARE
+  VIEW,
+  DELETE,
+  EDIT,
+  DUPLICATE,
+  SHARE
 }
 
 export interface CardAction {
-    card: Card;
-    action: Action;
+  card?: Card;
+  action?: Action;
 }
 
 @Component({
-    selector: 'app-card',
-    templateUrl: './card.component.html',
-    styleUrls: ['./card.component.scss']
+  selector: 'arlas-card',
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements AfterViewInit, OnInit {
 
-    @ViewChild('configMenu', { static: false }) configMenu: ConfigMenuComponent;
-    @Input() public card: Card;
-    @Input() public userGroups: string[] = [];
-    @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
+  @ViewChild('configMenu', { static: false }) public configMenu: ConfigMenuComponent;
+  @Input() public card: Card;
+  @Input() public userGroups: string[] = [];
+  @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
-    public action = Action;
-    public collectionColor = '#000000';
-    public status = 'private';
+  public action = Action;
+  public collectionColor = '#000000';
+  public status = 'private';
 
-    public readers: Array<{ name: string, in: boolean }> = [];
-    public writers: Array<{ name: string, in: boolean }> = [];
+  public readers: Array<{ name: string; in: boolean; }> = [];
+  public writers: Array<{ name: string; in: boolean; }> = [];
 
-    constructor(
-        private arlasColorGeneratorLoader: ArlasColorGeneratorLoader
-    ) {
-    }
-    public ngOnInit(): void {
-        this.readers = this.card.readers.map(g => {
-            return {
-                name: g.name,
-                in: this.userGroups.indexOf(g.name) > -1
-            };
-        });
-        this.writers = this.card.writers.map(g => {
-            return {
-                name: g.name,
-                in: this.userGroups.indexOf(g.name) > -1
-            };
-        });
+  public constructor(
+    private arlasColorGeneratorLoader: ArlasColorGeneratorLoader
+  ) {
+  }
+  public ngOnInit(): void {
+    if (!!this.card) {
+      this.readers = this.card.readers.map(g => ({
+        name: g.name,
+        in: this.userGroups.indexOf(g.name) > -1
+      }));
+      this.writers = this.card.writers.map(g => ({
+        name: g.name,
+        in: this.userGroups.indexOf(g.name) > -1
+      }));
 
-        this.status = (this.card.owner === 'anonymous' || this.readers.map(r => r.name).includes('public')
-            || this.writers.map(r => r.name).includes('public')) ? 'public'
-            : (this.readers.length === 0 && this.writers.length === 0) ? 'private'
-                : 'shared';
-        this.collectionColor = this.arlasColorGeneratorLoader.getColor(this.card.collection);
+      this.status = (this.card.owner === 'anonymous' || this.readers.map(r => r.name).includes('public')
+        || this.writers.map(r => r.name).includes('public')) ? 'public'
+        : (this.readers.length === 0 && this.writers.length === 0) ? 'private'
+          : 'shared';
+      this.collectionColor = this.arlasColorGeneratorLoader.getColor(this.card.collection);
     }
 
-    public ngAfterViewInit() {
-        const c = Object.assign(this.card.actions);
-        this.card.actions = new Array();
-        this.card.actions = c;
-    }
+  }
 
-    public afterAction() {
-        this.actionOnCard.next();
+  public ngAfterViewInit() {
+    if (!!this.card) {
+      const c = Object.assign(this.card.actions);
+      this.card.actions = new Array();
+      this.card.actions = c;
     }
+  }
 
-    public clickOnAction(action: Action) {
-        this.configMenu.onActionClick(this.card.actions.find(a => a.type === ConfigActionEnum.VIEW));
-    }
+  public afterAction() {
+    this.actionOnCard.next({});
+  }
+
+  public clickOnAction(action: Action) {
+    this.configMenu.onActionClick(this.card.actions.find(a => a.type === ConfigActionEnum.VIEW));
+  }
 }

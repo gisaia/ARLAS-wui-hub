@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'hub'
-FROM node:12.7-alpine as hub
+FROM node:16.13.1-alpine3.14 as builder
 
 COPY package.json package-lock.json ./
 
@@ -15,7 +15,7 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN export NODE_OPTIONS=--max_old_space_size=8192 && $(npm bin)/ng build --prod --aot --base-href='$ARLAS_HUB_BASE_HREF/'
+RUN export NODE_OPTIONS=--max_old_space_size=8192 && $(npm bin)/ng build --configuration production --aot --base-href='$ARLAS_HUB_BASE_HREF/'
 
 ### STAGE 2: Setup ###
 

@@ -10,7 +10,7 @@
     <div class="dashboard">
         <h2>{{'Dashboards' | translate}}</h2>
         <div class="cards">
-            <app-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card" [userGroups]="userGroups"></app-card>
+            <arlas-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card" [userGroups]="userGroups"></arlas-card>
         </div>
     </div>
     <div class="collection">
