@@ -148,9 +148,7 @@ git push origin :v${VERSION}
 
 echo "  -- Commit release version"
 git commit -a -m "Release prod version ${VERSION}"
-git tag v${VERSION}
-git push origin v${VERSION}
-git push origin ${REF_BRANCH}
+
 
 echo "==> Docker"
 docker build --no-cache --build-arg version=${VERSION} --tag gisaia/arlas-wui-hub:${VERSION} --tag gisaia/arlas-wui-hub:latest .
@@ -160,6 +158,10 @@ if [ "${STAGE}" == "stable" ];
     then
     docker push gisaia/arlas-wui-hub:latest
 fi
+
+git tag v${VERSION}
+git push origin v${VERSION}
+git push origin ${REF_BRANCH}
 
 if [ "${REF_BRANCH}" == "develop" ] && [ "${STAGE}" == "stable" ];
     then
