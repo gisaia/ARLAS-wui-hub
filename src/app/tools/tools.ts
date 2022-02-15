@@ -20,17 +20,17 @@ import { Observable, of } from 'rxjs';
 import { ArlasSettings } from 'arlas-wui-toolkit';
 
 export class MockPermissionService {
-  public get(): Observable<any> {
-    return of({});
-  }
+    public get(): Observable<any> {
+        return of({});
+    }
 }
 
 export class MockArlasSettingsService {
-  public getSettings(): ArlasSettings {
-    return {};
-  }
+    public getSettings(): ArlasSettings {
+        return {};
+    }
 
-  public getPersistenceSettings(): any {
-    return {};
-  }
+    public getPersistenceSettings(): any {
+        return {};
+    }
 }

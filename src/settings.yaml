@@ -23,7 +23,7 @@ authentication:
 persistence:
   url: 'http://localhost:19997/arlas-persistence-server'
 permission:
-  url: 'http://localhost:19998/arlas_permissions_server'
+  url: 'http://localhost:19996/arlas-permissions-server'
 arlas_wui_url: "http://localhost:4200"
 arlas_builder_url: "http://localhost:4200"
 links: [ { "icon": "lock", "name": "Google", "url": "http://www.google.com" }, { "icon": "public", "name": "Yahoo", "url": "http://www.yahoo.com" } ]

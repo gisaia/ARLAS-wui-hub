@@ -34,6 +34,16 @@
             "scripts": []
           },
           "configurations": {
+            "development": {
+                "optimization": false,
+                "outputHashing": "all",
+                "sourceMap": true,
+                "namedChunks": true,
+                "extractLicenses": false,
+                "vendorChunk": true,
+                "buildOptimizer": false,
+                "budgets": []
+            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
@@ -69,10 +79,14 @@
             "browserTarget": "arlas-home:build"
           },
           "configurations": {
+            "development": {
+                "browserTarget": "arlas-home:build:development"
+            },
             "production": {
               "browserTarget": "arlas-home:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
