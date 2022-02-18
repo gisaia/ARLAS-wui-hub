@@ -9,28 +9,28 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidenavService } from '../../services/sidenav.service';
 
 describe('LeftMenuComponent', () => {
-  let component: LeftMenuComponent;
-  let fixture: ComponentFixture<LeftMenuComponent>;
+    let component: LeftMenuComponent;
+    let fixture: ComponentFixture<LeftMenuComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LeftMenuComponent ],
-      imports: [ArlasToolkitSharedModule, ArlasToolKitModule, MatListModule, MatDividerModule, MatIconModule,
-        MatSidenavModule,
-        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
-      ],
-      providers: [SidenavService]
-    })
-      .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [LeftMenuComponent],
+            imports: [ArlasToolkitSharedModule, ArlasToolKitModule, MatListModule, MatDividerModule, MatIconModule,
+                MatSidenavModule,
+                TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
+            ],
+            providers: [SidenavService]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LeftMenuComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LeftMenuComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

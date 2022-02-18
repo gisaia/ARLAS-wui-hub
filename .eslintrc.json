@@ -60,17 +60,19 @@
                     "delimiter": "semi",
                     "requireLast": true
                 }
-
             }
         ],
         "@typescript-eslint/member-ordering": 0,
         "@typescript-eslint/naming-convention": [
             "error",
             {
-              "selector": "variable",
-              "format": ["camelCase", "UPPER_CASE"]
+                "selector": "variable",
+                "format": [
+                    "camelCase",
+                    "UPPER_CASE"
+                ]
             }
-          ],
+        ],
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-inferrable-types": [
@@ -93,8 +95,8 @@
             2,
             "single",
             {
-              "avoidEscape": true,
-              "allowTemplateLiterals": true
+                "avoidEscape": true,
+                "allowTemplateLiterals": true
             }
         ],
         "@typescript-eslint/semi": [
@@ -118,7 +120,13 @@
         "guard-for-in": "error",
         "id-denylist": "off",
         "id-match": "off",
-        "indent":["error", 2, { "SwitchCase": 1 }],
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
         "max-len": [
             "error",
             {

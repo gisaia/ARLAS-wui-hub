@@ -20,18 +20,18 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
-  selector: 'arlas-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'arlas-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
 
 
-  @Input() public sidenav: MatSidenav;
+    @Input() public sidenav: MatSidenav;
 
-  public constructor() { }
+    public constructor() { }
 
-  public ngOnInit(): void {
-  }
+    public ngOnInit(): void {
+    }
 
 }

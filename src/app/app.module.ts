@@ -38,15 +38,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { ArlasColorGeneratorLoader, ArlasConfigurationUpdaterService,
-  ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
-  ConfigMenuModule, configUpdaterFactory,
-  ErrorModalModule, getOptionsFactory, GET_OPTIONS } from 'arlas-wui-toolkit';
 import {
-  ArlasCollaborativesearchService,
-  ArlasStartupService,
-  CONFIG_UPDATER,
-  FETCH_OPTIONS
+    ArlasColorGeneratorLoader, ArlasConfigurationUpdaterService,
+    ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
+    ConfigMenuModule, configUpdaterFactory,
+    ErrorModalModule, getOptionsFactory, GET_OPTIONS
+} from 'arlas-wui-toolkit';
+import {
+    ArlasCollaborativesearchService,
+    ArlasStartupService,
+    CONFIG_UPDATER,
+    FETCH_OPTIONS
 } from 'arlas-wui-toolkit';
 import { PaginatorI18n } from 'arlas-wui-toolkit';
 import { AppRoutingModule } from './app-routing.modules';
@@ -62,98 +64,98 @@ import { ActionModalModule } from 'arlas-wui-toolkit';
 import { CommonModule } from '@angular/common';
 
 export function loadServiceFactory(loadService: LoadService) {
-  const load = () => loadService.init('config.json?' + Date.now());
-  return load;
+    const load = () => loadService.init('config.json?' + Date.now());
+    return load;
 
 }
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LeftMenuComponent,
-    StaticHubComponent,
-    DynamicHubComponent,
-    HeaderComponent,
-    CardComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    ActionModalModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatSidenavModule,
-    MatPaginatorModule,
-    MatListModule,
-    MatTooltipModule,
-    HttpClientModule,
-    ConfigMenuModule,
-    ErrorModalModule,
-    ArlasToolkitSharedModule,
-    ReactiveFormsModule,
-    FormsModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
-    OAuthModule.forRoot()
+    declarations: [
+        AppComponent,
+        LeftMenuComponent,
+        StaticHubComponent,
+        DynamicHubComponent,
+        HeaderComponent,
+        CardComponent
+    ],
+    imports: [
+        AppRoutingModule,
+        ActionModalModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatTooltipModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatSidenavModule,
+        MatPaginatorModule,
+        MatListModule,
+        MatTooltipModule,
+        HttpClientModule,
+        ConfigMenuModule,
+        ErrorModalModule,
+        ArlasToolkitSharedModule,
+        ReactiveFormsModule,
+        FormsModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        }),
+        OAuthModule.forRoot()
 
-  ],
-  providers: [
-    SidenavService,
-    forwardRef(() => ArlasColorGeneratorLoader),
-    forwardRef(() => LoadService),
-    forwardRef(() => ArlasStartupService),
-    forwardRef(() => ArlasCollaborativesearchService),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: loadServiceFactory,
-      deps: [LoadService],
-      multi: true
-    },
-    {
-      provide: 'AuthentificationService',
-      useFactory: auhtentServiceFactory,
-      deps: [AuthentificationService],
-      multi: true
-    },
-    {
-      provide: ArlasConfigurationUpdaterService,
-      useClass: ArlasConfigurationUpdaterService
-    },
-    { provide: FETCH_OPTIONS, useValue: {} },
-    {
-      provide: CONFIG_UPDATER,
-      useValue: configUpdaterFactory
-    },
-    {
-      provide: MatPaginatorIntl,
-      deps: [TranslateService],
-      useFactory: (translateService: TranslateService) => new PaginatorI18n(translateService).getPaginatorIntl()
-    },
-    {
-      provide: GET_OPTIONS,
-      useFactory: getOptionsFactory,
-      deps: [AuthentificationService]
-    }
-  ],
-  bootstrap: [AppComponent]
+    ],
+    providers: [
+        SidenavService,
+        forwardRef(() => ArlasColorGeneratorLoader),
+        forwardRef(() => LoadService),
+        forwardRef(() => ArlasStartupService),
+        forwardRef(() => ArlasCollaborativesearchService),
+        {
+            provide: APP_INITIALIZER,
+            useFactory: loadServiceFactory,
+            deps: [LoadService],
+            multi: true
+        },
+        {
+            provide: 'AuthentificationService',
+            useFactory: auhtentServiceFactory,
+            deps: [AuthentificationService],
+            multi: true
+        },
+        {
+            provide: ArlasConfigurationUpdaterService,
+            useClass: ArlasConfigurationUpdaterService
+        },
+        { provide: FETCH_OPTIONS, useValue: {} },
+        {
+            provide: CONFIG_UPDATER,
+            useValue: configUpdaterFactory
+        },
+        {
+            provide: MatPaginatorIntl,
+            deps: [TranslateService],
+            useFactory: (translateService: TranslateService) => new PaginatorI18n(translateService).getPaginatorIntl()
+        },
+        {
+            provide: GET_OPTIONS,
+            useFactory: getOptionsFactory,
+            deps: [AuthentificationService]
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

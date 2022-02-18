@@ -23,12 +23,12 @@ import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.compon
 
 
 const routes: Routes = [
-  { path: '', component: DynamicHubComponent },
-  { path: 'callback', redirectTo: '' }
+    { path: '', component: DynamicHubComponent },
+    { path: 'callback', redirectTo: '' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

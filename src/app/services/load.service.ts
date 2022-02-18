@@ -23,25 +23,25 @@ import { ArlasStartupService, ArlasSettings } from 'arlas-wui-toolkit';
 @Injectable()
 export class LoadService {
 
-  public appData: any;
+    public appData: any;
 
-  public constructor(
-      private arlasStartupService: ArlasStartupService,
-      private https: HttpClient) {
-  }
+    public constructor(
+        private arlasStartupService: ArlasStartupService,
+        private https: HttpClient) {
+    }
 
-  public init(config: string): Promise<any> {
-    return this.https
-      .get(config)
-      .toPromise()
-      .then(response => this.appData = response)
-      .then(() => this.arlasStartupService.applyAppSettings())
-      .then((s: ArlasSettings) => this.arlasStartupService.authenticate(s))
-      .then((s: ArlasSettings) => this.arlasStartupService.enrichHeaders(s))
-      .then(() => this.arlasStartupService.translationLoaded({}))
-      .catch(error => {
-        console.log(error);
-      });
-  }
+    public init(config: string): Promise<any> {
+        return this.https
+            .get(config)
+            .toPromise()
+            .then(response => this.appData = response)
+            .then(() => this.arlasStartupService.applyAppSettings())
+            .then((s: ArlasSettings) => this.arlasStartupService.authenticate(s))
+            .then((s: ArlasSettings) => this.arlasStartupService.enrichHeaders(s))
+            .then(() => this.arlasStartupService.translationLoaded({}))
+            .catch(error => {
+                console.log(error);
+            });
+    }
 }
 
