@@ -31,13 +31,17 @@ export class AppComponent implements OnInit {
 
     public onSideNavChange: boolean;
     public useStatic: boolean;
+    public appReady = false;
     public title = 'ARLAS-wui-hub';
 
-    public constructor(private loadService: LoadService,
+    public constructor(
+        private loadService: LoadService,
         private sidenavService: SidenavService,
         private titleService: Title,
-        private arlasSettingsService: ArlasSettingsService) {
+        private arlasSettingsService: ArlasSettingsService
+    ) {
         this.useStatic = this.loadService.appData?.static;
+        this.appReady = true;
         this.sidenavService.sideNavState?.subscribe(res => {
             this.onSideNavChange = res;
         });
