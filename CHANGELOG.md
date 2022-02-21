@@ -1,5 +1,13 @@
 # Change Log
 
+## [v20.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v20.1.0) (2022-02-21)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v20.0.1...v20.1.0)
+
+**New stuff:**
+
+- Unselect all ohter collection when selecting one collection [\#102](https://github.com/gisaia/ARLAS-wui-hub/issues/102)
+
 ## [v20.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v20.0.1) (2022-02-04)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v20.0.0...v20.0.1)
