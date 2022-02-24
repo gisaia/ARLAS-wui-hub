@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build:
+    name: Lint, Licence, Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Cache node modules
+        id: cache-nodemodules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Licence check
+        run: npm run licence-check
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm run test
