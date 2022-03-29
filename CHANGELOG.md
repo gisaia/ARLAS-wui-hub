@@ -1,5 +1,9 @@
 # Change Log
 
+## [v21.0.0-beta.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v21.0.0-beta.2) (2022-03-29)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v21.0.0-beta.1...v21.0.0-beta.2)
+
 ## [v21.0.0-beta.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v21.0.0-beta.1) (2022-03-14)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v20.1.0...v21.0.0-beta.1)
