@@ -79,7 +79,7 @@ export class DynamicHubComponent implements OnInit {
 
         if (!!this.authentService.identityClaims) {
             this.authentService.loadUserInfo().subscribe(data => {
-                this.userGroups = data['http://arlas.io/roles'].filter(r => r.startsWith('group/'))
+                this.userGroups = data.info['http://arlas.io/roles'].filter(r => r.startsWith('group/'))
                     .map(r => r.split('/')[r.split('/').length - 1]);
             });
         }
