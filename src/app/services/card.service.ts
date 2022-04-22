@@ -41,6 +41,7 @@ export interface Card {
     actions: Array<ConfigAction>;
     color: string;
     owner: string;
+    preview?: string;
 }
 
 @Injectable({

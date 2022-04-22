@@ -17,14 +17,14 @@ specific language governing permissions and limitations
 under the License.
 */
 .card {
-    max-width: 240px;
-    min-width: 240px;
-
+    max-width: 280px;
+    min-width: 280px;
+    border-radius: 0px;
     color: black;
-    margin: 5px 8px;
     min-height: 50px;
-    height: calc(100% - 52px);
-    border-radius: 0px !important;
+    padding: 16px 0;
+    overflow: hidden;
+    height: 290px;
 
     @mixin group() {
         color: #666;
@@ -36,6 +36,7 @@ under the License.
     .header {
         display: flex;
         justify-content: space-between;
+        padding: 0 10px;
 
         ::ng-deep .mat-card-header-text {
             margin: 0;
@@ -69,14 +70,53 @@ under the License.
         }
     }
 
+    .preview {
+        max-width: 280px;
+        .image {
+            width: 100%;
+            background-color: rgb(211, 211, 211);
+        }
+        &:hover {
+            .highlights {
+                display: block;
+                position: absolute;
+                padding: 5px 10px;
+                height: 122px;
+                width: 260px;
+                background-color: rgba(255, 255, 255, 0.55);
+                overflow: hidden;
+
+                .highlight {
+                    font-style: italic;
+                    font-size: 0.8em;
+                }
+            }
+        }
+
+        &.no-preview {
+            .image {
+                opacity: 0.5;
+            }
+            &:hover {
+                .highlights {
+                    height: 123px;
+                    background-color: rgba(255, 255, 255, 0.8);
+                }
+                .image {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
     .section_title {
         font-variant: small-caps;
     }
 
     .groups {
         margin-bottom: 5px;
-        border-bottom: 1px solid #999;
-        padding: 5px 0;
+        /*border-bottom: 1px solid #999;*/
+        padding: 5px 10px 0;
 
         ::ng-deep .mat-chip-list-wrapper {
             margin: 0 -4px;
@@ -93,13 +133,7 @@ under the License.
     }
 
     .highlights {
-        .group {
-            @include group();
-        }
-        .highlight {
-            font-style: italic;
-            font-size: 0.8em;
-        }
+        display: none;
     }
 
     .footer {

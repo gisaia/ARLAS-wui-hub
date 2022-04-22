@@ -22,7 +22,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Resource } from 'arlas-permissions-api';
 import {
     ActionModalComponent, ArlasSettingsService, AuthentificationService, ConfigAction,
-    ConfigActionEnum, PermissionService
+    ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { filter } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
@@ -56,7 +56,8 @@ export class DynamicHubComponent implements OnInit {
         private dialog: MatDialog,
         private authentService: AuthentificationService,
         private arlasSettingsService: ArlasSettingsService,
-        private permissionService: PermissionService) { }
+        private permissionService: PermissionService,
+        private persistenceService: PersistenceService) { }
 
     public ngOnInit(): void {
         this.permissionService.get('persist/resource/config.json').subscribe((resources: Resource[]) => {
@@ -131,6 +132,15 @@ export class DynamicHubComponent implements OnInit {
                     if (!this.cardCollections.has(c.collection)) {
                         this.cardCollections.set(c.collection, { color: c.color, selected: true });
                     }
+                    c.preview = 'assets/no_preview.png';
+                    this.persistenceService.existByZoneKey('preview', c.title.concat('_preview')).subscribe(
+                        exist => {
+                            if (exist.exists) {
+                                this.persistenceService.getByZoneKey('preview', c.title.concat('_preview'))
+                                    .subscribe(i => c.preview = i.doc_value);
+                            }
+                        }
+                    );
                 });
                 this.cardsRef = this.cards;
             },

@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {
     ArlasToolkitSharedModule, ArlasToolKitModule,
     ArlasColorGeneratorLoader, ArlasCollaborativesearchService,
-    ErrorModalModule, PermissionService, ArlasSettingsService
+    ErrorModalModule, PermissionService, ArlasSettingsService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
@@ -24,7 +24,7 @@ describe('DynamicHubComponent', () => {
                 MatCardModule, MatChipsModule, MatIconModule, MatCheckboxModule,
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
             ],
-            providers: [ArlasColorGeneratorLoader, ArlasCollaborativesearchService,
+            providers: [ArlasColorGeneratorLoader, ArlasCollaborativesearchService, PersistenceService,
                 {
                     provide: PermissionService,
                     useClass: MockPermissionService

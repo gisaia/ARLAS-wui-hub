@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CardComponent } from './card.component';
 import {
     ArlasCollaborativesearchService, ArlasColorGeneratorLoader,
-    ArlasToolKitModule, ArlasToolkitSharedModule, ConfigMenuModule, PermissionService
+    ArlasToolKitModule, ArlasToolkitSharedModule, ConfigMenuModule, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -21,7 +21,7 @@ describe('CardComponent', () => {
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
 
             ],
-            providers: [ArlasColorGeneratorLoader, ArlasCollaborativesearchService,
+            providers: [ArlasColorGeneratorLoader, ArlasCollaborativesearchService, PersistenceService,
                 {
                     provide: PermissionService,
                     useClass: MockPermissionService
