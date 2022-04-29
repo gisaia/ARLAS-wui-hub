@@ -11,6 +11,19 @@
         <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
             [actions]="card?.actions" (actionExecutedEmitter)="afterAction()"></arlas-config-menu>
     </mat-card-header>
+
+    <div class="preview" [class.no-preview]="card?.preview === 'assets/no_preview.png'">
+        <div class="highlights" *ngIf="card?.tabs.length > 0">
+            <div class="section_title">{{ 'Highlights' | translate}}</div>
+            <div *ngFor="let tab of card?.tabs" class="highlight">
+                ⇾ {{tab}}
+            </div>
+        </div>
+        <div class="highlights" *ngIf="card?.tabs.length === 0">
+            <div class="section_title">{{ 'No Highlights' | translate}}</div>
+        </div>
+        <img src="{{card?.preview}}" class="image" />
+    </div>
     <div class="groups">
         <div class="readers">
             <div class="section_title">{{ 'Readers' | translate}}</div>
@@ -27,11 +40,6 @@
             </mat-chip-list>
         </div>
     </div>
-    <div class="highlights" *ngIf="card?.tabs.length > 0">
-        <div class="section_title">{{ 'Highlights' | translate}}</div>
-        <div *ngFor="let tab of card?.tabs" class="highlight">
-            - {{tab}}
-        </div>
-    </div>
+
 
 </mat-card>
