@@ -1,6 +1,6 @@
 {
   "name": "arlas-home",
-  "version": "23.1.0-dev",
+  "version": "23.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -31,7 +31,7 @@
     "zone.js": "^0.11.4"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "~23.0.0"
+    "arlas-wui-toolkit": "~23.0.1-beta.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.1",
