@@ -60,7 +60,7 @@ export class DynamicHubComponent implements OnInit {
         private persistenceService: PersistenceService) { }
 
     public ngOnInit(): void {
-        this.permissionService.get('persist/resource/config.json').subscribe((resources: Resource[]) => {
+        this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
             this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
         });
 
