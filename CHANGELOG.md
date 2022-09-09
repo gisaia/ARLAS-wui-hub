@@ -1,5 +1,9 @@
 # Change Log
 
+## [v23.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v23.0.2) (2022-09-09)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v23.0.1...v23.0.2)
+
 ## [v23.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v23.0.1) (2022-09-02)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v23.0.1-beta.3...v23.0.1)
