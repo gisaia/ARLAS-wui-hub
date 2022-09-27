@@ -1,5 +1,13 @@
 # Change Log
 
+## [v23.0.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v23.0.3) (2022-09-27)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v23.0.2...v23.0.3)
+
+**Fixed bugs:**
+
+- No Highlights is not translated in the image preview [\#125](https://github.com/gisaia/ARLAS-wui-hub/issues/125)
+
 ## [v23.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v23.0.2) (2022-09-09)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v23.0.1...v23.0.2)
