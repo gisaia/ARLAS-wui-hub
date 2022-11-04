@@ -18,7 +18,7 @@ under the License.
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserInfosComponent, AuthentificationService } from 'arlas-wui-toolkit';
+import { UserInfosComponent, AuthentificationService, ArlasIamService } from 'arlas-wui-toolkit';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { SidenavService } from '../../services/sidenav.service';
@@ -41,6 +41,7 @@ export class LeftMenuComponent implements OnInit {
     public linkText = false;
     public connected;
     public isAuthentActivated;
+    public authentMode = 'false';
     public pages: Page[] = [];
     public name: string;
     public avatar: string;
@@ -48,32 +49,77 @@ export class LeftMenuComponent implements OnInit {
     public expand: string;
     public isLabelDisplayed = false;
 
-    public constructor(private authentService: AuthentificationService, private router: Router,
-        private dialog: MatDialog, private translate: TranslateService, private sidenavService: SidenavService) {
+    public constructor(
+        private authentService: AuthentificationService,
+        private router: Router,
+        private dialog: MatDialog,
+        private translate: TranslateService,
+        private sidenavService: SidenavService,
+        private arlasIamService: ArlasIamService
+    ) {
         this.reduce = this.translate.instant('reduce');
         this.expand = this.translate.instant('expand');
-        this.isAuthentActivated = !!this.authentService.authConfigValue && !!this.authentService.authConfigValue.use_authent;
+        this.isAuthentActivated = !!this.authentService.authConfigValue && this.authentService.authConfigValue.use_authent;
+
+        const isOpenID = this.isAuthentActivated && this.arlasIamService.authConfigValue.auth_mode !== 'iam';
+        const isIam = this.isAuthentActivated && this.arlasIamService.authConfigValue.auth_mode === 'iam';
+        this.isAuthentActivated = isOpenID || isIam;
+        if (isOpenID) {
+            this.authentMode = 'openid';
+        }
+        if (isIam) {
+            this.authentMode = 'iam';
+        }
     }
 
     public ngOnInit() {
-        const claims = this.authentService.identityClaims as any;
-        this.authentService.canActivateProtectedRoutes.subscribe(isConnected => {
-            this.connected = isConnected;
-            if (isConnected) {
-                this.name = claims.nickname;
-                this.avatar = claims.picture;
-            } else {
-                this.name = '';
-                this.avatar = '';
-            }
-        });
+        if (this.authentMode === 'openid') {
+            const claims = this.authentService.identityClaims as any;
+            this.authentService.canActivateProtectedRoutes.subscribe(isConnected => {
+                this.connected = isConnected;
+                if (isConnected) {
+                    this.name = claims.nickname;
+                    this.avatar = claims.picture;
+                } else {
+                    this.name = '';
+                    this.avatar = '';
+                }
+            });
+        }
+        if (this.authentMode === 'iam') {
+            this.arlasIamService.currentUserSubject.subscribe({
+                next: (data) => {
+                    if (!!data) {
+                        this.connected = true;
+                        this.name = data?.user.email;
+                        this.avatar = this.getInitials(this.name);
+                    } else {
+                        this.connected = false;
+                        this.name = '';
+                        this.avatar = '';
+                    }
+                },
+                error: () => {
+                    this.connected = false;
+                }
+            });
+        }
     }
 
     public connect() {
-        if (this.connected) {
-            this.authentService.logout();
-        } else {
-            this.authentService.login();
+        if (this.authentMode === 'openid') {
+            if (this.connected) {
+                this.authentService.logout();
+            } else {
+                this.authentService.login();
+            }
+        }
+        if (this.authentMode === 'iam') {
+            if (this.connected) {
+                this.arlasIamService.logout(['/']);
+            } else {
+                this.router.navigate(['login']);
+            }
         }
     }
 
@@ -86,5 +132,35 @@ export class LeftMenuComponent implements OnInit {
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));
         }, 100);
+    }
+
+    public getInitials(name) {
+
+        const canvas = document.createElement('canvas');
+        canvas.style.display = 'none';
+        canvas.width = 32;
+        canvas.height = 32;
+        document.body.appendChild(canvas);
+
+        const context = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 16;
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = '#999';
+        context.fill();
+        context.font = '16px Arial';
+        context.fillStyle = '#eee';
+
+        if (name && name !== '') {
+            const first = name[0];
+            context.fillText(first.toUpperCase(), 10, 23);
+            const data = canvas.toDataURL();
+            document.body.removeChild(canvas);
+            return data;
+        } else {
+            return '';
+        }
     }
 }

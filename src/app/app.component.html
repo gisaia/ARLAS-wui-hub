@@ -6,10 +6,10 @@
 
 <div *ngIf="!useStatic && appReady">
   <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #leftSidenav mode="side" class="sidenav" opened>
-      <arlas-left-menu></arlas-left-menu>
+    <mat-sidenav #leftSidenav mode="side" class="sidenav" [class.hide]="!displayMenu" opened>
+      <arlas-left-menu *ngIf="displayMenu"></arlas-left-menu>
     </mat-sidenav>
-    <mat-sidenav-content class="sidenav-content">
+    <mat-sidenav-content class="sidenav-content" [class.full]="!displayMenu">
       <div class="main_content">
         <div style="padding: 20px">
           <router-outlet></router-outlet>

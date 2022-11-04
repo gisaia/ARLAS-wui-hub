@@ -17,19 +17,23 @@ specific language governing permissions and limitations
 under the License.
 */
 
-.sidenav{
+.sidenav {
     width: 73px !important;
-}
-
-.sidenav-content{
-
-    background-color: whitesmoke;
-    margin-left: 73px !important;
-
-    .main_content {
-      width: 100%;
-      height: 100vh;
-
+    &.hide {
+        display: none;
     }
 }
 
+.sidenav-content {
+    background-color: whitesmoke;
+    margin-left: 73px !important;
+
+    &.full{
+        margin-left: unset !important;
+    }
+
+    .main_content {
+        width: 100%;
+        height: 100vh;
+    }
+}
