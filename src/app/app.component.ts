@@ -18,7 +18,9 @@ under the License.
 */
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { NavigationEnd, Router } from '@angular/router';
 import { ArlasSettingsService } from 'arlas-wui-toolkit';
+import { filter } from 'rxjs';
 import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
 
@@ -33,12 +35,14 @@ export class AppComponent implements OnInit {
     public useStatic: boolean;
     public appReady = false;
     public title = 'ARLAS-wui-hub';
+    public displayMenu = true;
 
     public constructor(
         private loadService: LoadService,
         private sidenavService: SidenavService,
         private titleService: Title,
-        private arlasSettingsService: ArlasSettingsService
+        private arlasSettingsService: ArlasSettingsService,
+        private router: Router
     ) {
         this.useStatic = this.loadService.appData?.static;
         this.appReady = true;
@@ -52,5 +56,13 @@ export class AppComponent implements OnInit {
             // tslint:disable-next-line:no-string-literal
             this.arlasSettingsService.settings['tab_name'] : 'ARLAS-wui-hub';
         this.titleService.setTitle(this.title);
+
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(
+            (data) => this.displayMenu = (data as NavigationEnd).url !== '/login'
+                && (data as NavigationEnd).url !== '/register'
+                && (data as NavigationEnd).url !== '/password_forgot'
+                && (data as NavigationEnd).url !== '/verify/'
+                && (data as NavigationEnd).url !== '/reset/'
+        );
     }
 }

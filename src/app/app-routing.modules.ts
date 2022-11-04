@@ -18,13 +18,19 @@ under the License.
 */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ForgotComponent, LoginComponent, RegisterComponent, ResetComponent, VerifyComponent } from 'arlas-wui-toolkit';
 import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
 
 
 
 const routes: Routes = [
     { path: '', component: DynamicHubComponent },
-    { path: 'callback', redirectTo: '' }
+    { path: 'callback', redirectTo: '' },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'verify/:id/user/:token', component: VerifyComponent },
+    { path: 'password_forgot', component: ForgotComponent },
+    { path: 'reset/:id/user/:token', component: ResetComponent }
 ];
 
 @NgModule({
