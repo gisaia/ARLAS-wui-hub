@@ -8,7 +8,7 @@
     "build": "export NODE_OPTIONS=--max_old_space_size=8192 && ng build --configuration production --aot --base-href='$ARLAS_HUB_BASE_HREF/'",
     "test": "ng test",
     "lint": "ng lint",
-    "postinstall": "patch-package --patch-dir ./node_modules/arlas-web-core/patches",
+    "postinstall": "patch-package --patch-dir ./node_modules/arlas-web-core/patches && patch-package --patch-dir ./node_modules/arlas-d3/patches",
     "e2e": "ng e2e",
     "licence-check": "license-check-and-add check -f license-check-and-add.json",
     "licence-add": "license-check-and-add add -f license-check-and-add.json",
@@ -31,10 +31,10 @@
     "zone.js": "^0.11.4"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "~23.0.4"
+    "arlas-wui-toolkit": "~23.1.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.2.1",
+    "@angular-devkit/build-angular": "~13.3.10",
     "@angular-eslint/builder": "13.0.1",
     "@angular-eslint/eslint-plugin": "13.0.1",
     "@angular-eslint/eslint-plugin-template": "13.0.1",
@@ -50,7 +50,6 @@
     "@types/node": "16.11.20",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
-    "codelyzer": "~6.0.1",
     "eslint": "^8.2.0",
     "jasmine-core": "~3.10.0",
     "jasmine-spec-reporter": "~4.2.1",
