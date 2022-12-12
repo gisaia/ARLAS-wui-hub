@@ -25,6 +25,19 @@ h2 {
     font-weight: 400;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    .organisations {
+        min-width: 200px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 7px 5px;
+        border-radius: 5px;
+        font-weight: 400;
+        font-size: 16px;
+        background-color: white;
+    }
+}
 .content {
     display: flex;
     .dashboard {
