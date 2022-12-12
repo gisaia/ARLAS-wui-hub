@@ -1,25 +1,38 @@
-<button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="add()" [matTooltip]="'Create a new Exploration Dashboard' | translate">
-    <mat-icon>add</mat-icon>
-    {{'Create a new Exploration Dashboard' | translate}}
-</button>
-<button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="import()" [matTooltip]="'Import an Exploration Dashboard' | translate">
-    <mat-icon>file_upload</mat-icon>
-    {{'Import an Exploration Dashboard' | translate}}
-</button>
+<div class="header">
+    <div>
+        <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="add()"
+            [matTooltip]="'Create a new Exploration Dashboard' | translate">
+            <mat-icon>add</mat-icon>
+            {{'Create a new Exploration Dashboard' | translate}}
+        </button>
+        <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="import()"
+            [matTooltip]="'Import an Exploration Dashboard' | translate">
+            <mat-icon>file_upload</mat-icon>
+            {{'Import an Exploration Dashboard' | translate}}
+        </button>
+    </div>
+    <div class="organisations" *ngIf="connected && orgs.length > 0">
+        <mat-select (selectionChange)="changeOrg($event)" [value]="this.currentOrga">
+            <mat-option *ngFor="let org of orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
+        </mat-select>
+    </div>
+</div>
 <div class="content">
     <div class="dashboard">
         <h2>{{'Dashboards' | translate}}</h2>
         <div class="cards">
-            <arlas-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card" [userGroups]="userGroups"></arlas-card>
+            <arlas-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card"
+                [userGroups]="userGroups"></arlas-card>
         </div>
     </div>
     <div class="collection">
         <h2>{{'Collections' | translate}}</h2>
         <div class="cards">
-            <mat-card class="card" [style.borderLeftColor]="col.value.color"  style="border-left: 3px solid;" [class.disabled]="!col.value.selected" (click)="getCheckbox(!col.value.selected, col.key)"
+            <mat-card class="card" [style.borderLeftColor]="col.value.color" style="border-left: 3px solid;"
+                [class.disabled]="!col.value.selected" (click)="getCheckbox(!col.value.selected, col.key)"
                 *ngFor="let col of cardCollections | keyvalue">
                 <mat-card-header>
-                   {{col.key | translate}}
+                    {{col.key | translate}}
                 </mat-card-header>
             </mat-card>
         </div>

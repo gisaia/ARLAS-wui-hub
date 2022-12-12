@@ -40,9 +40,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import {
     ArlasColorGeneratorLoader, ArlasConfigurationUpdaterService,
+    ArlasIamService,
     ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
     ConfigMenuModule, configUpdaterFactory,
-    ErrorModalModule, getOptionsFactory, GET_OPTIONS
+    ErrorModalModule, getOptionsFactory, GET_OPTIONS, iamServiceFactory
 } from 'arlas-wui-toolkit';
 import {
     ArlasCollaborativesearchService,
@@ -62,6 +63,7 @@ import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
 import { ActionModalModule } from 'arlas-wui-toolkit';
 import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init('config.json?' + Date.now());
@@ -98,6 +100,7 @@ export function createTranslateLoader(http: HttpClient) {
         MatIconModule,
         MatInputModule,
         MatMenuModule,
+        MatSelectModule,
         MatSidenavModule,
         MatPaginatorModule,
         MatListModule,
@@ -137,6 +140,12 @@ export function createTranslateLoader(http: HttpClient) {
             multi: true
         },
         {
+            provide: 'ArlasIamService',
+            useFactory: iamServiceFactory,
+            deps: [ArlasIamService],
+            multi: true
+        },
+        {
             provide: ArlasConfigurationUpdaterService,
             useClass: ArlasConfigurationUpdaterService
         },
@@ -148,12 +157,12 @@ export function createTranslateLoader(http: HttpClient) {
         {
             provide: MatPaginatorIntl,
             deps: [TranslateService],
-            useFactory: (translateService: TranslateService) => new PaginatorI18n(translateService).getPaginatorIntl()
+            useFactory: (translateService: TranslateService) => new PaginatorI18n(translateService)
         },
         {
             provide: GET_OPTIONS,
             useFactory: getOptionsFactory,
-            deps: [AuthentificationService]
+            deps: [AuthentificationService, ArlasIamService]
         }
     ],
     bootstrap: [AppComponent]

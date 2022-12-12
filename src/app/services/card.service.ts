@@ -53,18 +53,18 @@ export class CardService {
         private arlasColorGeneratorLoader: ArlasColorGeneratorLoader) {
     }
 
-    public cardList(size: number, page: number): Observable<[number, Card[]]> {
+    public cardList(size: number, page: number, org: string): Observable<[number, Card[]]> {
         return (this.persistenceService.list('config.json', size, page, 'desc') as Observable<DataResource>)
             .pipe(map(data => {
                 if (data.data !== undefined) {
-                    return [data.total, data.data.map(d => this.dataWithlinksToCards(d))];
+                    return [data.total, data.data.map(d => this.dataWithlinksToCards(d, org))];
                 } else {
                     return [data.total, []];
                 }
             }));
     }
 
-    private dataWithlinksToCards(data: DataWithLinks): Card {
+    private dataWithlinksToCards(data: DataWithLinks, org: string): Card {
         const actions: Array<ConfigAction> = new Array();
         const config: Config = {
             id: data.id,
@@ -73,7 +73,8 @@ export class CardService {
             readers: data.doc_readers,
             writers: data.doc_writers,
             lastUpdate: +data.last_update_date,
-            zone: data.doc_zone
+            zone: data.doc_zone,
+            org: org
         };
         actions.push({
             config: config,

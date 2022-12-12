@@ -6,7 +6,7 @@ authentication:
   auth_mode: 'iam'
   force_connect: false
   use_discovery: false
-  threshold: 5000
+  threshold: 60000
   url: http://localhost:9997/arlas_iam_server
 persistence:
   url: 'http://localhost:19997/arlas-persistence-server'
