@@ -1,6 +1,6 @@
 {
   "name": "arlas-home",
-  "version": "23.2.0-dev",
+  "version": "23.2.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -67,5 +67,5 @@
     "portable-fetch": {
       "node-fetch": "3.3.0"
     }
-  } 
+  }
 }
