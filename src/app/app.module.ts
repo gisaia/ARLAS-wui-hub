@@ -36,7 +36,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import {
     ArlasColorGeneratorLoader, ArlasConfigurationUpdaterService,
@@ -62,14 +61,43 @@ import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
 import { ActionModalModule } from 'arlas-wui-toolkit';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import enComponents from 'arlas-web-components/assets/i18n/en.json';
+import frComponents from 'arlas-web-components/assets/i18n/fr.json';
+import enToolkit from 'arlas-wui-toolkit/assets/i18n/en.json';
+import frToolkit from 'arlas-wui-toolkit/assets/i18n/fr.json';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init('config.json?' + Date.now());
     return load;
 
 }
-export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+export class CustomTranslateLoader implements TranslateLoader {
+
+    public constructor(private http: HttpClient) { }
+
+    public getTranslation(lang: string): Observable<any> {
+        const apiAddress = 'assets/i18n/' + lang + '.json?' + Date.now();
+        return Observable.create(observer => {
+            this.http.get(apiAddress).subscribe(
+                res => {
+                    let merged = res;
+                    // Properties in res will overwrite those in fr.
+                    if (lang === 'fr') {
+                        merged = { ...frComponents, ...frToolkit, ...res };
+                    } else if (lang === 'en') {
+                        merged = { ...enComponents, ...enToolkit, ...res };
+                    }
+                    observer.next(merged);
+                    observer.complete();
+                },
+                error => {
+                    // failed to retrieve requested language file, use default
+                    observer.complete(); // => Default language is already loaded
+                }
+            );
+        });
+    }
 }
 
 @NgModule({
@@ -111,7 +139,7 @@ export function createTranslateLoader(http: HttpClient) {
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
-                useFactory: (createTranslateLoader),
+                useClass: CustomTranslateLoader,
                 deps: [HttpClient]
             }
         }),
