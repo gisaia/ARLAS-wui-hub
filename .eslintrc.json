@@ -66,13 +66,10 @@
         "@typescript-eslint/naming-convention": [
             "error",
             {
-                "selector": "variable",
-                "format": [
-                    "camelCase",
-                    "UPPER_CASE"
-                ]
+              "selector": "variable",
+              "format": ["camelCase", "UPPER_CASE"]
             }
-        ],
+          ],
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-inferrable-types": [
@@ -95,8 +92,8 @@
             2,
             "single",
             {
-                "avoidEscape": true,
-                "allowTemplateLiterals": true
+              "avoidEscape": true,
+              "allowTemplateLiterals": true
             }
         ],
         "@typescript-eslint/semi": [
