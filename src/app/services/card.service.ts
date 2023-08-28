@@ -20,7 +20,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
-import { Config, ConfigAction, ConfigActionEnum, ArlasColorGeneratorLoader, PersistenceService } from 'arlas-wui-toolkit';
+import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
+import { ArlasColorService } from 'arlas-web-components';
 
 
 
@@ -50,7 +51,7 @@ export interface Card {
 export class CardService {
 
     public constructor(private persistenceService: PersistenceService,
-        private arlasColorGeneratorLoader: ArlasColorGeneratorLoader) {
+        private colorService: ArlasColorService) {
     }
 
     public cardList(size: number, page: number, org: string): Observable<[number, Card[]]> {
@@ -114,7 +115,7 @@ export class CardService {
                 const reader: Group = {
                     fullname: r,
                     name: r.split('/')[r.split('/').length - 1],
-                    color: this.arlasColorGeneratorLoader.getColor(r)
+                    color: this.colorService.getColor(r)
                 };
                 readers.push(reader);
             });
@@ -125,7 +126,7 @@ export class CardService {
                 const writer: Group = {
                     fullname: r,
                     name: r.split('/')[r.split('/').length - 1],
-                    color: this.arlasColorGeneratorLoader.getColor(r)
+                    color: this.colorService.getColor(r)
                 };
                 writers.push(writer);
             });
@@ -140,7 +141,7 @@ export class CardService {
             tabs: this.getTabs(data.doc_value),
             collection: this.getCollection(data.doc_value),
             actions: actions,
-            color: this.arlasColorGeneratorLoader.getColor(this.getCollection(data.doc_value)),
+            color: this.colorService.getColor(this.getCollection(data.doc_value)),
             owner: data.doc_owner
         };
     }

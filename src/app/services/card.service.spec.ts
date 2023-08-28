@@ -1,6 +1,6 @@
 import { inject, TestBed } from '@angular/core/testing';
 import {
-    ArlasColorGeneratorLoader, PermissionService, ArlasSettingsService,
+    PermissionService, ArlasSettingsService,
     ArlasToolKitModule, ArlasToolkitSharedModule
 } from 'arlas-wui-toolkit';
 import { MockPermissionService, MockArlasSettingsService } from '../tools/tools';
@@ -11,7 +11,7 @@ describe('CardService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [ArlasToolkitSharedModule, ArlasToolKitModule],
-            providers: [ArlasColorGeneratorLoader,
+            providers: [
                 {
                     provide: PermissionService,
                     useClass: MockPermissionService

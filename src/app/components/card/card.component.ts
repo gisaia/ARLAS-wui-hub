@@ -17,7 +17,8 @@ specific language governing permissions and limitations
 under the License.
 */
 import { Component, Input, Output, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import { ArlasColorGeneratorLoader, ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
+import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
+import { ArlasColorService } from 'arlas-web-components';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
 
@@ -55,7 +56,7 @@ export class CardComponent implements AfterViewInit, OnInit {
     public writers: Array<{ name: string; in: boolean; }> = [];
 
     public constructor(
-        private arlasColorGeneratorLoader: ArlasColorGeneratorLoader
+        private colorService: ArlasColorService
     ) {
     }
     public ngOnInit(): void {
@@ -73,7 +74,7 @@ export class CardComponent implements AfterViewInit, OnInit {
                 || this.writers.map(r => r.name).includes('public')) ? 'public'
                 : (this.readers.length === 0 && this.writers.length === 0) ? 'private'
                     : 'shared';
-            this.collectionColor = this.arlasColorGeneratorLoader.getColor(this.card.collection);
+            this.collectionColor = this.colorService.getColor(this.card.collection);
         }
 
     }
