@@ -1,8 +1,16 @@
 # Change Log
 
-## [v24.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.0.0) (2023-06-09)
+## [v24.2.0-beta.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.1) (2023-08-28)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.0.0...v24.2.0-beta.1)
+
+## [v24.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.0.0) (2023-06-19)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v23.2.1...v24.0.0)
+
+**New stuff:**
+
+- Migrate to angular 14 [\#147](https://github.com/gisaia/ARLAS-wui-hub/issues/147)
 
 ## [v23.2.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v23.2.1) (2023-03-24)
 
