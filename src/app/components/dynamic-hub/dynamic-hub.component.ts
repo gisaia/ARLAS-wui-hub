@@ -22,7 +22,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Resource } from 'arlas-permissions-api';
 import { UserOrgData } from 'arlas-iam-api';
 import {
-    ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
+    ActionModalComponent, ArlasAuthentificationService, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { filter } from 'rxjs/operators';
@@ -68,19 +68,11 @@ export class DynamicHubComponent implements OnInit {
         private permissionService: PermissionService,
         private persistenceService: PersistenceService,
         private arlasIamService: ArlasIamService,
-        private startupService: ArlasStartupService
+        private startupService: ArlasStartupService,
+        private arlasAuthentService: ArlasAuthentificationService
     ) {
-        this.isAuthentActivated = !!this.authentService.authConfigValue && this.authentService.authConfigValue.use_authent;
-
-        const isOpenID = this.isAuthentActivated && this.arlasIamService.authConfigValue.auth_mode !== 'iam';
-        const isIam = this.isAuthentActivated && this.arlasIamService.authConfigValue.auth_mode === 'iam';
-        this.isAuthentActivated = isOpenID || isIam;
-        if (isOpenID) {
-            this.authentMode = 'openid';
-        }
-        if (isIam) {
-            this.authentMode = 'iam';
-        }
+        this.isAuthentActivated = !!this.arlasAuthentService.authConfigValue && !!this.arlasAuthentService.authConfigValue.use_authent;
+        this.authentMode = this.arlasAuthentService.authConfigValue?.auth_mode;
     }
 
     public ngOnInit(): void {
@@ -93,7 +85,7 @@ export class DynamicHubComponent implements OnInit {
         ) {
             this.fetchCards();
         } else {
-            if (this.arlasSettingsService.getSettings().authentication.auth_mode === 'iam') {
+            if (this.authentMode === 'iam') {
                 this.arlasIamService.currentUserSubject.subscribe({
                     next: (userSubject) => {
                         if (!!userSubject) {

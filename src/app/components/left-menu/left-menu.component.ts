@@ -17,11 +17,10 @@ specific language governing permissions and limitations
 under the License.
 */
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserInfosComponent, AuthentificationService, ArlasIamService } from 'arlas-wui-toolkit';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { SidenavService } from '../../services/sidenav.service';
+import { ArlasAuthentificationService, ArlasIamService, AuthentificationService, UserInfosComponent } from 'arlas-wui-toolkit';
 
 interface Page {
     link: string;
@@ -54,22 +53,13 @@ export class LeftMenuComponent implements OnInit {
         private router: Router,
         private dialog: MatDialog,
         private translate: TranslateService,
-        private sidenavService: SidenavService,
-        private arlasIamService: ArlasIamService
+        private arlasIamService: ArlasIamService,
+        private arlasAuthentService: ArlasAuthentificationService
     ) {
         this.reduce = this.translate.instant('reduce');
         this.expand = this.translate.instant('expand');
-        this.isAuthentActivated = !!this.authentService.authConfigValue && this.authentService.authConfigValue.use_authent;
-
-        const isOpenID = this.isAuthentActivated && this.arlasIamService.authConfigValue.auth_mode !== 'iam';
-        const isIam = this.isAuthentActivated && this.arlasIamService.authConfigValue.auth_mode === 'iam';
-        this.isAuthentActivated = isOpenID || isIam;
-        if (isOpenID) {
-            this.authentMode = 'openid';
-        }
-        if (isIam) {
-            this.authentMode = 'iam';
-        }
+        this.isAuthentActivated = !!this.arlasAuthentService.authConfigValue && !!this.arlasAuthentService.authConfigValue.use_authent;
+        this.authentMode = this.arlasAuthentService.authConfigValue?.auth_mode;
     }
 
     public ngOnInit() {
