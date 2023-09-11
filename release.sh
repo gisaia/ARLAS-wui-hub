@@ -151,11 +151,12 @@ git commit -a -m "Release prod version ${VERSION}"
 
 
 echo "==> Docker"
-docker build --no-cache --build-arg version=${VERSION} --tag gisaia/arlas-wui-hub:${VERSION} --tag gisaia/arlas-wui-hub:latest .
+docker build --no-cache --build-arg version=${VERSION} --tag gisaia/arlas-wui-hub:${VERSION} .
 
 docker push gisaia/arlas-wui-hub:${VERSION}
 if [ "${STAGE}" == "stable" ];
     then
+    docker build --no-cache --build-arg version=${VERSION} --tag gisaia/arlas-wui-hub:latest .
     docker push gisaia/arlas-wui-hub:latest
 fi
 
