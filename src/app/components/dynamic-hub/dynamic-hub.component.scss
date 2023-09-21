@@ -48,6 +48,13 @@ h2 {
             flex-wrap: wrap;
             gap: 5px 8px;
         }
+
+        .no-card{
+            background-color: #fafafa;
+            padding: 10px;
+            border: 1px solid rgba(#054ADA, 0.12);
+            color: rgba(0, 0, 0, 0.7);
+        }
     }
     .collection {
         flex: 1;

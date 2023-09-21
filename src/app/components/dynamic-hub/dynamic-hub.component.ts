@@ -150,13 +150,15 @@ export class DynamicHubComponent implements OnInit {
 
     public fetchCards() {
         this.isLoading = true;
+
+        this.cardCollections.clear();
+        this.cards = [];
         this.cardService.cardList(
             this.pageSize,
             this.pageNumber + 1,
             this.currentOrga
         ).subscribe(
             (result: [number, Card[]]) => {
-                this.cardCollections.clear();
                 this.resultsLength = result[0];
                 this.cards = Array.from(result[1]);
                 this.cards.forEach(c => {
@@ -180,6 +182,7 @@ export class DynamicHubComponent implements OnInit {
                 this.cardsRef = this.cards;
             },
             error => {
+                this.isLoading = false;
                 console.error(error);
             },
             () => {

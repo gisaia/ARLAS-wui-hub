@@ -24,8 +24,9 @@
             <arlas-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card"
                 [userGroups]="userGroups"></arlas-card>
         </div>
+        <div *ngIf="cards.length === 0 && !isLoading" class="no-card">{{ 'No dashboard available' | translate}}</div>
     </div>
-    <div class="collection">
+    <div class="collection" *ngIf="cards.length > 0">
         <h2>{{'Collections' | translate}}</h2>
         <div class="cards">
             <mat-card class="card" [style.borderLeftColor]="col.value.color" style="border-left: 3px solid;"
