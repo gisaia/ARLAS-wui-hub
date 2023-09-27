@@ -86,15 +86,21 @@ export class DynamicHubComponent implements OnInit {
             this.fetchCards();
         } else {
             if (this.authentMode === 'iam') {
-                this.arlasIamService.currentUserSubject.subscribe({
+                this.arlasIamService.tokenRefreshed$.subscribe({
                     next: (userSubject) => {
                         if (!!userSubject) {
                             this.connected = true;
-                            this.orgs = userSubject.user.organisations.map(org => {
-                                org.displayName = org.name === userSubject.user.id ? userSubject.user.email.split('@')[0] : org.name;
+                            this.orgs = this.arlasIamService.user.organisations.map(org => {
+                                org.displayName = org.name === this.arlasIamService.user.id ?
+                                    this.arlasIamService.user.email.split('@')[0] : org.name;
                                 return org;
                             });
-                            this.currentOrga = this.orgs.length > 0 ? this.orgs[0].name : '';
+                            if (this.arlasIamService.getOrganisation()) {
+                                this.currentOrga = this.arlasIamService.getOrganisation();
+                            } else {
+                                this.currentOrga = this.orgs.length > 0 ? this.orgs[0].name : '';
+                                this.arlasIamService.storeOrganisation(this.currentOrga);
+                            }
                         } else {
                             this.connected = false;
                         }
@@ -228,7 +234,7 @@ export class DynamicHubComponent implements OnInit {
     }
 
     public changeOrg(event: MatSelectChange) {
-        this.startupService.changeOrgHeader(event.value, this.arlasIamService.currentUserValue.accessToken);
+        this.startupService.changeOrgHeader(event.value, this.arlasIamService.getAccessToken());
         this.currentOrga = event.value;
         this.fetchCards();
     }
