@@ -31,7 +31,7 @@
     "zone.js": "^0.11.4"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "24.2.0-beta-iam.11",
+    "arlas-wui-toolkit": "24.2.0-beta-iam.12",
     "@ngx-translate/core": "14.0.0"
   },
   "devDependencies": {

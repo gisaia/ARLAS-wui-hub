@@ -95,12 +95,7 @@ export class DynamicHubComponent implements OnInit {
                                     this.arlasIamService.user.email.split('@')[0] : org.name;
                                 return org;
                             });
-                            if (this.arlasIamService.getOrganisation()) {
-                                this.currentOrga = this.arlasIamService.getOrganisation();
-                            } else {
-                                this.currentOrga = this.orgs.length > 0 ? this.orgs[0].name : '';
-                                this.arlasIamService.storeOrganisation(this.currentOrga);
-                            }
+                            this.currentOrga = this.arlasIamService.getOrganisation();
                         } else {
                             this.connected = false;
                         }
@@ -162,7 +157,7 @@ export class DynamicHubComponent implements OnInit {
         this.cardService.cardList(
             this.pageSize,
             this.pageNumber + 1,
-            this.currentOrga
+            this.arlasIamService.getOrganisation()
         ).subscribe(
             (result: [number, Card[]]) => {
                 this.resultsLength = result[0];
@@ -235,7 +230,6 @@ export class DynamicHubComponent implements OnInit {
 
     public changeOrg(event: MatSelectChange) {
         this.startupService.changeOrgHeader(event.value, this.arlasIamService.getAccessToken());
-        this.currentOrga = event.value;
         this.fetchCards();
     }
 
