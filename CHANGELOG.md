@@ -1,5 +1,14 @@
 # Change Log
 
+## [v24.2.0-beta.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.5) (2023-10-10)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.2.0-beta.4...v24.2.0-beta.5)
+
+**Miscellaneous:**
+
+- When I logout from the hub, it is not refreshed [\#150](https://github.com/gisaia/ARLAS-wui-hub/issues/150)
+- New dashboard from hub to builder error [\#149](https://github.com/gisaia/ARLAS-wui-hub/issues/149)
+
 ## [v24.2.0-beta.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.4) (2023-09-27)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.2.0-beta.3...v24.2.0-beta.4)
