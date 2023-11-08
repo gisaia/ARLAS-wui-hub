@@ -1,7 +1,4 @@
 <div class="menu_container">
-    <div class="logo">
-        <img src="assets/hub-icon.png" matTooltip="ARLAS HuB"/>
-    </div>
     <div>
         <mat-nav-list>
             <mat-list-item *ngFor="let page of pages" [matTooltip]="page?.name" [routerLink]="page?.link"
@@ -16,27 +13,6 @@
     <div>
         <div class="action-list">
             <arlas-tool-link></arlas-tool-link>
-            <mat-divider></mat-divider>
-            <mat-nav-list>
-                <mat-list-item *ngIf="connected && isAuthentActivated" matTooltip="{{'User info' | translate}}" (click)="getUserInfos()">
-                    <button mat-icon-button>
-                        <img src="{{avatar}}" class="user_avatar">
-
-                    </button>
-                </mat-list-item>
-                <mat-list-item *ngIf="!connected && isAuthentActivated" matTooltip="{{'Log In' | translate}}" (click)="connect()">
-                    <button mat-icon-button>
-                        <mat-icon>account_circle</mat-icon>
-
-                    </button>
-                </mat-list-item>
-                <mat-list-item *ngIf="connected && isAuthentActivated" matTooltip="{{'Log Out' | translate}}" (click)="connect()">
-                    <button mat-icon-button>
-                        <mat-icon>lock_open</mat-icon>
-
-                    </button>
-                </mat-list-item>
-            </mat-nav-list>
         </div>
     </div>
 </div>

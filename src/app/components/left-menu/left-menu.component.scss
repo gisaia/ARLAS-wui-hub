@@ -16,12 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 */
+
+@import '../../../variables.scss';
+
 .menu_container {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+    width: $left-menu-width ;
     .logo {
         padding-top: 7px;
         margin: 0 auto;
@@ -45,6 +48,10 @@ under the License.
         .user_avatar {
             vertical-align: middle;
             height: 26px;
+        }
+
+        ::ng-deep .mat-list-item-content {
+            padding: 0 $sm-margin !important;
         }
     }
 
