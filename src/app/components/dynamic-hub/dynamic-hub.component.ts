@@ -137,14 +137,20 @@ export class DynamicHubComponent implements OnInit {
             .pipe(filter(result => result !== false))
             .subscribe(id => {
                 this.fetchCards();
-                const url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(id);
+                let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(id);
+                if (this.arlasIamService.getOrganisation()) {
+                    url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
+                }
                 const win = window.open(url, '_blank');
                 win.focus();
             });
     }
 
     public import() {
-        const url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+        let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+        if (this.arlasIamService.getOrganisation()) {
+            url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
+        }
         const win = window.open(url, '_blank');
         win.focus();
     }
