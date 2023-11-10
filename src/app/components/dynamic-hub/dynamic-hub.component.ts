@@ -71,8 +71,17 @@ export class DynamicHubComponent implements OnInit {
         private startupService: ArlasStartupService,
         private arlasAuthentService: ArlasAuthentificationService
     ) {
-        this.isAuthentActivated = !!this.arlasAuthentService.authConfigValue && !!this.arlasAuthentService.authConfigValue.use_authent;
-        this.authentMode = this.arlasAuthentService.authConfigValue?.auth_mode;
+        const authSettings = this.arlasSettingsService.getAuthentSettings();
+        const isAuthentActivated = !!authSettings && authSettings.use_authent;
+        const isOpenID = isAuthentActivated && authSettings.auth_mode !== 'iam';
+        const isIam = isAuthentActivated && authSettings.auth_mode === 'iam';
+        if (isOpenID) {
+            this.authentMode = 'openid';
+        }
+        if (isIam) {
+            this.authentMode = 'iam';
+        }
+
     }
 
     public ngOnInit(): void {
