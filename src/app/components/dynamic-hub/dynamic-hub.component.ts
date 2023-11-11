@@ -56,7 +56,7 @@ export class DynamicHubComponent implements OnInit {
 
     public connected;
     public isAuthentActivated;
-    public authentMode = 'false';
+    public authentMode;
     public orgs: UserOrgData[] = [];
     public currentOrga = '';
 
@@ -68,13 +68,12 @@ export class DynamicHubComponent implements OnInit {
         private permissionService: PermissionService,
         private persistenceService: PersistenceService,
         private arlasIamService: ArlasIamService,
-        private startupService: ArlasStartupService,
-        private arlasAuthentService: ArlasAuthentificationService
+        private startupService: ArlasStartupService
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
-        const isAuthentActivated = !!authSettings && authSettings.use_authent;
-        const isOpenID = isAuthentActivated && authSettings.auth_mode !== 'iam';
-        const isIam = isAuthentActivated && authSettings.auth_mode === 'iam';
+        this.isAuthentActivated = !!authSettings && authSettings.use_authent;
+        const isOpenID = this.isAuthentActivated && authSettings.auth_mode !== 'iam';
+        const isIam = this.isAuthentActivated && authSettings.auth_mode === 'iam';
         if (isOpenID) {
             this.authentMode = 'openid';
         }
