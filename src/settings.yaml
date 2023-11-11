@@ -2,15 +2,15 @@
 ############   AUTHENTICATION SETTINGS   ###############
 ########################################################
 authentication:
-  use_authent: false
+  use_authent: true
   auth_mode: 'iam'
   force_connect: false
   threshold: 60000
-  url: http://localhost:9997/arlas_iam_server
+  url: https://arlas.crts-staff.local/arlas_iam_server
 persistence:
-  url: 'http://localhost:19997/arlas-persistence-server'
+  url: 'https://arlas.crts-staff.local/arlas_persistence_server'
 permission:
-  url: 'http://localhost:19996/arlas-permissions-server'
+  url: 'https://arlas.crts-staff.local/arlas_permissions_server/'
 arlas_wui_url: "http://localhost:4200"
 arlas_builder_url: "http://localhost:4200"
 links: [ { "icon": "lock", "name": "Google", "url": "http://www.google.com" }, { "icon": "public", "name": "Yahoo", "url": "http://www.yahoo.com" } ]
