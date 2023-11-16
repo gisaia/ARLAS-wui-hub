@@ -33,4 +33,8 @@ export class MockArlasSettingsService {
     public getPersistenceSettings(): any {
         return {};
     }
+
+    public getAuthentSettings(): any {
+        return {};
+    }
 }
