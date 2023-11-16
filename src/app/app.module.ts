@@ -42,7 +42,7 @@ import {
     ArlasIamService,
     ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
     ConfigMenuModule, configUpdaterFactory,
-    ErrorModalModule, getOptionsFactory, GET_OPTIONS, iamServiceFactory
+    getOptionsFactory, GET_OPTIONS, iamServiceFactory
 } from 'arlas-wui-toolkit';
 import {
     ArlasCollaborativesearchService,
@@ -135,7 +135,6 @@ export class CustomTranslateLoader implements TranslateLoader {
         MatTooltipModule,
         HttpClientModule,
         ConfigMenuModule,
-        ErrorModalModule,
         ArlasToolkitSharedModule,
         ReactiveFormsModule,
         FormsModule,

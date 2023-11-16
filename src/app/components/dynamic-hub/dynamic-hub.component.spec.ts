@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {
     ArlasToolkitSharedModule, ArlasToolKitModule,
     ArlasCollaborativesearchService,
-    ErrorModalModule, PermissionService, ArlasSettingsService, PersistenceService
+    PermissionService, ArlasSettingsService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
@@ -20,7 +20,7 @@ describe('DynamicHubComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DynamicHubComponent],
-            imports: [ArlasToolkitSharedModule, ArlasToolKitModule, ErrorModalModule,
+            imports: [ArlasToolkitSharedModule, ArlasToolKitModule,
                 MatCardModule, MatChipsModule, MatIconModule, MatCheckboxModule,
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
             ],
