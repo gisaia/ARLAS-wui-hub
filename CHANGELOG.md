@@ -1,8 +1,73 @@
 # Change Log
 
-## [v24.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.0.0) (2023-06-09)
+## [v24.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.1.0) (2023-11-30)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.3.0-beta.7...v24.1.0)
+
+**Fixed bugs:**
+
+- Add current organisation before opening the builder page [\#152](https://github.com/gisaia/ARLAS-wui-hub/issues/152)
+
+## [v24.3.0-beta.7](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.3.0-beta.7) (2023-11-16)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.3.0-beta.6...v24.3.0-beta.7)
+
+## [v24.3.0-beta.6](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.3.0-beta.6) (2023-11-16)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.3.0-beta.5...v24.3.0-beta.6)
+
+## [v24.3.0-beta.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.3.0-beta.5) (2023-11-11)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.3.0-beta.4...v24.3.0-beta.5)
+
+## [v24.3.0-beta.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.3.0-beta.4) (2023-11-10)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.3.0-beta.3...v24.3.0-beta.4)
+
+## [v24.3.0-beta.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.3.0-beta.3) (2023-11-10)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.3.0-beta.2...v24.3.0-beta.3)
+
+## [v24.3.0-beta.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.3.0-beta.2) (2023-11-08)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.3.0-beta.1...v24.3.0-beta.2)
+
+## [v24.3.0-beta.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.3.0-beta.1) (2023-11-06)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.2.0-beta.5...v24.3.0-beta.1)
+
+## [v24.2.0-beta.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.5) (2023-10-10)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.2.0-beta.4...v24.2.0-beta.5)
+
+**Miscellaneous:**
+
+- When I logout from the hub, it is not refreshed [\#150](https://github.com/gisaia/ARLAS-wui-hub/issues/150)
+- New dashboard from hub to builder error [\#149](https://github.com/gisaia/ARLAS-wui-hub/issues/149)
+
+## [v24.2.0-beta.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.4) (2023-09-27)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.2.0-beta.3...v24.2.0-beta.4)
+
+## [v24.2.0-beta.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.3) (2023-09-21)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.2.0-beta.2...v24.2.0-beta.3)
+
+## [v24.2.0-beta.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.2) (2023-09-11)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.2.0-beta.1...v24.2.0-beta.2)
+
+## [v24.2.0-beta.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.2.0-beta.1) (2023-08-29)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v24.0.0...v24.2.0-beta.1)
+
+## [v24.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v24.0.0) (2023-06-19)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v23.2.1...v24.0.0)
+
+**New stuff:**
+
+- Migrate to angular 14 [\#147](https://github.com/gisaia/ARLAS-wui-hub/issues/147)
 
 ## [v23.2.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v23.2.1) (2023-03-24)
 
