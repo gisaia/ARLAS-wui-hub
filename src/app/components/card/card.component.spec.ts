@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardComponent } from './card.component';
 import {
-    ArlasCollaborativesearchService, ArlasColorGeneratorLoader,
+    ArlasCollaborativesearchService,
     ArlasToolKitModule, ArlasToolkitSharedModule, ConfigMenuModule, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MockPermissionService } from '../../tools/tools';
+import { ArlasColorService } from 'arlas-web-components';
+
 describe('CardComponent', () => {
     let component: CardComponent;
     let fixture: ComponentFixture<CardComponent>;
@@ -21,7 +23,7 @@ describe('CardComponent', () => {
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
 
             ],
-            providers: [ArlasColorGeneratorLoader, ArlasCollaborativesearchService, PersistenceService,
+            providers: [ArlasColorService, ArlasCollaborativesearchService, PersistenceService,
                 {
                     provide: PermissionService,
                     useClass: MockPermissionService
