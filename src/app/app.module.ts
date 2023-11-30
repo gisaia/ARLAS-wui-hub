@@ -38,10 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import {
-    ArlasColorGeneratorLoader, ArlasConfigurationUpdaterService,
-    ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
-    ConfigMenuModule, configUpdaterFactory,
-    ErrorModalModule, getOptionsFactory, GET_OPTIONS
+    ArlasConfigurationUpdaterService, ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
+    ConfigMenuModule, configUpdaterFactory, ErrorModalModule, getOptionsFactory, GET_OPTIONS
 } from 'arlas-wui-toolkit';
 import {
     ArlasCollaborativesearchService,
@@ -148,7 +146,6 @@ export class CustomTranslateLoader implements TranslateLoader {
     ],
     providers: [
         SidenavService,
-        forwardRef(() => ArlasColorGeneratorLoader),
         forwardRef(() => LoadService),
         forwardRef(() => ArlasStartupService),
         forwardRef(() => ArlasCollaborativesearchService),
