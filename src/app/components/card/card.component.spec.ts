@@ -25,7 +25,12 @@ describe('CardComponent', () => {
                 {
                     provide: PermissionService,
                     useClass: MockPermissionService
-                }]
+                },
+                {
+                    provide: PermissionService,
+                    useClass: MockPermissionService
+                },
+            ]
         })
             .compileComponents();
     }));

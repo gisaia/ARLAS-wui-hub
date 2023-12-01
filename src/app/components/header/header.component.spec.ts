@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { HeaderComponent } from './header.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('HeaderComponent', () => {
     let component: HeaderComponent;
@@ -11,7 +12,7 @@ describe('HeaderComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [HeaderComponent],
-            imports: [MatIconModule,
+            imports: [MatIconModule, MatTooltipModule,
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
 
             ],
