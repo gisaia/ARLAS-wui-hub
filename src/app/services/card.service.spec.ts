@@ -1,5 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { PermissionService, ArlasSettingsService, ArlasToolKitModule, ArlasToolkitSharedModule
+import {
+    PermissionService, ArlasSettingsService,
+    ArlasToolKitModule, ArlasToolkitSharedModule
 } from 'arlas-wui-toolkit';
 import { MockPermissionService, MockArlasSettingsService } from '../tools/tools';
 import { CardService } from './card.service';

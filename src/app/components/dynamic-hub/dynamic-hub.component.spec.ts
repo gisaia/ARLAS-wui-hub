@@ -3,14 +3,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import {
-    ArlasToolkitSharedModule, ArlasToolKitModule, ArlasCollaborativesearchService,
-    ErrorModalModule, PermissionService, ArlasSettingsService, PersistenceService
+    ArlasToolkitSharedModule, ArlasToolKitModule,
+    ArlasCollaborativesearchService,
+    PermissionService, ArlasSettingsService, PersistenceService, ErrorService
 } from 'arlas-wui-toolkit';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { DynamicHubComponent } from './dynamic-hub.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MockArlasSettingsService, MockPermissionService } from '../../tools/tools';
+import { MockArlasSettingsService, MockErrorService, MockPermissionService } from '../../tools/tools';
 
 describe('DynamicHubComponent', () => {
     let component: DynamicHubComponent;
@@ -19,14 +20,18 @@ describe('DynamicHubComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DynamicHubComponent],
-            imports: [ArlasToolkitSharedModule, ArlasToolKitModule, ErrorModalModule,
+            imports: [ArlasToolkitSharedModule, ArlasToolKitModule,
                 MatCardModule, MatChipsModule, MatIconModule, MatCheckboxModule,
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
             ],
-            providers: [ArlasCollaborativesearchService, PersistenceService,
+            providers: [ ArlasCollaborativesearchService, PersistenceService,
                 {
                     provide: PermissionService,
                     useClass: MockPermissionService
+                },
+                {
+                    provide: ErrorService,
+                    useClass: MockErrorService
                 },
                 {
                     provide: ArlasSettingsService,

@@ -38,8 +38,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import {
-    ArlasConfigurationUpdaterService, ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
-    ConfigMenuModule, configUpdaterFactory, ErrorModalModule, getOptionsFactory, GET_OPTIONS
+    ArlasConfigurationUpdaterService,
+    ArlasIamService,
+    ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
+    ConfigMenuModule, configUpdaterFactory,
+    getOptionsFactory, GET_OPTIONS, iamServiceFactory
 } from 'arlas-wui-toolkit';
 import {
     ArlasCollaborativesearchService,
@@ -64,6 +67,7 @@ import enComponents from 'arlas-web-components/assets/i18n/en.json';
 import frComponents from 'arlas-web-components/assets/i18n/fr.json';
 import enToolkit from 'arlas-wui-toolkit/assets/i18n/en.json';
 import frToolkit from 'arlas-wui-toolkit/assets/i18n/fr.json';
+import { MatSelectModule } from '@angular/material/select';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init('config.json?' + Date.now());
@@ -124,13 +128,13 @@ export class CustomTranslateLoader implements TranslateLoader {
         MatIconModule,
         MatInputModule,
         MatMenuModule,
+        MatSelectModule,
         MatSidenavModule,
         MatPaginatorModule,
         MatListModule,
         MatTooltipModule,
         HttpClientModule,
         ConfigMenuModule,
-        ErrorModalModule,
         ArlasToolkitSharedModule,
         ReactiveFormsModule,
         FormsModule,
@@ -162,6 +166,12 @@ export class CustomTranslateLoader implements TranslateLoader {
             multi: true
         },
         {
+            provide: 'ArlasIamService',
+            useFactory: iamServiceFactory,
+            deps: [ArlasIamService],
+            multi: true
+        },
+        {
             provide: ArlasConfigurationUpdaterService,
             useClass: ArlasConfigurationUpdaterService
         },
@@ -178,7 +188,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         {
             provide: GET_OPTIONS,
             useFactory: getOptionsFactory,
-            deps: [AuthentificationService]
+            deps: [AuthentificationService, ArlasIamService]
         }
     ],
     bootstrap: [AppComponent]

@@ -20,13 +20,16 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Resource } from 'arlas-permissions-api';
+import { UserOrgData } from 'arlas-iam-api';
 import {
-    ActionModalComponent, ArlasSettingsService, AuthentificationService, ConfigAction,
+    ActionModalComponent, ArlasAuthentificationService, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { filter } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
+import { MatSelectChange } from '@angular/material/select';
+import { ArlasStartupService } from 'arlas-wui-toolkit';
 
 @Component({
     selector: 'arlas-dynamic-hub',
@@ -51,13 +54,34 @@ export class DynamicHubComponent implements OnInit {
 
     public selectedCollection: any[] = [];
 
+    public connected;
+    public isAuthentActivated;
+    public authentMode;
+    public orgs: UserOrgData[] = [];
+    public currentOrga = '';
+
     public constructor(
         private cardService: CardService,
         private dialog: MatDialog,
         private authentService: AuthentificationService,
         private arlasSettingsService: ArlasSettingsService,
         private permissionService: PermissionService,
-        private persistenceService: PersistenceService) { }
+        private persistenceService: PersistenceService,
+        private arlasIamService: ArlasIamService,
+        private startupService: ArlasStartupService
+    ) {
+        const authSettings = this.arlasSettingsService.getAuthentSettings();
+        this.isAuthentActivated = !!authSettings && authSettings.use_authent;
+        const isOpenID = this.isAuthentActivated && authSettings.auth_mode !== 'iam';
+        const isIam = this.isAuthentActivated && authSettings.auth_mode === 'iam';
+        if (isOpenID) {
+            this.authentMode = 'openid';
+        }
+        if (isIam) {
+            this.authentMode = 'iam';
+        }
+
+    }
 
     public ngOnInit(): void {
         this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
@@ -65,25 +89,44 @@ export class DynamicHubComponent implements OnInit {
         });
 
         if (
-            !this.arlasSettingsService.getSettings().authentication ||
-            (!!this.arlasSettingsService.getSettings().authentication
-                && this.arlasSettingsService.getSettings().authentication.force_connect === false)
+            !this.isAuthentActivated
         ) {
             this.fetchCards();
         } else {
-            this.authentService.canActivateProtectedRoutes.subscribe(ready => {
-                if (ready) {
-                    this.fetchCards();
+            if (this.authentMode === 'iam') {
+                this.arlasIamService.tokenRefreshed$.subscribe({
+                    next: (userSubject) => {
+                        if (!!userSubject) {
+                            this.connected = true;
+                            this.orgs = this.arlasIamService.user.organisations.map(org => {
+                                org.displayName = org.name === this.arlasIamService.user.id ?
+                                    this.arlasIamService.user.email.split('@')[0] : org.name;
+                                return org;
+                            });
+                            this.currentOrga = this.arlasIamService.getOrganisation();
+                        } else {
+                            this.connected = false;
+                        }
+                        this.fetchCards();
+                    }
+                });
+            } else {
+                this.authentService.canActivateProtectedRoutes.subscribe(isConnected => {
+                    this.connected = isConnected;
+                    if (isConnected) {
+                        this.fetchCards();
+                    }
+                });
+                if (!!this.authentService.identityClaims) {
+                    this.authentService.loadUserInfo().subscribe(data => {
+                        this.userGroups = data.info['http://arlas.io/roles'].filter(r => r.startsWith('group/'))
+                            .map(r => r.split('/')[r.split('/').length - 1]);
+                    });
                 }
-            });
+            }
         }
 
-        if (!!this.authentService.identityClaims) {
-            this.authentService.loadUserInfo().subscribe(data => {
-                this.userGroups = data.info['http://arlas.io/roles'].filter(r => r.startsWith('group/'))
-                    .map(r => r.split('/')[r.split('/').length - 1]);
-            });
-        }
+
     }
 
     public add() {
@@ -102,26 +145,35 @@ export class DynamicHubComponent implements OnInit {
             .pipe(filter(result => result !== false))
             .subscribe(id => {
                 this.fetchCards();
-                const url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(id);
+                let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(id);
+                if (this.arlasIamService.getOrganisation()) {
+                    url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
+                }
                 const win = window.open(url, '_blank');
                 win.focus();
             });
     }
 
     public import() {
-        const url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+        let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+        if (this.arlasIamService.getOrganisation()) {
+            url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
+        }
         const win = window.open(url, '_blank');
         win.focus();
     }
 
     public fetchCards() {
         this.isLoading = true;
+
+        this.cardCollections.clear();
+        this.cards = [];
         this.cardService.cardList(
             this.pageSize,
-            this.pageNumber + 1
+            this.pageNumber + 1,
+            this.arlasIamService.getOrganisation()
         ).subscribe(
             (result: [number, Card[]]) => {
-                this.cardCollections.clear();
                 this.resultsLength = result[0];
                 this.cards = Array.from(result[1]);
                 this.cards.forEach(c => {
@@ -145,6 +197,7 @@ export class DynamicHubComponent implements OnInit {
                 this.cardsRef = this.cards;
             },
             error => {
+                this.isLoading = false;
                 console.error(error);
             },
             () => {
@@ -187,6 +240,11 @@ export class DynamicHubComponent implements OnInit {
         if (this.selectedCollection.length > 0) {
             this.cards = this.cards.filter(c => this.selectedCollection.includes(c.collection));
         }
+    }
+
+    public changeOrg(event: MatSelectChange) {
+        this.startupService.changeOrgHeader(event.value, this.arlasIamService.getAccessToken());
+        this.fetchCards();
     }
 
 }

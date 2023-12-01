@@ -1,15 +1,23 @@
-
-
 <div *ngIf="useStatic && appReady">
   <arlas-static-hub></arlas-static-hub>
 </div>
 
 <div *ngIf="!useStatic && appReady">
+  <arlas-top-menu [wuiName]="'ARLAS-Hub'">
+    <div left-menu class="top-left-menu">
+      <div class="logo">
+        <img src="assets/hub-icon.png" matTooltip="ARLAS-Hub" />
+      </div>
+    </div>
+    <div right-menu class="title" id="title">
+      <mat-divider vertical class="vertical-divider"></mat-divider>
+    </div>
+  </arlas-top-menu>
   <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #leftSidenav mode="side" class="sidenav" opened>
-      <arlas-left-menu></arlas-left-menu>
+    <mat-sidenav #leftSidenav mode="side" class="sidenav" [class.hide]="!displayMenu" opened>
+      <arlas-left-menu *ngIf="displayMenu"></arlas-left-menu>
     </mat-sidenav>
-    <mat-sidenav-content class="sidenav-content">
+    <mat-sidenav-content class="sidenav-content" [class.full]="!displayMenu">
       <div class="main_content">
         <div style="padding: 20px">
           <router-outlet></router-outlet>
