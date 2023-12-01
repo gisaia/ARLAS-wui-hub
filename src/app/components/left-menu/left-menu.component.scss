@@ -36,24 +36,6 @@ under the License.
         padding: 15px;
     }
 
-    .action-list {
-        .disabled-item {
-            cursor: not-allowed;
-            color: rgba(0, 0, 0, 0.26);
-            button {
-                cursor: not-allowed;
-            }
-        }
-
-        .user_avatar {
-            vertical-align: middle;
-            height: 26px;
-        }
-
-        ::ng-deep .mat-list-item-content {
-            padding: 0 $sm-margin !important;
-        }
-    }
 
     &.hide-label span {
         display: none;

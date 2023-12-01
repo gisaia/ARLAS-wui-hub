@@ -25,6 +25,12 @@ export class MockPermissionService {
     }
 }
 
+export class MockErrorService {
+    public emitUnavailableService(): Observable<any> {
+        return of({});
+    }
+}
+
 export class MockArlasSettingsService {
     public getSettings(): ArlasSettings {
         return {};
