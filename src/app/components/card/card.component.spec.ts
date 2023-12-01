@@ -10,6 +10,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MockPermissionService } from '../../tools/tools';
+import { ArlasColorService } from 'arlas-web-components';
+
 describe('CardComponent', () => {
     let component: CardComponent;
     let fixture: ComponentFixture<CardComponent>;
@@ -21,7 +23,7 @@ describe('CardComponent', () => {
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
 
             ],
-            providers: [ArlasCollaborativesearchService, PersistenceService,
+            providers: [ArlasColorService, ArlasCollaborativesearchService, PersistenceService,
                 {
                     provide: PermissionService,
                     useClass: MockPermissionService

@@ -18,9 +18,9 @@ under the License.
 */
 import { Component, Input, Output, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
-import { ArlasColorService } from 'arlas-web-components';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
+import { ArlasColorService } from 'arlas-web-components';
 
 
 export enum Action {

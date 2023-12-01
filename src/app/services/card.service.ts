@@ -23,8 +23,6 @@ import { Injectable } from '@angular/core';
 import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
 import { ArlasColorService } from 'arlas-web-components';
 
-
-
 export interface Group {
     fullname: string;
     name: string;
