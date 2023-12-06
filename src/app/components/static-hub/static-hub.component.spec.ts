@@ -16,7 +16,8 @@ describe('StaticHubComponent', () => {
             imports: [MatCardModule, ArlasToolKitModule, ArlasToolkitSharedModule,
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
             ],
-            providers: [LoadService]
+            providers: [LoadService],
+            teardown: { destroyAfterEach: false }
         }).compileComponents();
     }));
 

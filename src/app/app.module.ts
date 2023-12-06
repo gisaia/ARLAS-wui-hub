@@ -42,7 +42,7 @@ import {
     ArlasIamService,
     ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
     ConfigMenuModule, configUpdaterFactory,
-    getOptionsFactory, GET_OPTIONS, iamServiceFactory
+    getOptionsFactory, GET_OPTIONS, iamServiceFactory, ArlasSettingsService
 } from 'arlas-wui-toolkit';
 import {
     ArlasCollaborativesearchService,
@@ -188,7 +188,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         {
             provide: GET_OPTIONS,
             useFactory: getOptionsFactory,
-            deps: [AuthentificationService, ArlasIamService]
+            deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
         }
     ],
     bootstrap: [AppComponent]
