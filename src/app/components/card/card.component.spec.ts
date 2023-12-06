@@ -32,7 +32,8 @@ describe('CardComponent', () => {
                     provide: PermissionService,
                     useClass: MockPermissionService
                 },
-            ]
+            ],
+            teardown: { destroyAfterEach: false }
         })
             .compileComponents();
     }));

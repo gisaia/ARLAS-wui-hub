@@ -19,7 +19,8 @@ describe('CardService', () => {
                 {
                     provide: ArlasSettingsService,
                     useClass: MockArlasSettingsService
-                }]
+                }],
+            teardown: { destroyAfterEach: false }
         });
     });
 

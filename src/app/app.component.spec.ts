@@ -11,7 +11,8 @@ describe('AppComponent', () => {
                 AppComponent
             ],
             imports: [MatSidenavModule, ArlasToolKitModule, ArlasToolkitSharedModule],
-            providers: [LoadService, SidenavService]
+            providers: [LoadService, SidenavService],
+            teardown: { destroyAfterEach: false }
         }).compileComponents();
     }));
     it('should create the app', () => {

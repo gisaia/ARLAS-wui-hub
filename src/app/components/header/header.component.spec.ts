@@ -16,6 +16,7 @@ describe('HeaderComponent', () => {
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
 
             ],
+            teardown: { destroyAfterEach: false }
         })
             .compileComponents();
     }));

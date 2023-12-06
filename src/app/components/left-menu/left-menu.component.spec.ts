@@ -19,7 +19,8 @@ describe('LeftMenuComponent', () => {
                 MatSidenavModule,
                 TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
             ],
-            providers: [SidenavService]
+            providers: [SidenavService],
+            teardown: { destroyAfterEach: false }
         })
             .compileComponents();
     }));
