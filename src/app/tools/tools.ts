@@ -23,6 +23,13 @@ export class MockPermissionService {
     public get(): Observable<any> {
         return of({});
     }
+
+    public createPermissionApiInstance(){
+    }
+
+    public setOptions() {
+
+    }
 }
 
 export class MockErrorService {
@@ -42,5 +49,10 @@ export class MockArlasSettingsService {
 
     public getAuthentSettings(): any {
         return {};
+    }
+    public getArlasHubUrl(): string {
+        return '';
+    }
+    public setSettings(): void {
     }
 }

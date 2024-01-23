@@ -24,7 +24,7 @@ under the License.
     min-height: 50px;
     padding: 16px 0;
     overflow: hidden;
-    height: 290px;
+    height: 340px;
 
     @mixin group() {
         color: #666;
@@ -73,6 +73,7 @@ under the License.
     .preview {
         max-width: 280px;
         height: 140px;
+
         .image {
             width: 100%;
             background-color: rgb(211, 211, 211);
@@ -82,6 +83,7 @@ under the License.
             width: 100%;
             height: 100%;
         }
+
         &:hover {
             .highlights {
                 display: block;
@@ -103,11 +105,13 @@ under the License.
             .image {
                 opacity: 0.5;
             }
+
             &:hover {
                 .highlights {
                     height: 140px;
                     background-color: rgba(255, 255, 255, 0.8);
                 }
+
                 .image {
                     opacity: 1;
                 }
@@ -126,6 +130,15 @@ under the License.
 
         ::ng-deep .mat-chip-list-wrapper {
             margin: 0 -4px;
+        }
+
+        .organisation {
+            color: rgba(0, 0, 0, 0.9);
+            font-size: 0.7em;
+            min-height: 24px;
+            padding: 12px 8px;
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.9);
         }
 
         .group {

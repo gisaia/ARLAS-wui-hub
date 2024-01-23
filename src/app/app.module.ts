@@ -68,6 +68,8 @@ import frComponents from 'arlas-web-components/assets/i18n/fr.json';
 import enToolkit from 'arlas-wui-toolkit/assets/i18n/en.json';
 import frToolkit from 'arlas-wui-toolkit/assets/i18n/fr.json';
 import { MatSelectModule } from '@angular/material/select';
+import { HubActionModalComponent } from './components/hub-action-modal/hub-action-modal.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init('config.json?' + Date.now());
@@ -105,11 +107,12 @@ export class CustomTranslateLoader implements TranslateLoader {
 @NgModule({
     declarations: [
         AppComponent,
-        LeftMenuComponent,
-        StaticHubComponent,
+        CardComponent,
         DynamicHubComponent,
         HeaderComponent,
-        CardComponent
+        HubActionModalComponent,
+        LeftMenuComponent,
+        StaticHubComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -133,6 +136,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         MatPaginatorModule,
         MatListModule,
         MatTooltipModule,
+        MatProgressBarModule,
         HttpClientModule,
         ConfigMenuModule,
         ArlasToolkitSharedModule,
