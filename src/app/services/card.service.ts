@@ -16,8 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 */
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
 import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
@@ -41,6 +41,9 @@ export interface Card {
     color: string;
     owner: string;
     preview?: string;
+    previewId?: string;
+    organisation?: string;
+    isPublic?: boolean;
 }
 
 @Injectable({
@@ -48,22 +51,50 @@ export interface Card {
 })
 export class CardService {
 
-    public constructor(private persistenceService: PersistenceService,
+    public constructor(
+        private persistenceService: PersistenceService,
         private colorService: ArlasColorService) {
     }
 
-    public cardList(size: number, page: number, org: string): Observable<[number, Card[]]> {
-        return (this.persistenceService.list('config.json', size, page, 'desc') as Observable<DataResource>)
-            .pipe(map(data => {
-                if (data.data !== undefined) {
-                    return [data.total, data.data.map(d => this.dataWithlinksToCards(d, org))];
+    public cardList(options?: any): Observable<Map<string, Card[]>> {
+        // First call to list to find the total number of dashboards
+        return this.getListObs(1, options)
+            .pipe(mergeMap((one) => {
+                if (one.data !== undefined) {
+                    // Second call to list to retrieve all the  dashboards
+                    return this.getListObs(one.total, options);
                 } else {
-                    return [data.total, []];
+                    return of({});
+                }
+            }), map(data => {
+                if ((data as any).data !== undefined) {
+                    return this.getMapCard((data as DataResource).data);
+                } else {
+                    return new Map();
                 }
             }));
     }
 
-    private dataWithlinksToCards(data: DataWithLinks, org: string): Card {
+    private getListObs(size, options?): Observable<DataResource> {
+        return this.persistenceService.list('config.json', size, 1, 'desc', options);
+    }
+
+    private getMapCard(data: DataWithLinks[]): Map<string, Card[]> {
+        const dataMap = new Map<string, Card[]>();
+        data.map(d => this.dataWithlinksToCard(d)).forEach(c => {
+            const cardsForOrga = dataMap.get(c.organisation);
+            if (!!cardsForOrga) {
+                cardsForOrga.push(c);
+            } else {
+                dataMap.set(c.organisation, []);
+                dataMap.get(c.organisation).push(c);
+            }
+        });
+        return dataMap;
+    }
+
+    private dataWithlinksToCard(data: DataWithLinks): Card {
+        const organisation = (!!data.doc_organization || data.doc_organization !=='')  ? data.doc_organization : 'no_organisation';
         const actions: Array<ConfigAction> = new Array();
         const config: Config = {
             id: data.id,
@@ -73,7 +104,7 @@ export class CardService {
             writers: data.doc_writers,
             lastUpdate: +data.last_update_date,
             zone: data.doc_zone,
-            org: org
+            org: organisation
         };
         actions.push({
             config: config,
@@ -129,7 +160,7 @@ export class CardService {
                 writers.push(writer);
             });
         }
-        return {
+        const card: Card = {
             id: data.id,
             title: data.doc_key,
             readers,
@@ -137,11 +168,16 @@ export class CardService {
             updatable: data.updatable,
             last_update_date: data.last_update_date,
             tabs: this.getTabs(data.doc_value),
+            previewId: this.getPreviewId(data.doc_value),
             collection: this.getCollection(data.doc_value),
             actions: actions,
             color: this.colorService.getColor(this.getCollection(data.doc_value)),
-            owner: data.doc_owner
+            owner: data.doc_owner,
+            organisation: organisation,
+            isPublic: data.ispublic
         };
+
+        return card;
     }
 
     private getTabs(value: string): string[] {
@@ -154,6 +190,16 @@ export class CardService {
             return Array.from(tabs);
         } else {
             return [];
+        }
+    }
+
+    private getPreviewId(value: string): string {
+        const config: any = JSON.parse(value);
+        if (config.resources !== undefined &&
+            config.resources.previewId !== undefined) {
+            return config.resources.previewId;
+        } else {
+            return undefined;
         }
     }
 

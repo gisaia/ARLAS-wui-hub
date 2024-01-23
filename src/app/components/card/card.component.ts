@@ -45,6 +45,8 @@ export class CardComponent implements AfterViewInit, OnInit {
 
     @ViewChild('configMenu', { static: false }) public configMenu: ConfigMenuComponent;
     @Input() public card: Card;
+    @Input() public canCreateDashboard;;
+
     @Input() public userGroups: string[] = [];
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
@@ -70,8 +72,7 @@ export class CardComponent implements AfterViewInit, OnInit {
                 in: this.userGroups.indexOf(g.name) > -1
             }));
 
-            this.status = (this.card.owner === 'anonymous' || this.readers.map(r => r.name).includes('public')
-                || this.writers.map(r => r.name).includes('public')) ? 'public'
+            this.status = this.card.isPublic ? 'public'
                 : (this.readers.length === 0 && this.writers.length === 0) ? 'private'
                     : 'shared';
             this.collectionColor = this.colorService.getColor(this.card.collection);

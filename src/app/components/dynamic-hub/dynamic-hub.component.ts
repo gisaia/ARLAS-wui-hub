@@ -18,18 +18,18 @@ under the License.
 */
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
 import { Resource } from 'arlas-permissions-api';
 import { UserOrgData } from 'arlas-iam-api';
 import {
-    ActionModalComponent, ArlasAuthentificationService, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
+    ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-import { filter } from 'rxjs/operators';
+import { zip } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
-import { MatSelectChange } from '@angular/material/select';
 import { ArlasStartupService } from 'arlas-wui-toolkit';
+import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
 
 @Component({
     selector: 'arlas-dynamic-hub',
@@ -41,12 +41,10 @@ export class DynamicHubComponent implements OnInit {
     @ViewChildren('checkBox') public checkBox: QueryList<any>;
 
     public action = Action;
-    public pageSize = 20;
-    public pageNumber = 0;
     public isLoading = false;
-    public resultsLength = 0;
-    public cards: Card[];
-    public cardsRef: Card[];
+    public cards: Map<string, Card[]>;
+    public cardsRef: Map<string, Card[]>;
+
     public cardCollections: Map<string, { color: string; selected: boolean; }> = new Map<string, { color: string; selected: boolean; }>();
     public canCreateDashboard = false;
 
@@ -67,8 +65,7 @@ export class DynamicHubComponent implements OnInit {
         private arlasSettingsService: ArlasSettingsService,
         private permissionService: PermissionService,
         private persistenceService: PersistenceService,
-        private arlasIamService: ArlasIamService,
-        private startupService: ArlasStartupService
+        private arlasIamService: ArlasIamService
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -80,7 +77,6 @@ export class DynamicHubComponent implements OnInit {
         if (isIam) {
             this.authentMode = 'iam';
         }
-
     }
 
     public ngOnInit(): void {
@@ -107,6 +103,9 @@ export class DynamicHubComponent implements OnInit {
                         } else {
                             this.connected = false;
                         }
+                        this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
+                            this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
+                        });
                         this.fetchCards();
                     }
                 });
@@ -125,74 +124,138 @@ export class DynamicHubComponent implements OnInit {
                 }
             }
         }
-
-
     }
 
     public add() {
-        const action: ConfigAction = {
-            type: ConfigActionEnum.CREATE,
-            config: null
-        };
-        const dialogRef = this.dialog.open(ActionModalComponent, {
-            disableClose: true,
-            data: {
-                name: action.name,
-                type: action.type
-            }
-        });
-        dialogRef.afterClosed()
-            .pipe(filter(result => result !== false))
-            .subscribe(id => {
-                this.fetchCards();
-                let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(id);
-                if (this.arlasIamService.getOrganisation()) {
-                    url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
-                }
-                const win = window.open(url, '_blank');
-                win.focus();
+        if (this.authentMode === 'iam' && this.connected){
+            const iamHeader = {
+                Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
+            };
+            const options = { headers: iamHeader };
+            const action: HubAction = {
+                type: HubActionEnum.CREATE,
+                orgs: this.orgs,
+                options:options
+            };
+            const dialogRef = this.dialog.open(HubActionModalComponent, {
+                disableClose: true,
+                data:action
             });
+            dialogRef.afterClosed()
+                .pipe(filter(result => result !== false))
+                .subscribe(result => {
+                    this.fetchCards();
+                    let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(result[0]);
+                    if (!!result[1]) {
+                        url = url.concat(`?org=${result[1]}`);
+                    }
+                    const win = window.open(url, '_blank');
+                    win.focus();
+                });
+
+        }else{
+            const action: ConfigAction = {
+                type: ConfigActionEnum.CREATE,
+                config: null
+            };
+            const dialogRef = this.dialog.open(ActionModalComponent, {
+                disableClose: true,
+                data: {
+                    type: action.type
+                }
+            });
+            dialogRef.afterClosed()
+                .pipe(filter(result => result !== false))
+                .subscribe(id => {
+                    this.fetchCards();
+                    const url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(id);
+                    const win = window.open(url, '_blank');
+                    win.focus();
+                });
+        }
+
     }
 
     public import() {
-        let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
-        if (this.arlasIamService.getOrganisation()) {
-            url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
+
+        if (this.authentMode === 'iam' && this.connected){
+
+            const action: HubAction = {
+                type: HubActionEnum.IMPORT,
+                orgs: this.orgs,
+            };
+            const dialogRef = this.dialog.open(HubActionModalComponent, {
+                disableClose: true,
+                data:action
+            });
+            dialogRef.afterClosed()
+                .pipe(filter(result => result !== false))
+                .subscribe(result => {
+                    let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+                    if (this.arlasIamService.getOrganisation()) {
+                        url = url.concat(`?org=${result}`);
+                    }
+                    const win = window.open(url, '_blank');
+                    win.focus();
+                });
+        }else{
+            let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+            if (this.arlasIamService.getOrganisation()) {
+                url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
+            }
+            const win = window.open(url, '_blank');
+            win.focus();
         }
-        const win = window.open(url, '_blank');
-        win.focus();
     }
 
     public fetchCards() {
         this.isLoading = true;
-
         this.cardCollections.clear();
-        this.cards = [];
-        this.cardService.cardList(
-            this.pageSize,
-            this.pageNumber + 1,
-            this.arlasIamService.getOrganisation()
-        ).subscribe(
-            (result: [number, Card[]]) => {
-                this.resultsLength = result[0];
-                this.cards = Array.from(result[1]);
-                this.cards.forEach(c => {
-                    c.actions.filter(a => a.type === ConfigActionEnum.VIEW)
-                        .map(a => a.url = this.arlasSettingsService.getArlasWuiUrl());
-                    c.actions.filter(a => a.type === ConfigActionEnum.EDIT)
-                        .map(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
-                    if (!this.cardCollections.has(c.collection)) {
-                        this.cardCollections.set(c.collection, { color: c.color, selected: true });
-                    }
-                    c.preview = 'assets/no_preview.png';
-                    this.persistenceService.existByZoneKey('preview', c.title.concat('_preview')).subscribe(
-                        exist => {
-                            if (exist.exists) {
-                                this.persistenceService.getByZoneKey('preview', c.title.concat('_preview'))
-                                    .subscribe(i => c.preview = i.doc_value);
-                            }
+        this.cards = new Map<string, Card[]>();
+        let getList;
+        if (this.authentMode === 'openid' && this.connected) {
+            // we dont overide persistence header option with openid
+            getList = this.cardService.cardList();
+        } else if (this.authentMode === 'iam' && this.connected) {
+            // we  overide persistence header option with iam and not pass the organisation
+            const iamHeader = {
+                Authorization: 'Bearer ' + this.arlasIamService.getAccessToken(),
+            };
+            getList=this.cardService.cardList({ headers: iamHeader });
+        }else{
+            getList = this.cardService.cardList();
+        }
+        getList.subscribe(
+            (result: Map<string, Card[]>) => {
+                this.cards = result;
+                this.cards.forEach(cs => {
+                    cs.forEach(c => {
+                        c.actions.filter(a => a.type === ConfigActionEnum.VIEW)
+                            .map(a => a.url = this.arlasSettingsService.getArlasWuiUrl());
+                        c.actions.filter(a => a.type === ConfigActionEnum.EDIT)
+                            .map(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
+                        if (!this.cardCollections.has(c.collection)) {
+                            this.cardCollections.set(c.collection, { color: c.color, selected: true });
                         }
-                    );
+                        c.preview = 'assets/no_preview.png';
+                        let options;
+                        if (this.authentMode === 'iam' && this.connected){
+                            const iamHeader = {
+                                Authorization: 'Bearer ' + this.arlasIamService.getAccessToken(),
+                            };
+                            options={ headers: iamHeader };
+                        }
+                        if (!!c.previewId) {
+                            this.persistenceService.exists(c.previewId).subscribe(
+                                exist => {
+                                    if (exist.exists) {
+                                        this.persistenceService.get(c.previewId)
+                                            .subscribe(i => c.preview = i.doc_value);
+                                    }
+                                }
+                            );
+                        }
+                    });
                 });
                 this.cardsRef = this.cards;
             },
@@ -204,12 +267,6 @@ export class DynamicHubComponent implements OnInit {
                 this.isLoading = false;
             }
         );
-    }
-
-    public pageChange(pageEvent: PageEvent) {
-        this.pageNumber = pageEvent.pageIndex;
-        this.pageSize = pageEvent.pageSize;
-        this.fetchCards();
     }
 
     public getCheckbox(state, collectionKey) {
@@ -238,13 +295,11 @@ export class DynamicHubComponent implements OnInit {
         }
         this.cards = this.cardsRef;
         if (this.selectedCollection.length > 0) {
-            this.cards = this.cards.filter(c => this.selectedCollection.includes(c.collection));
+            const filteredMap = new Map<string, Card[]>();
+            this.cards.forEach((values: Card[], key: string) => {
+                filteredMap.set(key, values.filter(c => this.selectedCollection.includes(c.collection)));
+            });
+            this.cards = filteredMap;
         }
     }
-
-    public changeOrg(event: MatSelectChange) {
-        this.startupService.changeOrgHeader(event.value, this.arlasIamService.getAccessToken());
-        this.fetchCards();
-    }
-
 }

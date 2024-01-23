@@ -8,7 +8,7 @@
             {{card?.title}}
         </mat-card-title>
         <mat-card-subtitle class="subtitle">{{ 'Last update' | translate }} : {{card?.last_update_date | date}}</mat-card-subtitle>
-        <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
+        <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'" [canCreateDashboard]="canCreateDashboard"
             [actions]="card?.actions" (actionExecutedEmitter)="afterAction()"></arlas-config-menu>
     </mat-card-header>
 

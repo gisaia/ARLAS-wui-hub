@@ -11,22 +11,25 @@
             {{'Import an Exploration Dashboard' | translate}}
         </button>
     </div>
-    <div class="organisations" *ngIf="connected && orgs.length > 0">
-        <mat-select (selectionChange)="changeOrg($event)" [value]="this.currentOrga">
-            <mat-option *ngFor="let org of orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
-        </mat-select>
-    </div>
 </div>
 <div class="content">
-    <div class="dashboard">
-        <h2>{{'Dashboards' | translate}}</h2>
-        <div class="cards">
-            <arlas-card *ngFor="let card of cards" (actionOnCard)="fetchCards($event)" [card]="card"
-                [userGroups]="userGroups"></arlas-card>
-        </div>
-        <div *ngIf="cards.length === 0 && !isLoading" class="no-card">{{ 'No dashboard available' | translate}}</div>
-    </div>
-    <div class="collection" *ngIf="cards.length > 0">
+    <div class="dashboards">
+
+
+        <div class="dashboard" *ngFor="let data of cards | keyvalue">
+            <h2>{{data.key | translate}}  {{'dashboards' | translate}}</h2>
+            <div class="cards">
+                <arlas-card *ngFor="let card of data.value" (actionOnCard)="fetchCards($event)" [card]="card" [canCreateDashboard]="canCreateDashboard"
+                    [userGroups]="userGroups"></arlas-card> 
+            </div>
+            <div *ngIf="data.value.length === 0 && !isLoading" class="no-card">{{ 'No dashboard available' | translate}}</div>
+        </div>         
+
+    </div>         
+
+
+
+    <div class="collection" *ngIf="cards?.size > 0">
         <h2>{{'Collections' | translate}}</h2>
         <div class="cards">
             <mat-card class="card" [style.borderLeftColor]="col.value.color" style="border-left: 3px solid;"
@@ -39,5 +42,3 @@
         </div>
     </div>
 </div>
-<mat-paginator *ngIf="resultsLength > pageSize" class="paginator" [length]="resultsLength" [pageSize]="this.pageSize"
-    [showFirstLastButtons]=true (page)="pageChange($event)"></mat-paginator>

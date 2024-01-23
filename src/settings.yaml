@@ -2,16 +2,16 @@
 ############   AUTHENTICATION SETTINGS   ###############
 ########################################################
 authentication:
-  use_authent: false
+  use_authent: true
   auth_mode: 'iam'
   force_connect: false
   threshold: 60000
-  url: http://localhost:9997/arlas_iam_server
+  url: https://demo.cloud.staging.arlas.io/arlas/iam
 persistence:
-  url: 'http://localhost:19997/arlas-persistence-server'
+  url: 'https://demo.cloud.staging.arlas.io/arlas/persistence'
 permission:
-  url: 'http://localhost:19996/arlas-permissions-server'
+  url: 'https://demo.cloud.staging.arlas.io/arlas/permissions'
 arlas_wui_url: "http://localhost:4200"
-arlas_builder_url: "http://localhost:4200"
+arlas_builder_url: "https://demo.cloud.staging.arlas.io/arlas/wui/builder"
 links: [ { "icon": "lock", "name": "Google", "url": "http://www.google.com" }, { "icon": "public", "name": "Yahoo", "url": "http://www.yahoo.com" } ]
 tab_name: "ARLAS Wui hub Dev"

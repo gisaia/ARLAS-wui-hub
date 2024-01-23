@@ -40,6 +40,10 @@ h2 {
 }
 .content {
     display: flex;
+    .dashboards{
+        display: flex;
+        flex-direction: column;
+    }
     .dashboard {
         flex: 4;
         .cards {
