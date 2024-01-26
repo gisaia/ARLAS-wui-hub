@@ -24,11 +24,10 @@ import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-import { zip } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
-import { ArlasStartupService } from 'arlas-wui-toolkit';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
 
 @Component({
@@ -56,6 +55,7 @@ export class DynamicHubComponent implements OnInit {
     public isAuthentActivated;
     public authentMode;
     public orgs: UserOrgData[] = [];
+    private orgsSet = new Set<string>();
     public currentOrga = '';
 
     public constructor(
@@ -80,17 +80,16 @@ export class DynamicHubComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+        this.cardCollections.clear();
         this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
             this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
         });
 
-        if (
-            !this.isAuthentActivated
-        ) {
+        if (!this.isAuthentActivated) {
             this.fetchCards();
         } else {
             if (this.authentMode === 'iam') {
-                this.arlasIamService.tokenRefreshed$.subscribe({
+                this.arlasIamService.tokenRefreshed$.pipe().subscribe({
                     next: (userSubject) => {
                         if (!!userSubject) {
                             this.connected = true;
@@ -99,14 +98,16 @@ export class DynamicHubComponent implements OnInit {
                                     this.arlasIamService.user.email.split('@')[0] : org.name;
                                 return org;
                             });
+                            this.orgsSet = new Set(this.orgs.map(o => o.name));
                             this.currentOrga = this.arlasIamService.getOrganisation();
+                            this.fetchCards();
                         } else {
                             this.connected = false;
+                            this.fetchCards();
                         }
-                        this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
+                        this.permissionService.get('persist/resource/').pipe(take(1)).subscribe((resources: Resource[]) => {
                             this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
                         });
-                        this.fetchCards();
                     }
                 });
             } else {
@@ -127,7 +128,7 @@ export class DynamicHubComponent implements OnInit {
     }
 
     public add() {
-        if (this.authentMode === 'iam' && this.connected){
+        if (this.authentMode === 'iam' && this.connected) {
             const iamHeader = {
                 Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
             };
@@ -135,11 +136,11 @@ export class DynamicHubComponent implements OnInit {
             const action: HubAction = {
                 type: HubActionEnum.CREATE,
                 orgs: this.orgs,
-                options:options
+                options: options
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
-                data:action
+                data: action
             });
             dialogRef.afterClosed()
                 .pipe(filter(result => result !== false))
@@ -153,7 +154,7 @@ export class DynamicHubComponent implements OnInit {
                     win.focus();
                 });
 
-        }else{
+        } else {
             const action: ConfigAction = {
                 type: ConfigActionEnum.CREATE,
                 config: null
@@ -178,7 +179,7 @@ export class DynamicHubComponent implements OnInit {
 
     public import() {
 
-        if (this.authentMode === 'iam' && this.connected){
+        if (this.authentMode === 'iam' && this.connected) {
 
             const action: HubAction = {
                 type: HubActionEnum.IMPORT,
@@ -186,7 +187,7 @@ export class DynamicHubComponent implements OnInit {
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
-                data:action
+                data: action
             });
             dialogRef.afterClosed()
                 .pipe(filter(result => result !== false))
@@ -198,7 +199,7 @@ export class DynamicHubComponent implements OnInit {
                     const win = window.open(url, '_blank');
                     win.focus();
                 });
-        }else{
+        } else {
             let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
             if (this.arlasIamService.getOrganisation()) {
                 url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
@@ -208,65 +209,128 @@ export class DynamicHubComponent implements OnInit {
         }
     }
 
-    public fetchCards() {
-        this.isLoading = true;
-        this.cardCollections.clear();
-        this.cards = new Map<string, Card[]>();
-        let getList;
-        if (this.authentMode === 'openid' && this.connected) {
-            // we dont overide persistence header option with openid
-            getList = this.cardService.cardList();
-        } else if (this.authentMode === 'iam' && this.connected) {
-            // we  overide persistence header option with iam and not pass the organisation
+    private fetchCardsByUserOrganisation() {
+        let i = 0;
+        this.orgs.map(o => o.name).forEach(o => {
             const iamHeader = {
                 Authorization: 'Bearer ' + this.arlasIamService.getAccessToken(),
+                'arlas-org-filter': o
             };
-            getList=this.cardService.cardList({ headers: iamHeader });
-        }else{
-            getList = this.cardService.cardList();
-        }
-        getList.subscribe(
-            (result: Map<string, Card[]>) => {
-                this.cards = result;
-                this.cards.forEach(cs => {
-                    cs.forEach(c => {
-                        c.actions.filter(a => a.type === ConfigActionEnum.VIEW)
-                            .map(a => a.url = this.arlasSettingsService.getArlasWuiUrl());
-                        c.actions.filter(a => a.type === ConfigActionEnum.EDIT)
-                            .map(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
-                        if (!this.cardCollections.has(c.collection)) {
-                            this.cardCollections.set(c.collection, { color: c.color, selected: true });
+            const fetchOptions = { headers: iamHeader };
+            this.cardService.cardList(fetchOptions)
+                .pipe(map(cards => this.filterCardsByOrganisation(cards, o, fetchOptions)))
+                .pipe(tap(cards => this.enrichCards(cards, fetchOptions)))
+                .subscribe({
+                    next: (cards) => {
+                        this.cardsRef.set(o, cards);
+                        i++;
+                        this.applyCollectionFilter();
+                        if (i === this.orgs.length) {
+                            this.isLoading = false;
                         }
-                        c.preview = 'assets/no_preview.png';
-                        let options;
-                        if (this.authentMode === 'iam' && this.connected){
-                            const iamHeader = {
-                                Authorization: 'Bearer ' + this.arlasIamService.getAccessToken(),
-                            };
-                            options={ headers: iamHeader };
-                        }
-                        if (!!c.previewId) {
-                            this.persistenceService.exists(c.previewId).subscribe(
-                                exist => {
-                                    if (exist.exists) {
-                                        this.persistenceService.get(c.previewId)
-                                            .subscribe(i => c.preview = i.doc_value);
-                                    }
-                                }
-                            );
-                        }
-                    });
+                    }
                 });
-                this.cardsRef = this.cards;
-            },
-            error => {
-                this.isLoading = false;
-                console.error(error);
-            },
-            () => {
-                this.isLoading = false;
-            }
+        });
+    }
+
+    private fetchAllCards() {
+        this.cardService.cardList()
+            .pipe(tap(cards => this.enrichCards(cards)))
+            .subscribe({
+                next: (cards) => {
+                    this.storeExternalOrganisationsCards(cards);
+                    this.isLoading = false;
+                    this.applyCollectionFilter();
+                }
+            });
+    }
+
+    private filterCardsByOrganisation(cards: Card[], o?: string, fetchOptions?) {
+        this.storeExternalOrganisationsCards(cards.filter(card => card.organisation !== o)
         );
+        return cards.filter(card => card.organisation === o);
+    }
+
+
+    private storeExternalOrganisationsCards(cards: Card[]) {
+        cards.forEach(c => {
+            if (this.orgsSet.has(c.organisation)) {
+                let cardsOfOrga = this.cardsRef.get(c.organisation);
+                if (!cardsOfOrga) {
+                    cardsOfOrga = [];
+                }
+                this.addCard(c, cardsOfOrga);
+                this.cardsRef.set(c.organisation, cardsOfOrga);
+            } else {
+                const publicOrg = 'public';
+                let publicCards = this.cardsRef.get(publicOrg);
+                if (!publicCards) {
+                    publicCards = [];
+                }
+                this.addCard(c, publicCards);
+                this.cardsRef.set(publicOrg, publicCards);
+            }
+        });
+    }
+
+    private addCard(card: Card, cards: Card[]) {
+        const cardsSet = new Set(cards.map(c => c.id));
+        if (!cardsSet.has(card.id)) {
+            cards.push(card);
+        }
+
+    }
+
+    private registerCollection(c: Card) {
+        if (!this.cardCollections.has(c.collection)) {
+            this.cardCollections.set(c.collection, { color: c.color, selected: true });
+        }
+    }
+
+    private enrichCards(cards: Card[], fetchOptions?): Card[] {
+        cards.forEach(c => {
+            /** todo concat org ? */
+            c.actions.filter(a => a.type === ConfigActionEnum.VIEW)
+                .forEach(a => a.url = this.arlasSettingsService.getArlasWuiUrl());
+            c.actions.filter(a => a.type === ConfigActionEnum.EDIT)
+                .forEach(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
+            this.registerCollection(c);
+            c.preview$ = this.getPreview$(c.previewId, fetchOptions);
+        });
+        return cards;
+    }
+
+    private getPreview$(previewId: string, fetchOptions?): Observable<string> {
+        const assetPreview = 'assets/no_preview.png';
+        if (previewId) {
+            return this.persistenceService.get(previewId, fetchOptions)
+                .pipe(map(p => p.doc_value))
+                .pipe(catchError(() => of(assetPreview)));
+        }
+        return of(assetPreview);
+    }
+
+    public fetchCards() {
+        this.isLoading = true;
+        this.cards = new Map<string, Card[]>();
+        this.cardsRef = new Map<string, Card[]>();
+        if (this.authentMode === 'iam' && this.connected) {
+            this.fetchCardsByUserOrganisation();
+        } else {
+            this.fetchAllCards();
+        }
+    }
+
+    public applyCollectionFilter() {
+        if (this.selectedCollection.length > 0) {
+            const filteredMap = new Map<string, Card[]>();
+            this.cardsRef.forEach((values: Card[], key: string) => {
+                filteredMap.set(key, values.filter(c => this.selectedCollection.includes(c.collection)));
+            });
+            this.cards = filteredMap;
+        } else {
+            this.cards = this.cardsRef;
+        }
     }
 
     public getCheckbox(state, collectionKey) {

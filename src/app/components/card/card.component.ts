@@ -45,8 +45,6 @@ export class CardComponent implements AfterViewInit, OnInit {
 
     @ViewChild('configMenu', { static: false }) public configMenu: ConfigMenuComponent;
     @Input() public card: Card;
-    @Input() public canCreateDashboard;;
-
     @Input() public userGroups: string[] = [];
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
@@ -88,8 +86,8 @@ export class CardComponent implements AfterViewInit, OnInit {
         }
     }
 
-    public afterAction() {
-        this.actionOnCard.next({});
+    public afterAction(e) {
+        this.actionOnCard.next(e);
     }
 
     public clickOnAction(action: Action) {

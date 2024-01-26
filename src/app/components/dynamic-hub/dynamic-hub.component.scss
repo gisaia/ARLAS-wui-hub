@@ -25,6 +25,10 @@ h2 {
     font-weight: 400;
 }
 
+.spinner {
+    margin: 5px 0;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -43,9 +47,9 @@ h2 {
     .dashboards{
         display: flex;
         flex-direction: column;
+        flex: 4;
     }
     .dashboard {
-        flex: 4;
         .cards {
             display: flex;
             flex-direction: row;

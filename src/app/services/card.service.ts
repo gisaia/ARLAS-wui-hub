@@ -41,6 +41,7 @@ export interface Card {
     color: string;
     owner: string;
     preview?: string;
+    preview$?: Observable<string>;
     previewId?: string;
     organisation?: string;
     isPublic?: boolean;
@@ -56,7 +57,7 @@ export class CardService {
         private colorService: ArlasColorService) {
     }
 
-    public cardList(options?: any): Observable<Map<string, Card[]>> {
+    public cardList(options?: any): Observable<Card[]> {
         // First call to list to find the total number of dashboards
         return this.getListObs(1, options)
             .pipe(mergeMap((one) => {
@@ -68,9 +69,9 @@ export class CardService {
                 }
             }), map(data => {
                 if ((data as any).data !== undefined) {
-                    return this.getMapCard((data as DataResource).data);
+                    return (data as DataResource).data.map(d => this.dataWithlinksToCard(d));
                 } else {
-                    return new Map();
+                    return [];
                 }
             }));
     }
@@ -125,7 +126,8 @@ export class CardService {
         actions.push({
             config: config,
             type: ConfigActionEnum.DUPLICATE,
-            name: data.doc_key
+            name: data.doc_key,
+            enabled: data.updatable
         });
         actions.push({
             config: config,
