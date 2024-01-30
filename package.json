@@ -67,6 +67,9 @@
   "overrides": {
     "portable-fetch": {
       "node-fetch": "3.3.0"
+    },
+    "angular-oauth2-oidc-jwks": {
+      "jsrsasign": "^11.0.0"
     }
   }
 }
