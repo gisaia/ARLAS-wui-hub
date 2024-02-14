@@ -20,7 +20,7 @@ import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
-import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
+import { Config, ConfigAction, ConfigActionEnum, NO_ORGANISATION, PersistenceService } from 'arlas-wui-toolkit';
 import { ArlasColorService } from 'arlas-web-components';
 
 export interface Group {
@@ -59,11 +59,11 @@ export class CardService {
 
     public cardList(options?: any): Observable<Card[]> {
         // First call to list to find the total number of dashboards
-        return this.getListObs(1, options)
+        return this.getList$(1, options)
             .pipe(mergeMap((one) => {
                 if (one.data !== undefined) {
                     // Second call to list to retrieve all the  dashboards
-                    return this.getListObs(one.total, options);
+                    return this.getList$(one.total, options);
                 } else {
                     return of({});
                 }
@@ -76,7 +76,7 @@ export class CardService {
             }));
     }
 
-    private getListObs(size, options?): Observable<DataResource> {
+    private getList$(size, options?): Observable<DataResource> {
         return this.persistenceService.list('config.json', size, 1, 'desc', options);
     }
 
@@ -95,7 +95,7 @@ export class CardService {
     }
 
     private dataWithlinksToCard(data: DataWithLinks): Card {
-        const organisation = (!!data.doc_organization || data.doc_organization !=='')  ? data.doc_organization : 'no_organisation';
+        const organisation = (!!data.doc_organization || data.doc_organization !=='')  ? data.doc_organization : NO_ORGANISATION;
         const actions: Array<ConfigAction> = new Array();
         const config: Config = {
             id: data.id,

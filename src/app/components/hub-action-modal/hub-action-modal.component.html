@@ -16,7 +16,7 @@
             </mat-select>
         </div>
     </mat-form-field>
-      <span style="color: red; display: block;">{{errorMessage | translate}}</span>
+      <span class="error">{{errorMessage | translate}}</span>
   </div>
   <div mat-dialog-actions>
       <button mat-raised-button class="modal_button" color="primary" (click)="create(value,this.currentOrga)">{{ 'Create' | translate }}</button>
@@ -36,7 +36,7 @@
                 </mat-select>
             </div> 
         </mat-form-field>
-        <span style="color: red; display: block;">{{errorMessage | translate}}</span>
+        <span class="error">{{errorMessage | translate}}</span>
     </div>
     <div mat-dialog-actions>
         <button mat-raised-button class="modal_button" color="primary" (click)="import()">{{ 'Import' | translate }}</button>

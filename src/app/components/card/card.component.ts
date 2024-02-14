@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 */
 import { Component, Input, Output, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
+import { ConfigActionEnum, ConfigMenuComponent, NO_ORGANISATION } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
 import { ArlasColorService } from 'arlas-web-components';
@@ -51,6 +51,7 @@ export class CardComponent implements AfterViewInit, OnInit {
     public action = Action;
     public collectionColor = '#000000';
     public status = 'private';
+    public NO_ORGANISATION = NO_ORGANISATION;
 
     public readers: Array<{ name: string; in: boolean; }> = [];
     public writers: Array<{ name: string; in: boolean; }> = [];
