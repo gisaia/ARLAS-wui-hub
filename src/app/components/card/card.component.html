@@ -30,10 +30,10 @@
         </ng-template>
     </div>
     <div class="groups">
-        <div *ngIf="card.organisation === NO_ORGANISATION">
+        <div *ngIf="card?.organisation === NO_ORGANISATION">
             <div class="section_title">{{ 'Organisation' | translate}}</div>
             <mat-chip-list>
-                <mat-chip class="organisation" >{{card.organisation}}</mat-chip>
+                <mat-chip class="organisation" >{{card?.organisation}}</mat-chip>
             </mat-chip-list>
         </div>
         <div class="readers">
