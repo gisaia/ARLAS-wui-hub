@@ -9,7 +9,7 @@
         </mat-card-title>
         <mat-card-subtitle class="subtitle">{{ 'Last update' | translate }} : {{card?.last_update_date | date}}</mat-card-subtitle>
         <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
-            [actions]="card?.actions" (actionExecutedEmitter)="afterAction()"></arlas-config-menu>
+            [actions]="card?.actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
     </mat-card-header>
 
     <div class="preview" [class.no-preview]="card?.preview === 'assets/no_preview.png'">
@@ -22,9 +22,20 @@
         <div class="highlights" *ngIf="card?.tabs.length === 0">
             <div class="section_title">{{ 'No Highlights' | translate}}</div>
         </div>
-        <img src="{{card?.preview}}" class="image" />
+        <ng-container *ngIf="card?.preview$ | async; let preview; else notPreview">
+            <img src="{{preview}}" class="image" />
+        </ng-container>
+        <ng-template #notPreview>
+            <img src="assets/no_preview.png" class="image" />
+        </ng-template>
     </div>
     <div class="groups">
+        <div *ngIf="card?.organisation === NO_ORGANISATION">
+            <div class="section_title">{{ 'Organisation' | translate}}</div>
+            <mat-chip-list>
+                <mat-chip class="organisation" >{{card?.organisation}}</mat-chip>
+            </mat-chip-list>
+        </div>
         <div class="readers">
             <div class="section_title">{{ 'Readers' | translate}}</div>
             <mat-chip-list>
@@ -39,6 +50,7 @@
                 <mat-chip *ngFor="let writer of writers" class="group" [class.mygroup]="writer.in">{{writer.name}}</mat-chip>
             </mat-chip-list>
         </div>
+        
     </div>
 
 
