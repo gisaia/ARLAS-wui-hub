@@ -19,7 +19,7 @@
       <span class="error">{{errorMessage | translate}}</span>
   </div>
   <div mat-dialog-actions>
-      <button mat-raised-button class="modal_button" color="primary" (click)="create(value,this.currentOrga)">{{ 'Create' | translate }}</button>
+      <button mat-raised-button class="modal_button" [disabled]="!currentOrga" color="primary" (click)="create(value,this.currentOrga)">{{ 'Create' | translate }}</button>
       <button mat-raised-button class="modal_button" [mat-dialog-close]="false">{{ 'Cancel' | translate }}</button>
   </div>
 </div>
@@ -39,7 +39,7 @@
         <span class="error">{{errorMessage | translate}}</span>
     </div>
     <div mat-dialog-actions>
-        <button mat-raised-button class="modal_button" color="primary" (click)="import()">{{ 'Select' | translate }}</button>
+        <button mat-raised-button class="modal_button" [disabled]="!currentOrga" color="primary" (click)="import()">{{ 'Select' | translate }}</button>
         <button mat-raised-button class="modal_button" [mat-dialog-close]="false">{{ 'Cancel' | translate }}</button>
     </div>
   </div>
