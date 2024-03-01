@@ -53,5 +53,7 @@
 	"A configuration with this name exists already, please choose another name": "A dashboard with this name exists already, please choose another name",
 	"Unauthorized to create a dashboard, you need to log in": "Unauthorized to create or update a dashboard, you need to log in",
 	"Missing permissions to create a dashboard": "Missing permissions to create or update a dashboard",
-	"no_organisation":""
+	"no_organisation":"",
+	"Choose an organisation": "Choose an organisation",
+	"Select": "Select"
 }
