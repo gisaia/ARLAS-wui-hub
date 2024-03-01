@@ -22,7 +22,7 @@
         <div class="highlights" *ngIf="card?.tabs.length === 0">
             <div class="section_title">{{ 'No Highlights' | translate}}</div>
         </div>
-        <ng-container *ngIf="card?.preview$ | async; let preview; else notPreview">
+        <ng-container *ngIf="card?.preview$ | async | json_to_preview; let preview; else notPreview">
             <img src="{{preview}}" class="image" />
         </ng-container>
         <ng-template #notPreview>
