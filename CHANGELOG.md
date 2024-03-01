@@ -1,5 +1,13 @@
 # Change Log
 
+## [v25.0.0-beta.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0-beta.3) (2024-03-01)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0-beta.2...v25.0.0-beta.3)
+
+**New stuff:**
+
+- Display the possibility too switch organisations when there are more than 1 only [\#154](https://github.com/gisaia/ARLAS-wui-hub/issues/154)
+
 ## [v25.0.0-beta.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0-beta.2) (2024-02-20)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0-beta.1...v25.0.0-beta.2)
