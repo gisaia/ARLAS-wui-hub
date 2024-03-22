@@ -152,7 +152,6 @@ export class CustomTranslateLoader implements TranslateLoader {
             }
         }),
         OAuthModule.forRoot()
-
     ],
     providers: [
         SidenavService,
