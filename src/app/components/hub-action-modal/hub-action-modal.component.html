@@ -12,7 +12,7 @@
         <mat-label>{{'Organisation' | translate}}</mat-label>
         <div class="organisations" *ngIf="action.orgs?.length > 0">
             <mat-select  [(value)]="this.currentOrga" required>
-                <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
+                <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.display_name}}</mat-option>
             </mat-select>
         </div>
     </mat-form-field>
@@ -32,7 +32,7 @@
             <mat-label>{{'Organisation' | translate}}</mat-label>
             <div class="organisations" *ngIf="action.orgs?.length > 0">
                 <mat-select  [(value)]="this.currentOrga" required>
-                    <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
+                    <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.display_name}}</mat-option>
                 </mat-select>
             </div> 
         </mat-form-field>
