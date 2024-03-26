@@ -94,7 +94,7 @@ export class DynamicHubComponent implements OnInit {
                         if (!!userSubject) {
                             this.connected = true;
                             this.orgs = this.arlasIamService.user.organisations.map(org => {
-                                org.display_name = org.name === this.arlasIamService.user.id ?
+                                org.displayName = org.name === this.arlasIamService.user.id ?
                                     this.arlasIamService.user.email.split('@')[0] : org.name;
                                 return org;
                             });

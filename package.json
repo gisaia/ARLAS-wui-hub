@@ -1,6 +1,6 @@
 {
   "name": "arlas-home",
-  "version": "25.0.0-beta.5",
+  "version": "25.0.0-beta.12",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -31,7 +31,7 @@
     "zone.js": "^0.11.4"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "25.0.0-beta.6",
+    "arlas-wui-toolkit": "25.0.0-beta.16",
     "@ngx-translate/core": "14.0.0"
   },
   "devDependencies": {
