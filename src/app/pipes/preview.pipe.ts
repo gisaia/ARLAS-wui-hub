@@ -16,43 +16,19 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 */
-import { Observable, of } from 'rxjs';
-import { ArlasSettings } from 'arlas-wui-toolkit';
+import { Pipe, PipeTransform } from '@angular/core';
 
-export class MockPermissionService {
-    public get(): Observable<any> {
-        return of({});
-    }
+@Pipe({
+    name: 'json_to_preview'
+})
+export class PreviewPipe implements PipeTransform {
 
-    public createPermissionApiInstance(){
-    }
-
-    public setOptions() {
-
-    }
-}
-
-export class MockErrorService {
-    public emitUnavailableService(): Observable<any> {
-        return of({});
-    }
-}
-
-export class MockArlasSettingsService {
-    public getSettings(): ArlasSettings {
-        return {};
+    public transform(input: string): any {
+        try {
+            return JSON.parse(input)?.img;
+        } catch(err) {
+            return input;
+        }
     }
 
-    public getPersistenceSettings(): any {
-        return {};
-    }
-
-    public getAuthentSettings(): any {
-        return {};
-    }
-    public getArlasHubUrl(): string {
-        return '';
-    }
-    public setSettings(): void {
-    }
 }

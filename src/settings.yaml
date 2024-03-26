@@ -2,15 +2,31 @@
 ############   AUTHENTICATION SETTINGS   ###############
 ########################################################
 authentication:
-  use_authent: false
-  auth_mode: 'iam'
-  force_connect: false
-  threshold: 60000
-  url: http://localhost:9997/arlas_iam_server
+  use_authent: true
+  force_connect: true
+  use_discovery: true
+  auth_mode: openid
+  scope: openid
+  issuer: http://mgoun/auth/realms/arlas
+  client_id: arlasfrontend
+  redirect_uri: http://mgoun/hub/callback
+  silent_refresh_redirect_uri: http://localhost:4200/silent-refresh.html
+  require_https: false
+  response_type: "code"
+  silent_refresh_timeout: 10000
+  timeout_factor: 0.75
+  session_checks_enabled: false
+  clear_hash_after_login: true
+  disable_at_hash_check: false
+  show_debug_information: true
+  login_url: http://mgoun/hub/login
+  logout_url: http://mgoun/auth/realms/arlas/protocol/openid-connect/logout
+  storage: sessionstorage
+  custom_query_params: [{"audience":"http://arlas.io/api/server"}]
 persistence:
-  url: 'http://localhost:19997/arlas-persistence-server'
+  url: 'http://mgoun/arlas_persistence_server'
 permission:
-  url: 'http://localhost:19996/arlas-permissions-server'
+  url: 'http://mgoun/arlas_permissions_server'
 arlas_wui_url: "http://localhost:4200"
 arlas_builder_url: "http://localhost:4200"
 links: [ { "icon": "lock", "name": "Google", "url": "http://www.google.com" }, { "icon": "public", "name": "Yahoo", "url": "http://www.yahoo.com" } ]

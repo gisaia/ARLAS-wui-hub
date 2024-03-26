@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 */
 import { Component, Input, Output, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
+import { ConfigActionEnum, ConfigMenuComponent, NO_ORGANISATION } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
 import { ArlasColorService } from 'arlas-web-components';
@@ -51,6 +51,7 @@ export class CardComponent implements AfterViewInit, OnInit {
     public action = Action;
     public collectionColor = '#000000';
     public status = 'private';
+    public NO_ORGANISATION = NO_ORGANISATION;
 
     public readers: Array<{ name: string; in: boolean; }> = [];
     public writers: Array<{ name: string; in: boolean; }> = [];
@@ -70,8 +71,7 @@ export class CardComponent implements AfterViewInit, OnInit {
                 in: this.userGroups.indexOf(g.name) > -1
             }));
 
-            this.status = (this.card.owner === 'anonymous' || this.readers.map(r => r.name).includes('public')
-                || this.writers.map(r => r.name).includes('public')) ? 'public'
+            this.status = this.card.isPublic ? 'public'
                 : (this.readers.length === 0 && this.writers.length === 0) ? 'private'
                     : 'shared';
             this.collectionColor = this.colorService.getColor(this.card.collection);
@@ -87,8 +87,8 @@ export class CardComponent implements AfterViewInit, OnInit {
         }
     }
 
-    public afterAction() {
-        this.actionOnCard.next({});
+    public afterAction(e) {
+        this.actionOnCard.next(e);
     }
 
     public clickOnAction(action: Action) {
