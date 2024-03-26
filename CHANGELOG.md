@@ -1,5 +1,9 @@
 # Change Log
 
+## [v25.0.0-beta.7](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0-beta.7) (2024-03-26)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0-beta.4...v25.0.0-beta.7)
+
 ## [v25.0.0-beta.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0-beta.4) (2024-03-26)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0-beta.5...v25.0.0-beta.4)
@@ -311,15 +315,15 @@
 
 ## [14.2.1](https://github.com/gisaia/ARLAS-wui-hub/tree/14.2.1) (2021-01-18)
 
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.0...14.2.1)
-
-## [v14.2.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.2.0) (2021-01-18)
-
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.1...v14.2.0)
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.1...14.2.1)
 
 ## [v14.2.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.2.1) (2021-01-18)
 
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.1.2...v14.2.1)
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.2.0...v14.2.1)
+
+## [v14.2.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v14.2.0) (2021-01-18)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v14.1.2...v14.2.0)
 
 **New stuff:**
 
