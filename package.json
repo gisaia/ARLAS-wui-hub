@@ -1,6 +1,6 @@
 {
   "name": "arlas-home",
-  "version": "24.3.1",
+  "version": "25.0.0-beta.12",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -31,7 +31,7 @@
     "zone.js": "^0.11.4"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "~24.3.4",
+    "arlas-wui-toolkit": "25.0.0-rc.2",
     "@ngx-translate/core": "14.0.0"
   },
   "devDependencies": {
@@ -65,11 +65,11 @@
     "typescript": "~4.6.0"
   },
   "overrides": {
-    "portable-fetch": {
-      "node-fetch": "3.3.0"
-    },
     "angular-oauth2-oidc-jwks": {
       "jsrsasign": "^11.0.0"
+    },
+    "@angular-devkit/build-angular": {
+      "webpack-dev-middleware": "~5.3.4"
     }
   }
 }
