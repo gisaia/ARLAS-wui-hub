@@ -3,7 +3,7 @@
 ########################################################
 authentication:
   use_authent: true
-  force_connect: false
+  force_connect: true
   use_discovery: true
   auth_mode: 'iam'
   url: 'http://localhost/arlas_iam_server'
@@ -31,5 +31,5 @@ permission:
   url: 'http://localhost/arlas_permissions_server'
 arlas_wui_url: "http://localhost:4200"
 arlas_builder_url: "http://localhost:4200"
-links: [ { "icon": "lock", "name": "Google", "url": "http://www.google.com" }, { "icon": "public", "name": "Yahoo", "url": "http://www.yahoo.com" } ]
+links: []
 tab_name: "ARLAS Wui hub Dev"
