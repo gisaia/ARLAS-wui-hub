@@ -1,8 +1,22 @@
 # Change Log
 
+## [v25.0.0-rc.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0-rc.2) (2024-05-14)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0-rc.1...v25.0.0-rc.2)
+
 ## [v25.0.0-rc.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0-rc.1) (2024-05-13)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0-beta.12...v25.0.0-rc.1)
+
+**New stuff:**
+
+- Forbid setting the 'write' right to 'public' group [\#167](https://github.com/gisaia/ARLAS-wui-hub/issues/167)
+- Display lists of dashbords by organisation [\#162](https://github.com/gisaia/ARLAS-wui-hub/issues/162)
+
+**Fixed bugs:**
+
+- Filters on the collection are not kept after opening a dashboard [\#172](https://github.com/gisaia/ARLAS-wui-hub/issues/172)
+- ARLAS Builder: it is possible to create a dashboard without selecting an organization [\#166](https://github.com/gisaia/ARLAS-wui-hub/issues/166)
 
 ## [v25.0.0-beta.12](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0-beta.12) (2024-05-02)
 
