@@ -1,41 +1,44 @@
-<mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="spinner"></mat-progress-bar>
-<div class="header">
-    <div>
-        <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="add()"
-            [matTooltip]="'Create a new Exploration Dashboard' | translate">
-            <mat-icon>add</mat-icon>
-            {{'Create a new Exploration Dashboard' | translate}}
-        </button>
-        <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="import()"
-            [matTooltip]="'Import an Exploration Dashboard' | translate">
-            <mat-icon>file_upload</mat-icon>
-            {{'Import an Exploration Dashboard' | translate}}
-        </button>
-    </div>
-</div>
-<div class="content">
-    <div class="dashboards">
-        <div class="dashboard" *ngFor="let data of cards | keyvalue">
-            <h2>{{data.key | titlecase | translate}}  {{'dashboards' | translate}}</h2>
-            <div class="cards">
-                <arlas-card *ngFor="let card of data.value" (actionOnCard)="fetchCards()" [card]="card"
-                    [userGroups]="userGroups"></arlas-card>
-            </div>
-            <div *ngIf="data.value.length === 0 && !isLoading" class="no-card">{{ 'No dashboard available' | translate}}</div>
+<div class="dynamic-hub">
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="dynamic-hub__spinner"></mat-progress-bar>
+    <div class="dynamic-hub__header">
+        <div>
+            <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="add()"
+                [matTooltip]="'Create a new Exploration Dashboard' | translate">
+                <mat-icon>add</mat-icon>
+                {{'Create a new Exploration Dashboard' | translate}}
+            </button>
+            <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="import()"
+                [matTooltip]="'Import an Exploration Dashboard' | translate">
+                <mat-icon>file_upload</mat-icon>
+                {{'Import an Exploration Dashboard' | translate}}
+            </button>
         </div>
     </div>
+    <div class="dynamic-hub__content">
+        <div class="dashboards">
+            <div class="dashboard" *ngFor="let data of cards | keyvalue">
+                <h2>{{data.key | titlecase | translate}} {{'dashboards' | translate}}</h2>
+                <div class="cards">
+                    <arlas-card *ngFor="let card of data.value" (actionOnCard)="fetchCards()" [card]="card"
+                        [userGroups]="userGroups" [publicOrg]="data.key === PUBLIC_ORG"></arlas-card>
+                </div>
+                <div *ngIf="data.value.length === 0 && !isLoading" class="no-card">{{ 'No dashboard available' |
+                    translate}}</div>
+            </div>
+        </div>
 
 
-    <div class="collection" *ngIf="cards?.size > 0">
-        <h2>{{'Collections' | translate}}</h2>
-        <div class="cards">
-            <mat-card class="card" [style.borderLeftColor]="col.value.color" style="border-left: 3px solid;"
-                [class.disabled]="!col.value.selected" (click)="getCheckbox(!col.value.selected, col.key)"
-                *ngFor="let col of cardCollections | keyvalue">
-                <mat-card-header>
-                    {{col.key | translate}}
-                </mat-card-header>
-            </mat-card>
+        <div class="collection" *ngIf="cards?.size > 0">
+            <h2>{{'Collections' | translate}}</h2>
+            <div class="cards">
+                <mat-card class="card" [style.borderLeftColor]="col.value.color" style="border-left: 3px solid;"
+                    [class.disabled]="!col.value.selected" (click)="getCheckbox(!col.value.selected, col.key)"
+                    *ngFor="let col of cardCollections | keyvalue">
+                    <mat-card-header>
+                        {{col.key | translate}}
+                    </mat-card-header>
+                </mat-card>
+            </div>
         </div>
     </div>
 </div>

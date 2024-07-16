@@ -46,6 +46,7 @@ export class CardComponent implements AfterViewInit, OnInit {
     @ViewChild('configMenu', { static: false }) public configMenu: ConfigMenuComponent;
     @Input() public card: Card;
     @Input() public userGroups: string[] = [];
+    @Input() public publicOrg = false;
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
     public action = Action;

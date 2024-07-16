@@ -57,6 +57,7 @@ export class DynamicHubComponent implements OnInit {
     public orgs: UserOrgData[] = [];
     private orgsSet = new Set<string>();
     public currentOrga = '';
+    public PUBLIC_ORG = 'public';
 
     public constructor(
         private cardService: CardService,
@@ -262,7 +263,7 @@ export class DynamicHubComponent implements OnInit {
                 this.addCard(c, cardsOfOrga);
                 this.cardsRef.set(c.organisation, cardsOfOrga);
             } else {
-                const publicOrg = 'public';
+                const publicOrg = this.PUBLIC_ORG;
                 let publicCards = this.cardsRef.get(publicOrg);
                 if (!publicCards) {
                     publicCards = [];
