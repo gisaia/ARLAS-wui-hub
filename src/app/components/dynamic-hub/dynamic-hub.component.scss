@@ -25,67 +25,70 @@ h2 {
     font-weight: 400;
 }
 
-.spinner {
-    margin: 5px 0;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    .organisations {
-        min-width: 200px;
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        padding: 7px 5px;
-        border-radius: 5px;
-        font-weight: 400;
-        font-size: 16px;
-        background-color: white;
+.dynamic-hub {
+    padding: 20px;
+    &__spinner {
+        margin: 5px 0;
     }
-}
-.content {
-    display: flex;
-    .dashboards{
+
+    &__header {
         display: flex;
-        flex-direction: column;
-        flex: 4;
+        justify-content: space-between;
+        .organisations {
+            min-width: 200px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            padding: 7px 5px;
+            border-radius: 5px;
+            font-weight: 400;
+            font-size: 16px;
+            background-color: white;
+        }
     }
-    .dashboard {
-        .cards {
+    &__content {
+        display: flex;
+        .dashboards {
             display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 5px 8px;
+            flex-direction: column;
+            flex: 4;
         }
+        .dashboard {
+            .cards {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 5px 8px;
+            }
 
-        .no-card{
-            background-color: #fafafa;
-            padding: 10px;
-            border: 1px solid rgba(#054ADA, 0.12);
-            color: rgba(0, 0, 0, 0.7);
+            .no-card {
+                background-color: #fafafa;
+                padding: 10px;
+                border: 1px solid rgba(#054ada, 0.12);
+                color: rgba(0, 0, 0, 0.7);
+            }
         }
-    }
-    .collection {
-        flex: 1;
+        .collection {
+            flex: 1;
 
-        .cards {
-            padding-top: 1px;
-            .card {
-                margin: 4px 5px;
-                border-radius: 0px;
-                padding: 8px 15px;
-                cursor: pointer;
+            .cards {
+                padding-top: 1px;
+                .card {
+                    margin: 4px 5px;
+                    border-radius: 0px;
+                    padding: 8px 15px;
+                    cursor: pointer;
 
-                ::ng-deep .mat-card-header-text {
-                    margin: 0;
-                }
+                    ::ng-deep .mat-card-header-text {
+                        margin: 0;
+                    }
 
-                ::ng-deep .mat-checkbox-inner-container {
-                    display: none;
-                }
+                    ::ng-deep .mat-checkbox-inner-container {
+                        display: none;
+                    }
 
-                &.disabled {
-                    border-color: whitesmoke !important;
-                    color: rgba(0, 0, 0, 0.54);
+                    &.disabled {
+                        border-color: whitesmoke !important;
+                        color: rgba(0, 0, 0, 0.54);
+                    }
                 }
             }
         }
