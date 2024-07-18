@@ -25,6 +25,8 @@ authentication:
   logout_url: http://mgoun/auth/realms/arlas/protocol/openid-connect/logout
   storage: sessionstorage
   custom_query_params: [{"audience":"http://arlas.io/api/server"}]
+  sign_up_enabled: true
+
 persistence:
   url: 'http://localhost/arlas_persistence_server'
 permission:
