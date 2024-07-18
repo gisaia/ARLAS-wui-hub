@@ -1,5 +1,13 @@
 # Change Log
 
+## [v25.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.1.0) (2024-07-18)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0...v25.1.0)
+
+**Fixed bugs:**
+
+- Public dashboards don't have the org displayed [\#173](https://github.com/gisaia/ARLAS-wui-hub/issues/173)
+
 ## [v25.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.0.0) (2024-05-15)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0-rc.3...v25.0.0)
