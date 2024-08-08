@@ -8,9 +8,9 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports":true,
-    "resolveJsonModule":true,
-    "target": "es2020",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -19,6 +19,7 @@
       "dom"
     ],
     "module": "es2015",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "useDefineForClassFields": false
   }
 }
