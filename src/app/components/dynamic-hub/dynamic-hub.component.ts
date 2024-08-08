@@ -17,9 +17,9 @@
  * under the License.
  */
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { Resource } from 'arlas-permissions-api';
+import { MatDialog } from '@angular/material/dialog';
 import { UserOrgData } from 'arlas-iam-api';
+import { Resource } from 'arlas-permissions-api';
 import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
@@ -44,16 +44,16 @@ export class DynamicHubComponent implements OnInit {
     public cards: Map<string, Card[]>;
     public cardsRef: Map<string, Card[]>;
 
-    public cardCollections: Map<string, { color: string; selected: boolean; }> = new Map<string, { color: string; selected: boolean; }>();
+    public cardCollections = new Map<string, { color: string; selected: boolean; }>();
     public canCreateDashboard = false;
 
     public userGroups: string[] = [];
 
-    public selectedCollection: any[] = [];
+    public selectedCollection: string[] = [];
 
-    public connected;
-    public isAuthentActivated;
-    public authentMode;
+    public connected = false;
+    public isAuthentActivated: boolean;
+    public authentMode: 'openid' | 'iam';
     public orgs: UserOrgData[] = [];
     private orgsSet = new Set<string>();
     public currentOrga = '';
@@ -179,9 +179,7 @@ export class DynamicHubComponent implements OnInit {
     }
 
     public import() {
-
         if (this.authentMode === 'iam' && this.connected) {
-
             const action: HubAction = {
                 type: HubActionEnum.IMPORT,
                 orgs: this.orgs,
@@ -247,8 +245,7 @@ export class DynamicHubComponent implements OnInit {
     }
 
     private filterCardsByOrganisation(cards: Card[], o?: string, fetchOptions?) {
-        this.storeExternalOrganisationsCards(cards.filter(card => card.organisation !== o)
-        );
+        this.storeExternalOrganisationsCards(cards.filter(card => card.organisation !== o));
         return cards.filter(card => card.organisation === o);
     }
 
@@ -334,7 +331,7 @@ export class DynamicHubComponent implements OnInit {
         }
     }
 
-    public getCheckbox(state, collectionKey) {
+    public getCheckbox(state: boolean, collectionKey: string) {
         if (this.selectedCollection.length === 0) {
             this.cardCollections.forEach(v => v.selected = false);
             this.selectedCollection.push(collectionKey);

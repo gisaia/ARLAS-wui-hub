@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="grid">
-        <mat-card class="grid-card" *ngFor="let card of cards">
+        <mat-card appearance="outlined" class="grid-card" *ngFor="let card of cards">
             <mat-card-header>
                 <mat-card-title>{{card?.title | translate}}</mat-card-title>
                 <mat-card-subtitle>{{card?.subtitle | translate}}</mat-card-subtitle>

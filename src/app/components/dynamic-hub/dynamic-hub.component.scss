@@ -27,23 +27,15 @@ h2 {
 
 .dynamic-hub {
     padding: 20px;
+
     &__spinner {
         margin: 5px 0;
     }
 
     &__header {
-        display: flex;
-        justify-content: space-between;
-        .organisations {
-            min-width: 200px;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            padding: 7px 5px;
-            border-radius: 5px;
-            font-weight: 400;
-            font-size: 16px;
-            background-color: white;
-        }
+        --mdc-outlined-button-label-text-color:
     }
+
     &__content {
         display: flex;
         .dashboards {
@@ -77,10 +69,18 @@ h2 {
                     padding: 8px 15px;
                     cursor: pointer;
 
+                    .mat-mdc-card-header {
+                        padding: 0;
+                    }
+                    /*
+ TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.
+ */
                     ::ng-deep .mat-card-header-text {
                         margin: 0;
                     }
-
+                    /*
+ TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
+ */
                     ::ng-deep .mat-checkbox-inner-container {
                         display: none;
                     }
@@ -97,7 +97,7 @@ h2 {
 
 .add-button {
     margin-right: 10px;
-    color: $primaryColor;
+    --mdc-outlined-button-label-text-color: #e33e6b;
     background-color: white;
 
     &:focus {
