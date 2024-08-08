@@ -1,11 +1,11 @@
-<div *ngIf="action.type=== HubAction.CREATE">
+<div *ngIf="action.type === HubAction.CREATE">
   <h2 mat-dialog-title>{{'Add a new dashboard' | translate}}</h2>
   <div mat-dialog-content class="create-dashboard">
       <mat-form-field class="example-form-field">
           <mat-label>{{'Name' | translate}}</mat-label>
           <input matInput type="text" [(ngModel)]="value" (focus)="errorMessage=''">
           <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-          <mat-icon>close</mat-icon>
+            <mat-icon>close</mat-icon>
           </button>
       </mat-form-field>
       <mat-form-field class="example-form-field">
@@ -24,8 +24,7 @@
   </div>
 </div>
 
-
-<div *ngIf="action.type=== HubAction.IMPORT">
+<div *ngIf="action.type === HubAction.IMPORT">
     <h2 mat-dialog-title>{{'Choose an organisation' | translate}}</h2>
     <div mat-dialog-content>
         <mat-form-field class="example-form-field" >
@@ -34,7 +33,7 @@
                 <mat-select  [(value)]="this.currentOrga" required>
                     <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
                 </mat-select>
-            </div> 
+            </div>
         </mat-form-field>
         <span class="error">{{errorMessage | translate}}</span>
     </div>
@@ -43,4 +42,3 @@
         <button mat-raised-button class="modal_button" [mat-dialog-close]="false">{{ 'Cancel' | translate }}</button>
     </div>
   </div>
-

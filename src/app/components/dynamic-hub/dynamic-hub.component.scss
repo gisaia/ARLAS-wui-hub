@@ -60,6 +60,7 @@ h2 {
             background-color: white;
         }
     }
+
     &__content {
         display: flex;
         gap: 0 10px;
@@ -128,10 +129,18 @@ h2 {
                     cursor: pointer;
                     box-shadow: none;
 
+                    .mat-mdc-card-header {
+                        padding: 0;
+                    }
+                    /*
+ TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.
+ */
                     ::ng-deep .mat-card-header-text {
                         margin: 0;
                     }
-
+                    /*
+ TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
+ */
                     ::ng-deep .mat-checkbox-inner-container {
                         display: none;
                     }

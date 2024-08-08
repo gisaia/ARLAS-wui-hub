@@ -1,5 +1,5 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { StaticHubComponent } from './static-hub.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LoadService } from '../../services/load.service';

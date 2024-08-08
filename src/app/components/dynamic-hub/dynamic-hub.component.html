@@ -36,8 +36,8 @@
                     <arlas-card *ngFor="let card of data.value" (actionOnCard)="fetchCards()" [card]="card"
                         [userGroups]="userGroups" [publicOrg]="data.key === PUBLIC_ORG"></arlas-card>
                 </div>
-                <div *ngIf="data.value.length === 0 && !isLoading" class="no-card">{{ 'No dashboard available' |
-                    translate}}</div>
+                <div *ngIf="data.value.length === 0 && !isLoading" class="no-card">
+                    {{ 'No dashboard available' | translate}}</div>
             </div>
         </div>
 

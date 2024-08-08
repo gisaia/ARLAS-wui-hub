@@ -18,10 +18,10 @@
  */
 
 import { Component, Inject } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { marker } from '@biesbjerg/ngx-translate-extract-marker';
-import { PersistenceService } from 'arlas-wui-toolkit';
 import { UserOrgData } from 'arlas-iam-api';
+import { PersistenceService } from 'arlas-wui-toolkit';
 
 export enum HubActionEnum {
   CREATE,
@@ -46,25 +46,25 @@ export class HubActionModalComponent {
     public HubAction = HubActionEnum;
     public currentOrga: any;
     public errorMessage = '';
+
     public constructor(
-    @Inject(MAT_DIALOG_DATA) data: HubAction,
-    private dialogRef: MatDialogRef<HubActionModalComponent>,
-    private persistenceService: PersistenceService
+        @Inject(MAT_DIALOG_DATA) data: HubAction,
+        private dialogRef: MatDialogRef<HubActionModalComponent>,
+        private persistenceService: PersistenceService
     ) {
         this.action = data;
     }
 
-
-
     public create(name: string, orga: string) {
         this.action.options['headers']['arlas-org-filter'] = orga;
         this.persistenceService.create('config.json', name, '{}', [], [], this.action.options)
-            .subscribe(
-                data => {
+            .subscribe({
+                next: (data) => {
                     this.errorMessage = '';
                     this.dialogRef.close([data.id,orga]);
                 },
-                error => this.raiseError(error));
+                error: (error) => this.raiseError(error)
+            });
     }
 
     public import(){
@@ -94,5 +94,3 @@ export class HubActionModalComponent {
         }
     }
 }
-
-
