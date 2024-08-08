@@ -17,7 +17,7 @@
  * under the License.
  */
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Resource } from 'arlas-permissions-api';
 import { UserOrgData } from 'arlas-iam-api';
 import {
