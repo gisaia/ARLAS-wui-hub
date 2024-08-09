@@ -16,6 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import version from '../../package.json';
 export const environment = {
-    production: true
+    production: true,
+    VERSION: version.version
 };
