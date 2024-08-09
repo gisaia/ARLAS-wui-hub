@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { ArlasSettingsService } from 'arlas-wui-toolkit';
-import { filter } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { environment } from '../environments/environment';
 import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
 
@@ -29,13 +30,16 @@ import { SidenavService } from './services/sidenav.service';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
     public onSideNavChange: boolean;
     public useStatic: boolean;
     public appReady = false;
     public title = 'ARLAS-wui-hub';
     public displayMenu = true;
+    public version: string;
+
+    private _onDestroy$ = new Subject<boolean>();
 
     public constructor(
         private loadService: LoadService,
@@ -51,18 +55,26 @@ export class AppComponent implements OnInit {
         });
     }
     public ngOnInit(): void {
-        // tslint:disable-next-line:no-string-literal
         this.title = this.arlasSettingsService.settings['tab_name'] ?
-            // tslint:disable-next-line:no-string-literal
             this.arlasSettingsService.settings['tab_name'] : 'ARLAS-wui-hub';
         this.titleService.setTitle(this.title);
+        this.version = environment.VERSION;
 
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(
-            (data) => this.displayMenu = (data as NavigationEnd).url !== '/login'
-                && (data as NavigationEnd).url !== '/register'
-                && (data as NavigationEnd).url !== '/password_forgot'
-                && (data as NavigationEnd).url !== '/verify/'
-                && (data as NavigationEnd).url !== '/reset/'
-        );
+        this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationEnd),
+                takeUntil(this._onDestroy$))
+            .subscribe(
+                (data) => this.displayMenu = (data as NavigationEnd).url !== '/login'
+                    && (data as NavigationEnd).url !== '/register'
+                    && (data as NavigationEnd).url !== '/password_forgot'
+                    && (data as NavigationEnd).url !== '/verify/'
+                    && (data as NavigationEnd).url !== '/reset/'
+            );
+    }
+
+    public ngOnDestroy(): void {
+        this._onDestroy$.next(true);
+        this._onDestroy$.complete();
     }
 }

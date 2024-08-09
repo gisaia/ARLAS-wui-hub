@@ -1,7 +1,7 @@
 {
-  "name": "arlas-home",
-  "version": "26.0.3",
-  "license": "MIT",
+  "name": "arlas-hub",
+  "version": "25.1.0",
+  "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

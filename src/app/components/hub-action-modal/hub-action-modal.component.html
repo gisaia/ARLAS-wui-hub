@@ -11,7 +11,7 @@
       <mat-form-field class="example-form-field">
         <mat-label>{{'Organisation' | translate}}</mat-label>
         <div class="organisations" *ngIf="action.orgs?.length > 0">
-            <mat-select  [(value)]="this.currentOrga" required>
+            <mat-select  [(value)]="currentOrga" required>
                 <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
             </mat-select>
         </div>
@@ -19,8 +19,10 @@
       <span class="error">{{errorMessage | translate}}</span>
   </div>
   <div mat-dialog-actions>
-      <button mat-raised-button class="modal_button" [disabled]="!currentOrga" color="primary" (click)="create(value,this.currentOrga)">{{ 'Create' | translate }}</button>
-      <button mat-raised-button class="modal_button" [mat-dialog-close]="false">{{ 'Cancel' | translate }}</button>
+      <button mat-raised-button class="modal_button" [disabled]="!currentOrga" color="primary"
+        (click)="create(value, currentOrga)">{{ 'Create' | translate }}</button>
+      <button mat-raised-button class="modal_button" [mat-dialog-close]="false">
+        {{ 'Cancel' | translate }}</button>
   </div>
 </div>
 
@@ -30,8 +32,9 @@
         <mat-form-field class="example-form-field" >
             <mat-label>{{'Organisation' | translate}}</mat-label>
             <div class="organisations" *ngIf="action.orgs?.length > 0">
-                <mat-select  [(value)]="this.currentOrga" required>
-                    <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
+                <mat-select  [(value)]="currentOrga" required>
+                    <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">
+                        {{org.displayName}}</mat-option>
                 </mat-select>
             </div>
         </mat-form-field>

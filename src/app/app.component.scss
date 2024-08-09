@@ -55,6 +55,11 @@
         width: min($left-menu-width, $top-menu-height);
         margin: 0 calc(($left-menu-width - min($left-menu-width, $top-menu-height)) / 2);
         display: flex;
+
+        a {
+            display: flex;
+        }
+
         img {
             height: calc(min($left-menu-width, $top-menu-height) - 5px);
             width: calc(min($left-menu-width, $top-menu-height) - 5px);

@@ -26,6 +26,7 @@ interface Page {
     disabled?: boolean;
 }
 
+// TODO: to remove ?
 @Component({
     selector: 'arlas-left-menu',
     templateUrl: './left-menu.component.html',
