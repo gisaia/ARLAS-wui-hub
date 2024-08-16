@@ -62,3 +62,8 @@
 .mat-mdc-card-actions {
   float: right;
 }
+
+// Disable click on card chips
+mat-chip-option .mdc-evolution-chip__action {
+  cursor: default;
+}
