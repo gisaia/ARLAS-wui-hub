@@ -32,21 +32,23 @@
         <div *ngIf="!!card.organisation && card.organisation !== NO_ORGANISATION && publicOrg">
             <div class="section_title">{{ 'Organisation' | translate}}</div>
             <mat-chip-listbox>
-                <mat-chip-option class="organisation" >{{card?.organisation}}</mat-chip-option>
+                <mat-chip-option class="organisation" [selectable]="false" [selectable]="false">{{card?.organisation}}</mat-chip-option>
             </mat-chip-listbox>
         </div>
         <div class="readers">
             <div class="section_title">{{ 'Readers' | translate}}</div>
             <mat-chip-listbox>
-                <mat-chip-option *ngIf="card?.readers.length === 0" class="group"> -- </mat-chip-option>
-                <mat-chip-option *ngFor="let reader of readers" class="group" [class.mygroup]="reader.in">{{reader.name}}</mat-chip-option>
+                <mat-chip-option *ngIf="card?.readers.length === 0" class="group" [selectable]="false"> -- </mat-chip-option>
+                <mat-chip-option *ngFor="let reader of readers" class="group" [class.mygroup]="reader.in" [selectable]="false">
+                    {{reader.name}}</mat-chip-option>
             </mat-chip-listbox>
         </div>
         <div class="writers">
             <div class="section_title">{{ 'Writers' | translate}}</div>
             <mat-chip-listbox>
-                <mat-chip-option *ngIf="card?.writers.length === 0" class="group"> -- </mat-chip-option>
-                <mat-chip-option *ngFor="let writer of writers" class="group" [class.mygroup]="writer.in">{{writer.name}}</mat-chip-option>
+                <mat-chip-option *ngIf="card?.writers.length === 0" class="group" [selectable]="false"> -- </mat-chip-option>
+                <mat-chip-option *ngFor="let writer of writers" class="group" [class.mygroup]="writer.in" [selectable]="false">
+                    {{writer.name}}</mat-chip-option>
             </mat-chip-listbox>
         </div>
     </div>
