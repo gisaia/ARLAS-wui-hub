@@ -43,6 +43,7 @@ export class DynamicHubComponent implements OnInit {
     public isLoading = false;
     public cards: Map<string, Card[]>;
     public cardsRef: Map<string, Card[]>;
+    public canCreateDashboardByOrg: Map<string, boolean>;
 
     public cardCollections: Map<string, { color: string; selected: boolean; }> = new Map<string, { color: string; selected: boolean; }>();
     public canCreateDashboard = false;
@@ -82,9 +83,9 @@ export class DynamicHubComponent implements OnInit {
 
     public ngOnInit(): void {
         this.cardCollections.clear();
-        this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
-            this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
-        });
+        // this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
+        //     this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
+        // });
 
         if (!this.isAuthentActivated) {
             this.fetchCards();
@@ -106,9 +107,6 @@ export class DynamicHubComponent implements OnInit {
                             this.connected = false;
                             this.fetchCards();
                         }
-                        this.permissionService.get('persist/resource/').pipe(take(1)).subscribe((resources: Resource[]) => {
-                            this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
-                        });
                     }
                 });
             } else {
@@ -128,21 +126,28 @@ export class DynamicHubComponent implements OnInit {
         }
     }
 
-    public add() {
+    public add(org?: string) {
         if (this.authentMode === 'iam' && this.connected) {
+            const allowedOrganisations = [...this.canCreateDashboardByOrg.entries()].filter(m => !!m[1]).map(m => m[0]);
+
             const iamHeader = {
                 Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
             };
             const options = { headers: iamHeader };
             const action: HubAction = {
                 type: HubActionEnum.CREATE,
-                orgs: this.orgs,
+                orgs: this.orgs.filter(o => allowedOrganisations.includes(o.name)),
                 options: options
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
                 data: action
             });
+
+            if (!!org) {
+                dialogRef.componentInstance.currentOrga = org;
+            }
+
             dialogRef.afterClosed()
                 .pipe(filter(result => result !== false))
                 .subscribe(result => {
@@ -178,18 +183,21 @@ export class DynamicHubComponent implements OnInit {
 
     }
 
-    public import() {
+    public import(org?: string) {
 
         if (this.authentMode === 'iam' && this.connected) {
-
+            const allowedOrganisations = [...this.canCreateDashboardByOrg.entries()].filter(m => !!m[1]).map(m => m[0]);
             const action: HubAction = {
                 type: HubActionEnum.IMPORT,
-                orgs: this.orgs,
+                orgs: this.orgs.filter(o => allowedOrganisations.includes(o.name)),
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
                 data: action
             });
+            if (!!org) {
+                dialogRef.componentInstance.currentOrga = org;
+            }
             dialogRef.afterClosed()
                 .pipe(filter(result => result !== false))
                 .subscribe(result => {
@@ -217,7 +225,15 @@ export class DynamicHubComponent implements OnInit {
                 Authorization: 'Bearer ' + this.arlasIamService.getAccessToken(),
                 'arlas-org-filter': o
             };
+
             const fetchOptions = { headers: iamHeader };
+
+            // Check user rights on each organisation
+            this.permissionService.setOptions(fetchOptions);
+            this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
+                this.canCreateDashboardByOrg.set(o, resources.filter(r => r.verb === 'POST').length > 0);
+            });
+
             this.cardService.cardList(fetchOptions)
                 .pipe(map(cards => this.filterCardsByOrganisation(cards, o, fetchOptions)))
                 .pipe(tap(cards => this.enrichCards(cards, fetchOptions)))
@@ -235,6 +251,9 @@ export class DynamicHubComponent implements OnInit {
     }
 
     private fetchAllCards() {
+        this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
+            this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
+        });
         this.cardService.cardList()
             .pipe(tap(cards => this.enrichCards(cards)))
             .subscribe({
@@ -315,6 +334,7 @@ export class DynamicHubComponent implements OnInit {
         this.isLoading = true;
         this.cards = new Map<string, Card[]>();
         this.cardsRef = new Map<string, Card[]>();
+        this.canCreateDashboardByOrg = new Map<string, boolean>();
         if (this.authentMode === 'iam' && this.connected) {
             this.fetchCardsByUserOrganisation();
         } else {
