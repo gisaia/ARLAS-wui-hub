@@ -44,6 +44,7 @@ export class DynamicHubComponent implements OnInit {
     public cards: Map<string, Card[]>;
     public cardsRef: Map<string, Card[]>;
     public canCreateDashboardByOrg: Map<string, boolean>;
+    public allowedOrganisations: string[] = [];
 
     public cardCollections: Map<string, { color: string; selected: boolean; }> = new Map<string, { color: string; selected: boolean; }>();
     public canCreateDashboard = false;
@@ -125,7 +126,6 @@ export class DynamicHubComponent implements OnInit {
 
     public add(org?: string) {
         if (this.authentMode === 'iam' && this.connected) {
-            const allowedOrganisations = [...this.canCreateDashboardByOrg.entries()].filter(m => !!m[1]).map(m => m[0]);
 
             const iamHeader = {
                 Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
@@ -133,7 +133,7 @@ export class DynamicHubComponent implements OnInit {
             const options = { headers: iamHeader };
             const action: HubAction = {
                 type: HubActionEnum.CREATE,
-                orgs: this.orgs.filter(o => allowedOrganisations.includes(o.name)),
+                orgs: this.orgs.filter(o => this.allowedOrganisations.includes(o.name)),
                 options: options
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
@@ -183,10 +183,9 @@ export class DynamicHubComponent implements OnInit {
     public import(org?: string) {
 
         if (this.authentMode === 'iam' && this.connected) {
-            const allowedOrganisations = [...this.canCreateDashboardByOrg.entries()].filter(m => !!m[1]).map(m => m[0]);
             const action: HubAction = {
                 type: HubActionEnum.IMPORT,
-                orgs: this.orgs.filter(o => allowedOrganisations.includes(o.name)),
+                orgs: this.orgs.filter(o => this.allowedOrganisations.includes(o.name)),
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
@@ -231,6 +230,7 @@ export class DynamicHubComponent implements OnInit {
                 .pipe(
                     mergeMap((resources: Resource[]) => {
                         this.canCreateDashboardByOrg.set(o, resources.filter(r => r.verb === 'POST').length > 0);
+                        this.allowedOrganisations = this.getAllowedOrganisations();
                         return this.cardService.cardList(fetchOptions)
                             .pipe(map(cards => this.filterCardsByOrganisation(cards, o, fetchOptions)))
                             .pipe(tap(cards => this.enrichCards(cards, fetchOptions)));
@@ -238,9 +238,8 @@ export class DynamicHubComponent implements OnInit {
                 )
                 .subscribe({
                     next: (cards) => {
-                        const allowedOrganisations = [...this.canCreateDashboardByOrg.entries()].filter(m => !!m[1]).map(m => m[0]);
                         cards.map(card => card.actions.filter(a => a.type === ConfigActionEnum.EDIT).map(a =>
-                            a.enabled = a.enabled && allowedOrganisations.includes(card.organisation)
+                            a.enabled = a.enabled && this.allowedOrganisations.includes(card.organisation)
                         ));
                         this.cardsRef.set(o, cards);
                         i++;
@@ -389,5 +388,9 @@ export class DynamicHubComponent implements OnInit {
             });
             this.cards = filteredMap;
         }
+    }
+
+    public getAllowedOrganisations(): string[] {
+        return [...this.canCreateDashboardByOrg.entries()].filter(m => !!m[1]).map(m => m[0]);
     }
 }
