@@ -19,7 +19,7 @@
             <div class="dashboard" *ngFor="let data of cards | keyvalue">
                 <h2>
                     <span class="dashboard-title">{{data.key | titlecase | translate}} {{'dashboards' | translate}}</span>
-                    <ng-container *ngIf="!!canCreateDashboardByOrg.get(data.key)">
+                    <ng-container *ngIf="data.key | getValue:canCreateDashboardByOrg">
                         <button class="add-button" mat-stroked-button (click)="add(data.key)"
                             [matTooltip]="'Create a new Exploration Dashboard' | translate">
                             <mat-icon class="add-button--icon">add</mat-icon>

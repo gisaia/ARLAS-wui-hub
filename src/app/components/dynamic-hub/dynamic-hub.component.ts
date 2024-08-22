@@ -25,7 +25,7 @@ import {
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
@@ -83,9 +83,6 @@ export class DynamicHubComponent implements OnInit {
 
     public ngOnInit(): void {
         this.cardCollections.clear();
-        // this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
-        //     this.canCreateDashboard = (resources.filter(r => r.verb === 'POST').length > 0);
-        // });
 
         if (!this.isAuthentActivated) {
             this.fetchCards();
@@ -230,15 +227,21 @@ export class DynamicHubComponent implements OnInit {
 
             // Check user rights on each organisation
             this.permissionService.setOptions(fetchOptions);
-            this.permissionService.get('persist/resource/').subscribe((resources: Resource[]) => {
-                this.canCreateDashboardByOrg.set(o, resources.filter(r => r.verb === 'POST').length > 0);
-            });
-
-            this.cardService.cardList(fetchOptions)
-                .pipe(map(cards => this.filterCardsByOrganisation(cards, o, fetchOptions)))
-                .pipe(tap(cards => this.enrichCards(cards, fetchOptions)))
+            this.permissionService.get('persist/resource/')
+                .pipe(
+                    mergeMap((resources: Resource[]) => {
+                        this.canCreateDashboardByOrg.set(o, resources.filter(r => r.verb === 'POST').length > 0);
+                        return this.cardService.cardList(fetchOptions)
+                            .pipe(map(cards => this.filterCardsByOrganisation(cards, o, fetchOptions)))
+                            .pipe(tap(cards => this.enrichCards(cards, fetchOptions)));
+                    })
+                )
                 .subscribe({
                     next: (cards) => {
+                        const allowedOrganisations = [...this.canCreateDashboardByOrg.entries()].filter(m => !!m[1]).map(m => m[0]);
+                        cards.map(card => card.actions.filter(a => a.type === ConfigActionEnum.EDIT).map(a =>
+                            a.enabled = a.enabled && allowedOrganisations.includes(card.organisation)
+                        ));
                         this.cardsRef.set(o, cards);
                         i++;
                         this.applyCollectionFilter();
