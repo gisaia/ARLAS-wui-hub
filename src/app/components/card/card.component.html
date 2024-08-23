@@ -1,4 +1,4 @@
-<mat-card class="card" [style.borderTopColor]="card?.color" style="border-top: 3px solid;">
+<mat-card class="card" [class.public]="publicOrg" [style.borderTopColor]="card?.color" style="border-top: 3px solid;">
     <mat-card-header class="header">
 
         <mat-icon mat-card-avatar matTooltip="{{'Private' | translate}}" *ngIf="this.status === 'private'" >lock</mat-icon>

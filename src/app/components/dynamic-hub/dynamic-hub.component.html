@@ -1,13 +1,13 @@
 <div class="dynamic-hub">
     <mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="dynamic-hub__spinner"></mat-progress-bar>
-    <div class="dynamic-hub__header">
+    <div *ngIf="canCreateDashboard" class="dynamic-hub__header">
         <div>
-            <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="add()"
+            <button class="add-button" mat-stroked-button (click)="add()"
                 [matTooltip]="'Create a new Exploration Dashboard' | translate">
                 <mat-icon>add</mat-icon>
                 {{'Create a new Exploration Dashboard' | translate}}
             </button>
-            <button *ngIf="canCreateDashboard" class="add-button" mat-stroked-button (click)="import()"
+            <button class="add-button" mat-stroked-button (click)="import()"
                 [matTooltip]="'Import an Exploration Dashboard' | translate">
                 <mat-icon>file_upload</mat-icon>
                 {{'Import an Exploration Dashboard' | translate}}
@@ -17,7 +17,19 @@
     <div class="dynamic-hub__content">
         <div class="dashboards">
             <div class="dashboard" *ngFor="let data of cards | keyvalue">
-                <h2>{{data.key | titlecase | translate}} {{'dashboards' | translate}}</h2>
+                <h2>
+                    <span class="dashboard-title">{{data.key | titlecase | translate}} {{'dashboards' | translate}}</span>
+                    <ng-container *ngIf="data.key | getValue:canCreateDashboardByOrg">
+                        <button class="add-button" mat-stroked-button (click)="add(data.key)"
+                            [matTooltip]="'Create a new Exploration Dashboard' | translate">
+                            <mat-icon class="add-button--icon">add</mat-icon>
+                        </button>
+                        <button class="add-button" mat-stroked-button (click)="import(data.key)"
+                            [matTooltip]="'Import an Exploration Dashboard' | translate">
+                            <mat-icon class="add-button--icon">file_upload</mat-icon>
+                        </button>
+                    </ng-container>
+                </h2>
                 <div class="cards">
                     <arlas-card *ngFor="let card of data.value" (actionOnCard)="fetchCards()" [card]="card"
                         [userGroups]="userGroups" [publicOrg]="data.key === PUBLIC_ORG"></arlas-card>

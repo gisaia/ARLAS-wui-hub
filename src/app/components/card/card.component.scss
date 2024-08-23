@@ -24,13 +24,18 @@
     min-height: 50px;
     padding: 16px 0;
     overflow: hidden;
-    height: 340px;
+    height: 290px;
+    box-shadow: none;
+
+    &.public {
+        height: 340px;
+    }
 
     @mixin group() {
         color: #666;
-        font-size: 0.7em;
-        min-height: 24px;
-        padding: 12px 8px;
+        font-size: 0.65em;
+        min-height: 20px;
+        padding: 10px 8px;
     }
 
     .header {
@@ -53,6 +58,7 @@
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+            font-size: 18px;
         }
 
         ::ng-deep .mat-card-title:hover {
@@ -60,8 +66,7 @@
         }
 
         .subtitle {
-            font-variant: small-caps;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
         }
 
         .config-menu {
