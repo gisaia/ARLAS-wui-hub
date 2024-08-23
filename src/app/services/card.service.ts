@@ -77,7 +77,7 @@ export class CardService {
     }
 
     private getList$(size, options?): Observable<DataResource> {
-        return this.persistenceService.list('config.json', size, 1, 'desc', options);
+        return this.persistenceService.list('config.json', size, 1, 'desc', undefined, options);
     }
 
     private getMapCard(data: DataWithLinks[]): Map<string, Card[]> {
