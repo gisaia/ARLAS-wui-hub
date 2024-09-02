@@ -1,5 +1,13 @@
 # Change Log
 
+## [v26.0.0-rc.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.0.0-rc.1) (2024-09-02)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.1.0...v26.0.0-rc.1)
+
+**Fixed bugs:**
+
+- ARLAS Hub hides "create dashboard" when user is an organisation \(with builder rights\) and belongs as a simple user of a second organization [\#181](https://github.com/gisaia/ARLAS-wui-hub/issues/181)
+
 ## [v25.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v25.1.0) (2024-07-18)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v25.0.0...v25.1.0)
