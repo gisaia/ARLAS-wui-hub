@@ -16,163 +16,160 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+
+@import "variables";
+
+:host {
+    flex: 1 1 auto;
+    display: block;
+    max-width: 384px;
+    min-width: 200px;
+}
+
 .card {
-    max-width: 280px;
-    min-width: 280px;
-    border-radius: 0px;
+
+    border-radius: 4px;
     color: black;
     min-height: 50px;
-    padding: 16px 0;
+    padding: 0;
     overflow: hidden;
-    height: 290px;
-    box-shadow: none;
-
-    &.public {
-        height: 340px;
+    height: 100%;
+    &_config-menu{
+        position: absolute;
     }
 
-    @mixin group() {
-        color: #666;
-        font-size: 0.65em;
-        min-height: 20px;
-        padding: 10px 8px;
+    &_preview {
+        max-width: 100%;
+        height: 150px;
+        position: relative;
     }
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 10px;
+    &_meta{
+        padding: 6px;
+    }
 
-        ::ng-deep .mat-card-header-text {
-            margin: 0;
-            width: 175px;
-        }
+    &_right{
+        margin-top: 4px;
+    }
+}
 
-        .mat-card-avatar {
-            font-size: 28px;
-        }
+.group {
+    color: #6D6565;
+    background: #F1F1F1;
+    min-height: 24px;
+    padding: 12px 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    .mat-icon {
+        height: $group-icon-size;
+        width: $group-icon-size;
+        font-size: $group-icon-size;
+    }
 
-        ::ng-deep .mat-card-title {
-            font-weight: 400;
+
+    &--mine {
+        font-weight: bold;
+    }
+}
+
+.preview {
+    &_holder {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        &:hover{
             cursor: pointer;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            font-size: 18px;
-        }
-
-        ::ng-deep .mat-card-title:hover {
-            text-decoration: underline;
-        }
-
-        .subtitle {
-            font-size: 0.65rem;
-        }
-
-        .config-menu {
-            margin-top: -8px;
-            margin-right: -8px;
+            background: rgba(96, 96, 96, 0.55);
+            transition: background-color 300ms ease;
         }
     }
-
-    .preview {
-        max-width: 280px;
-        height: 140px;
-
-        .image {
-            width: 100%;
-            background-color: rgb(211, 211, 211);
-            object-fit: cover;
-            max-width: 100%;
-            max-height: 100%;
-            width: 100%;
-            height: 100%;
-        }
-
-        &:hover {
-            .highlights {
-                display: block;
-                position: absolute;
-                padding: 5px 10px;
-                height: 140px;
-                width: 260px;
-                background-color: rgba(255, 255, 255, 0.55);
-                overflow: hidden;
-
-                .highlight {
-                    font-style: italic;
-                    font-size: 0.8em;
-                }
-            }
-        }
-
-        &.no-preview {
-            .image {
-                opacity: 0.5;
-            }
-
-            &:hover {
-                .highlights {
-                    height: 140px;
-                    background-color: rgba(255, 255, 255, 0.8);
-                }
-
-                .image {
-                    opacity: 1;
-                }
-            }
-        }
+    &_image {
+        width: 100%;
+        background-color: rgb(211, 211, 211);
+        object-fit: cover;
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
     }
 
-    .section_title {
-        font-variant: small-caps;
+    &_info {
+        display: flex;
+        position: absolute;
+        top: $sm-margin;
+        left: $sm-margin;
+        height: 20px;
+        gap: 6px;
+        z-index: 1;
+    }
+}
+
+.meta {
+    &_title {
+        font-weight: 400;
+        font-size: 20px;
+    }
+    &_subtitle {
+        font-size: .75rem;
+        font-style: italic;
     }
 
-    .groups {
-        margin-bottom: 5px;
-        /*border-bottom: 1px solid #999;*/
-        padding: 5px 10px 0;
-
-        ::ng-deep .mat-chip-list-wrapper {
-            margin: 0 -4px;
-        }
-
-        .organisation {
-            color: rgba(0, 0, 0, 0.9);
-            font-size: 0.7em;
-            min-height: 24px;
-            padding: 12px 8px;
-            background-color: white;
-            border: 1px solid rgba(0, 0, 0, 0.9);
-        }
-
-        .group {
-            @include group();
-
-            &.mygroup {
-                background-color: #959595;
-                color: white;
-            }
-        }
-    }
-
-    .highlights {
-        display: none;
-    }
-
-    .footer {
+    &_title-container {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        padding: 0 5px 1px 0;
-        right: 0;
+        justify-content: space-between;
+    }
+}
 
-        .date {
-            font-size: 0.75em;
-            color: rgba(0, 0, 0, 0.55);
-        }
+.info_item {
+    background: #F0F0F0;
+    padding: 4px;
+    height: 20px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.organisation {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 200px;
+
+    & mat-icon {
+        flex: 1 0 auto;
+    }
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+
+/* Medium devices such as tablets (768px and up)*/
+@media only screen and (min-width: 768px) {
+    .card {
+        max-width: 350px;
+        min-width: 350px;
+    }
+}
+
+/* Large devices such as laptops (1024px and up)*/
+@media only screen and (min-width: 1024px) {
+    .card {
+        max-width: 364px;
+        min-width: 364px;
+    }
+}
+
+/* Largest devices such as desktops (1280px and up)*/
+@media only screen and (min-width: 1280px) {
+    .card {
+        max-width: 384px;
+        min-width: 384px;
     }
 }
