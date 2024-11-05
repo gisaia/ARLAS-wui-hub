@@ -47,7 +47,7 @@
                     [class.disabled]="!col.value.selected" (click)="getCheckbox(!col.value.selected, col.key)"
                     *ngFor="let col of cardCollections | keyvalue">
                     <mat-card-header>
-                        {{col.key | translate}}
+                        {{col.key | getCollectionDisplayName | translate}}
                     </mat-card-header>
                 </mat-card>
             </div>
