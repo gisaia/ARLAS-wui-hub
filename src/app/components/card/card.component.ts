@@ -57,7 +57,7 @@ export class CardComponent implements AfterViewInit, OnInit {
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
     public action = Action;
-    public status:DashboardStatus = 'private';
+    public status: DashboardStatus = 'private';
     public NO_ORGANISATION = NO_ORGANISATION;
     public readonly NO_PREVIEW_ASSET = 'assets/no_preview.png';
 

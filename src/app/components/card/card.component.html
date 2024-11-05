@@ -31,18 +31,18 @@
         <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {variable1: card?.last_update_date | date} }}</mat-card-subtitle>
 
         <mat-chip-list class="card_right">
-            <mat-chip *ngIf="rights.length === 0" class="group"> -- </mat-chip>
+            <mat-chip *ngIf="rights.length === 0" class="group text-ellipsis"> -- </mat-chip>
             <ng-container *ngFor="let r of rights" >
                 <mat-chip
                     *ngIf="r.right ==='Editor'"
                     matTooltip="{{'Right to read' | translate}}"
                     [matTooltipPosition]="'above'"  class="group" [class.group--mine]="r.in">
-                    <mat-icon>edit</mat-icon> {{r.name}}
+                    <mat-icon>edit</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
                 </mat-chip>
                 <mat-chip *ngIf="r.right ==='Viewer'"
                           matTooltip="{{'Right to write' | translate}}" [matTooltipPosition]="'above'"
                           class="group" [class.group--mine]="r.in">
-                    <mat-icon>visibility</mat-icon> {{r.name}}
+                    <mat-icon>visibility</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
                 </mat-chip>
             </ng-container>
         </mat-chip-list>

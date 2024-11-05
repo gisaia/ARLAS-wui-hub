@@ -23,8 +23,9 @@
 :host {
     flex: 1 1 auto;
     display: block;
-    max-width: 384px;
-    min-width: 200px;
+    max-width: 484px;
+    min-width: 240px;
+    width: 100%;
 }
 
 .card {
@@ -35,6 +36,7 @@
     padding: 0;
     overflow: hidden;
     height: 100%;
+    width: 100%;
     &_config-menu{
         position: absolute;
     }
@@ -62,10 +64,12 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    .mat-icon {
+    max-width: 150px;
+        .mat-icon {
         height: $group-icon-size;
         width: $group-icon-size;
         font-size: $group-icon-size;
+            flex: 1 0 auto;
     }
 
 
@@ -150,26 +154,3 @@
 }
 
 
-/* Medium devices such as tablets (768px and up)*/
-@media only screen and (min-width: 768px) {
-    .card {
-        max-width: 350px;
-        min-width: 350px;
-    }
-}
-
-/* Large devices such as laptops (1024px and up)*/
-@media only screen and (min-width: 1024px) {
-    .card {
-        max-width: 364px;
-        min-width: 364px;
-    }
-}
-
-/* Largest devices such as desktops (1280px and up)*/
-@media only screen and (min-width: 1280px) {
-    .card {
-        max-width: 384px;
-        min-width: 384px;
-    }
-}
