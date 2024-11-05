@@ -38,8 +38,10 @@ export interface CardAction {
 export interface CardRights {
     name: string;
     in: boolean;
-    right: 'reader' | 'writer';
+    right: 'Editor' | 'Viewer';
 }
+
+export type DashboardStatus = 'private' | 'shared' | 'public';
 
 @Component({
     selector: 'arlas-card',
@@ -55,8 +57,9 @@ export class CardComponent implements AfterViewInit, OnInit {
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
     public action = Action;
-    public status = 'private';
+    public status:DashboardStatus = 'private';
     public NO_ORGANISATION = NO_ORGANISATION;
+    public readonly NO_PREVIEW_ASSET = 'assets/no_preview.png';
 
     public rights: Array<CardRights> = [];
 
@@ -71,19 +74,25 @@ export class CardComponent implements AfterViewInit, OnInit {
     }
 
     public initDashboardWright() {
-        const writers: CardRights[] = this.card.writers.map(g => ({
-            name: g.name,
-            in: this.userGroups.indexOf(g.name) > -1,
-            right: 'writer'
-        }));
-
-        const readers: CardRights[] = this.card.readers
-            .filter(g => !writers.find(w => w.name === g.name))
-            .map(g => ({
+        let  writers: CardRights[] = [];
+        if(this.card && this.card.writers) {
+            writers = this.card.writers.map(g => ({
                 name: g.name,
                 in: this.userGroups.indexOf(g.name) > -1,
-                right: 'reader'
+                right: 'Editor'
             }));
+        }
+
+        let readers: CardRights[] = [];
+        if(this.card && this.card.readers) {
+            readers = this.card.readers
+                .filter(g => !writers.find(w => w.name === g.name))
+                .map(g => ({
+                    name: g.name,
+                    in: this.userGroups.indexOf(g.name) > -1,
+                    right: 'Viewer'
+                }));
+        }
 
         this.rights = [...writers, ...readers];
     }
@@ -95,7 +104,7 @@ export class CardComponent implements AfterViewInit, OnInit {
     public ngAfterViewInit() {
         if (!!this.card) {
             const c = Object.assign(this.card.actions);
-            this.card.actions = new Array();
+            this.card.actions = [];
             this.card.actions = c;
         }
     }
