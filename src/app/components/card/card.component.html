@@ -24,23 +24,23 @@
     </div>
     <mat-card-content class="card_meta">
         <div class="meta_title-container">
-            <div class="meta_title text-ellipsis" [matTooltip]="'View' | translate:{value1: (card?.title| translate)}" [matTooltipPosition]="'above'"> {{card?.title | translate}}</div>
+            <div class="meta_title text-ellipsis" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}" [matTooltipPosition]="'above'"> {{card?.title | translate}}</div>
             <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
                                [actions]="card?.actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
         </div>
-        <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {variable1: card?.last_update_date | date} }}</mat-card-subtitle>
+        <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {date: card?.last_update_date | date} }}</mat-card-subtitle>
 
         <mat-chip-list class="card_right">
             <mat-chip *ngIf="rights.length === 0" class="group text-ellipsis"> -- </mat-chip>
             <ng-container *ngFor="let r of rights" >
                 <mat-chip
                     *ngIf="r.right ==='Editor'"
-                    matTooltip="{{'Right to read' | translate}}"
+                    matTooltip="{{'Editor' | translate}}"
                     [matTooltipPosition]="'above'"  class="group" [class.group--mine]="r.in">
                     <mat-icon>edit</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
                 </mat-chip>
                 <mat-chip *ngIf="r.right ==='Viewer'"
-                          matTooltip="{{'Right to write' | translate}}" [matTooltipPosition]="'above'"
+                          matTooltip="{{'Viewer' | translate}}" [matTooltipPosition]="'above'"
                           class="group" [class.group--mine]="r.in">
                     <mat-icon>visibility</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
                 </mat-chip>
