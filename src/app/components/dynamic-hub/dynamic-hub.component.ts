@@ -29,6 +29,7 @@ import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
+import { KeyValue } from '@angular/common';
 
 @Component({
     selector: 'arlas-dynamic-hub',
@@ -213,6 +214,16 @@ export class DynamicHubComponent implements OnInit {
             win.focus();
         }
     }
+
+    public publicAtTheEnd = (a: KeyValue<string, Card[]>, b: KeyValue<string, Card[]>): number => {
+        if (a.key !== this.PUBLIC_ORG && b.key === this.PUBLIC_ORG ) {
+            return -1;
+        }
+        if (a.key === this.PUBLIC_ORG && b.key !== this.PUBLIC_ORG) {
+            return 1;
+        }
+        return a.key > b.key ? 1 : (b.key > a.key ? -1 : 0);
+    };
 
     private fetchCardsByUserOrganisation() {
         let i = 0;
