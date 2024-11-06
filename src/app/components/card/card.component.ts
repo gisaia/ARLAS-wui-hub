@@ -16,11 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component, Input, Output, AfterViewInit, ViewChild, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ConfigActionEnum, ConfigMenuComponent, NO_ORGANISATION } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
-import { ArlasColorService } from 'arlas-web-components';
 
 
 export enum Action {
@@ -36,6 +35,14 @@ export interface CardAction {
     action?: Action;
 }
 
+export interface CardRights {
+    name: string;
+    in: boolean;
+    right: 'Editor' | 'Viewer';
+}
+
+export type DashboardStatus = 'private' | 'shared' | 'public';
+
 @Component({
     selector: 'arlas-card',
     templateUrl: './card.component.html',
@@ -43,47 +50,61 @@ export interface CardAction {
 })
 export class CardComponent implements AfterViewInit, OnInit {
 
-    @ViewChild('configMenu', { static: false }) public configMenu: ConfigMenuComponent;
+    @ViewChild('configMenu', {static: false}) public configMenu: ConfigMenuComponent;
     @Input() public card: Card;
     @Input() public userGroups: string[] = [];
     @Input() public publicOrg = false;
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
     public action = Action;
-    public collectionColor = '#000000';
-    public status = 'private';
+    public status: DashboardStatus = 'private';
     public NO_ORGANISATION = NO_ORGANISATION;
+    public readonly NO_PREVIEW_ASSET = 'assets/no_preview.png';
 
-    public readers: Array<{ name: string; in: boolean; }> = [];
-    public writers: Array<{ name: string; in: boolean; }> = [];
+    public rights: Array<CardRights> = [];
 
-    public constructor(
-        private colorService: ArlasColorService
-    ) {
+    public constructor() {
     }
-    public ngOnInit(): void {
-        if (!!this.card) {
-            this.readers = this.card.readers.map(g => ({
-                name: g.name,
-                in: this.userGroups.indexOf(g.name) > -1
-            }));
-            this.writers = this.card.writers.map(g => ({
-                name: g.name,
-                in: this.userGroups.indexOf(g.name) > -1
-            }));
 
-            this.status = this.card.isPublic ? 'public'
-                : (this.readers.length === 0 && this.writers.length === 0) ? 'private'
-                    : 'shared';
-            this.collectionColor = this.colorService.getColor(this.card.collection);
+    public ngOnInit(): void {
+        if (Boolean(this.card)) {
+            this.initDashboardWright();
+            this.initDashboardVisibility();
+        }
+    }
+
+    public initDashboardWright() {
+        let  writers: CardRights[] = [];
+        if(this.card && this.card.writers) {
+            writers = this.card.writers.map(g => ({
+                name: g.name,
+                in: this.userGroups.indexOf(g.name) > -1,
+                right: 'Editor'
+            }));
         }
 
+        let readers: CardRights[] = [];
+        if(this.card && this.card.readers) {
+            readers = this.card.readers
+                .filter(g => !writers.find(w => w.name === g.name))
+                .map(g => ({
+                    name: g.name,
+                    in: this.userGroups.indexOf(g.name) > -1,
+                    right: 'Viewer'
+                }));
+        }
+
+        this.rights = [...writers, ...readers];
+    }
+
+    public initDashboardVisibility() {
+        this.status = this.card.isPublic ? 'public' : (this.rights.length === 0) ? 'private' : 'shared';
     }
 
     public ngAfterViewInit() {
         if (!!this.card) {
             const c = Object.assign(this.card.actions);
-            this.card.actions = new Array();
+            this.card.actions = [];
             this.card.actions = c;
         }
     }

@@ -62,9 +62,7 @@ h2 {
                 min-width: 265px;
             }
             .cards {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
+                display: grid;
                 gap: 5px 8px;
             }
 
@@ -131,4 +129,38 @@ h2 {
 
 .paginator {
     background-color: #fafafa;
+}
+
+@media only screen and (min-width: 600px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Medium devices such as tablets (768px and up)*/
+@media only screen and (min-width: 768px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Large devices such as laptops (1024px and up)*/
+@media only screen and (min-width: 1024px) {
+    .cards  {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Largest devices such as desktops (1280px and up)*/
+@media only screen and (min-width: 1280px) {
+    .cards  {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Largest devices such as desktops (1280px and up)*/
+@media only screen and (min-width: 1580px) {
+    .cards  {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }

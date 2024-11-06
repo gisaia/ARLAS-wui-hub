@@ -24,7 +24,7 @@ import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
@@ -355,6 +355,7 @@ export class DynamicHubComponent implements OnInit {
             this.cards = this.cardsRef;
         }
     }
+
 
     public getCheckbox(state, collectionKey) {
         if (this.selectedCollection.length === 0) {
