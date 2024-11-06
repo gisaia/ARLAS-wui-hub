@@ -243,7 +243,7 @@ export class DynamicHubComponent implements OnInit {
                         this.canCreateDashboardByOrg.set(o, resources.filter(r => r.verb === 'POST').length > 0);
                         this.allowedOrganisations = this.getAllowedOrganisations();
                         return this.cardService.cardList(fetchOptions)
-                            .pipe(map(cards => this.filterCardsByOrganisation(cards, o, fetchOptions)))
+                            .pipe(map(cards => this.filterCardsByOrganisation(cards, o)))
                             .pipe(tap(cards => this.enrichCards(cards, fetchOptions)));
                     })
                 )
@@ -278,9 +278,8 @@ export class DynamicHubComponent implements OnInit {
             });
     }
 
-    private filterCardsByOrganisation(cards: Card[], o?: string, fetchOptions?) {
-        this.storeExternalOrganisationsCards(cards.filter(card => card.organisation !== o)
-        );
+    private filterCardsByOrganisation(cards: Card[], o?: string) {
+        this.storeExternalOrganisationsCards(cards.filter(card => card.organisation !== o));
         return cards.filter(card => card.organisation === o);
     }
 
@@ -300,6 +299,8 @@ export class DynamicHubComponent implements OnInit {
                 if (!publicCards) {
                     publicCards = [];
                 }
+                this.registerCollection(c);
+                c.preview$ = this.getPreview$(c.previewId,{});
                 this.addCard(c, publicCards);
                 this.cardsRef.set(publicOrg, publicCards);
             }
