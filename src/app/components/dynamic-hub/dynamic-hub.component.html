@@ -16,7 +16,7 @@
     </div>
     <div class="dynamic-hub__content">
         <div class="dashboards">
-            <div class="dashboard" *ngFor="let data of cards | keyvalue">
+            <div class="dashboard" *ngFor="let data of cards | keyvalue : publicAtTheEnd ">
                 <h2>
                     <span class="dashboard-title">{{data.key | titlecase | translate}} {{'dashboards' | translate}}</span>
                     <ng-container *ngIf="data.key | getValue:canCreateDashboardByOrg">
