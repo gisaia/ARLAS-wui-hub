@@ -43,6 +43,8 @@ export class DynamicHubComponent implements OnInit {
     public action = Action;
     public isLoading = false;
     public cards: Map<string, Card[]>;
+    public cardsFiltered: Map<string, Card[]>;
+    public searchIndex: string[] = []; // indexId: ;research:;
     public cardsRef: Map<string, Card[]>;
     public canCreateDashboardByOrg: Map<string, boolean>;
     public allowedOrganisations: string[] = [];
@@ -180,6 +182,8 @@ export class DynamicHubComponent implements OnInit {
         }
 
     }
+
+
 
     public import(org?: string) {
 
@@ -319,6 +323,13 @@ export class DynamicHubComponent implements OnInit {
         if (!this.cardCollections.has(c.collection)) {
             this.cardCollections.set(c.collection, { color: c.color, selected: true });
         }
+        // todo: remove when dev end
+        /*
+        let i = 0;
+        while (i < 50){
+            this.cardCollections.set('' + i, { color: c.color, selected: false });
+            i++;
+        }*/
     }
 
     private enrichCards(cards: Card[], fetchOptions?): Card[] {
@@ -365,6 +376,62 @@ export class DynamicHubComponent implements OnInit {
             this.cards = filteredMap;
         } else {
             this.cards = this.cardsRef;
+        }
+
+        // todo: remove when dev end
+        /*
+        this.cards.forEach((values: Card[], key: string) => {
+           const v = {...values[0]};
+           v.organisation = 'too'
+            const v2 = {...values[0]};
+            v2.organisation = 'gisaia'
+            v2.title = 'fusée du ciel.'
+            const v3 = {...values[0]};
+            v3.organisation = 'cnes'
+            v3.title = 'bateau echoue'
+            values.push(v3, v2, v)
+            console.log(v3)
+        });
+
+        this.cards.set('toto', this.cards.get('public'))
+        this.cards.set('zdzd', this.cards.get('public'))
+        this.cards.set('aaadd', this.cards.get('public'))
+ */
+
+        this._buildSearchIndex();
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const filter = urlParams.get('filter_hub_dashboard');
+        this.filterDashboard(filter);
+    }
+
+    private _buildSearchIndex(){
+        this.cards.forEach((values: Card[], key: string) => {
+            values.forEach((c,i) => {
+                const s = `${c.title.toLowerCase().replace(/\s/g, '')}${(c?.organisation) ? c.organisation : '' }`;
+                const searchIndex = `searchIndex:${key};i:${i};search:${s}`;
+                this.searchIndex.push(searchIndex);
+            });
+        });
+    }
+
+    public filterDashboard(searchValue: string){
+        if(searchValue){
+            this.cardsFiltered = new Map<string, Card[]>();
+            this.searchIndex.filter(s => s.split(';search:')[1].includes(searchValue.toLowerCase().trim())).forEach(f => {
+                const z = f.split(';');
+                const key = z[0].split(':')[1];
+                const index = z[1].split(':')[1];
+
+                if(this.cardsFiltered.has(key)){
+                    this.cardsFiltered.get(key).push( this.cards.get(key)[index]);
+                } else {
+                    this.cardsFiltered.set(key, [this.cards.get(key)[index]]);
+                }
+
+            });
+        } else {
+            this.cardsFiltered = this.cards;
         }
     }
 
