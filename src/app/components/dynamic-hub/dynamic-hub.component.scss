@@ -18,6 +18,12 @@
  */
 @import "variables.scss";
 
+:host {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+}
+
 h2 {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-variant: small-caps;
@@ -32,6 +38,8 @@ h2 {
 
 .dynamic-hub {
     padding: 10px 20px;
+    max-height: 100%;
+    overflow-x: scroll;
     &__spinner {
         margin: 5px 0;
     }
@@ -39,6 +47,7 @@ h2 {
     &__header {
         display: flex;
         justify-content: space-between;
+        height: $header-height;
         .organisations {
             min-width: 200px;
             border: 1px solid rgba(0, 0, 0, 0.12);
@@ -77,8 +86,33 @@ h2 {
         .collection {
             flex: 1;
 
+            &-wrapper {
+                height: calc(100vh - 60px);
+                position: sticky;
+                width: 100%;
+                top: $header-height;
+            }
+
             .cards {
                 padding-top: 1px;
+                height: calc(100% - 90px);
+                overflow-x: hidden;
+                overflow-y: scroll;
+                & .scroll-hider {
+                    position: absolute;
+                    background: #F5F5F5;
+                    height: 100%;
+                    top: 0;
+                    right: 0;
+                    width: .4em;
+                    -webkit-transition: all .5s;
+                    opacity: 1;
+                }
+                &:hover .scroll-hider {
+                    opacity: 0;
+                    -webkit-transition: all .5s;
+                }
+
                 .card {
                     margin: 4px 0px;
                     border-radius: 0px;
@@ -105,11 +139,10 @@ h2 {
 }
 
 .add-button {
-    color: rgba(0, 0, 0, 0.75);
     color: $primaryColor;
     background-color: white;
     min-width: 40px;
-    padding: 0;
+    padding: 2px 4px;
     line-height: 24px;
 
     &:focus {
