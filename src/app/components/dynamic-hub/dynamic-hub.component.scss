@@ -23,6 +23,7 @@ h2 {
     font-variant: small-caps;
     font-weight: 400;
     display: flex;
+
     gap: 0 10px;
     background-color: white;
     margin: 10px 0;
@@ -125,6 +126,11 @@ h2 {
             opacity: 0.5;
         }
     }
+}
+
+.collapse {
+    height: 30px;
+    margin-left: auto;
 }
 
 .paginator {

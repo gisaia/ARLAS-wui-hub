@@ -1,0 +1,6 @@
+<button class="dynamic-collapse" mat-icon-button (click)="collapse()">
+    <mat-icon *ngIf="display; else arrow_down">keyboard_arrow_up</mat-icon>
+    <ng-template  #arrow_down>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+    </ng-template>
+</button>

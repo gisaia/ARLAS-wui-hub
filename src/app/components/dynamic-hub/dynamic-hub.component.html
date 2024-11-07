@@ -16,7 +16,7 @@
     </div>
     <div class="dynamic-hub__content">
         <div class="dashboards">
-            <div class="dashboard" *ngFor="let data of cards | keyvalue : publicAtTheEnd ">
+            <div class="dashboard" *ngFor="let data of cards | keyvalue : publicAtTheEnd " >
                 <h2>
                     <span class="dashboard-title">{{data.key | titlecase | translate}} {{'dashboards' | translate}}</span>
                     <ng-container *ngIf="data.key | getValue:canCreateDashboardByOrg">
@@ -29,8 +29,9 @@
                             <mat-icon class="add-button--icon">file_upload</mat-icon>
                         </button>
                     </ng-container>
+                    <div class="collapse" [card-dropdown]="cards"></div>
                 </h2>
-                <div class="cards">
+                <div #cards class="cards">
                     <arlas-card *ngFor="let card of data.value" (actionOnCard)="fetchCards()" [card]="card"
                         [userGroups]="userGroups" [publicOrg]="data.key === PUBLIC_ORG"></arlas-card>
                 </div>
