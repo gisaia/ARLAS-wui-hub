@@ -24,12 +24,13 @@ import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, debounceTime, Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
 import { KeyValue } from '@angular/common';
+import { DashboardSearchService } from '../../services/dashboard-search.service';
 
 @Component({
     selector: 'arlas-dynamic-hub',
@@ -71,7 +72,8 @@ export class DynamicHubComponent implements OnInit {
         private arlasSettingsService: ArlasSettingsService,
         private permissionService: PermissionService,
         private persistenceService: PersistenceService,
-        private arlasIamService: ArlasIamService
+        private arlasIamService: ArlasIamService,
+        private dashboardSearch: DashboardSearchService
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -125,6 +127,21 @@ export class DynamicHubComponent implements OnInit {
                 }
             }
         }
+
+        this.initSearch();
+    }
+
+    public initSearch(){
+        this.dashboardSearch.valueChanged$
+            .pipe(
+                tap(() =>  this.isLoading = true),
+                debounceTime(500),
+                map((v) => {
+                    this.filterDashboard(v);
+                    this.isLoading = false;
+                })
+            )
+            .subscribe({error: () => this.isLoading = false});
     }
 
     public add(org?: string) {
@@ -323,13 +340,6 @@ export class DynamicHubComponent implements OnInit {
         if (!this.cardCollections.has(c.collection)) {
             this.cardCollections.set(c.collection, { color: c.color, selected: true });
         }
-        // todo: remove when dev end
-        /*
-        let i = 0;
-        while (i < 50){
-            this.cardCollections.set('' + i, { color: c.color, selected: false });
-            i++;
-        }*/
     }
 
     private enrichCards(cards: Card[], fetchOptions?): Card[] {
@@ -378,60 +388,32 @@ export class DynamicHubComponent implements OnInit {
             this.cards = this.cardsRef;
         }
 
-        // todo: remove when dev end
-        /*
-        this.cards.forEach((values: Card[], key: string) => {
-           const v = {...values[0]};
-           v.organisation = 'too'
-            const v2 = {...values[0]};
-            v2.organisation = 'gisaia'
-            v2.title = 'fusée du ciel.'
-            const v3 = {...values[0]};
-            v3.organisation = 'cnes'
-            v3.title = 'bateau echoue'
-            values.push(v3, v2, v)
-            console.log(v3)
-        });
-
-        this.cards.set('toto', this.cards.get('public'))
-        this.cards.set('zdzd', this.cards.get('public'))
-        this.cards.set('aaadd', this.cards.get('public'))
- */
-
-        this._buildSearchIndex();
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const filter = urlParams.get('filter_hub_dashboard');
-        this.filterDashboard(filter);
+        this.dashboardSearch.buildSearchIndex(this.cards);
+        this.filterDashboard(this.dashboardSearch.currentFilter);
     }
 
-    private _buildSearchIndex(){
-        this.cards.forEach((values: Card[], key: string) => {
-            values.forEach((c,i) => {
-                const s = `${c.title.toLowerCase().replace(/\s/g, '')}${(c?.organisation) ? c.organisation : '' }`;
-                const searchIndex = `searchIndex:${key};i:${i};search:${s}`;
-                this.searchIndex.push(searchIndex);
-            });
-        });
-    }
-
-    public filterDashboard(searchValue: string){
+    public filterDashboard(searchValue: string, preserveEmptyCardList = false){
+        let previous;
         if(searchValue){
+            previous = this.cardsFiltered;
             this.cardsFiltered = new Map<string, Card[]>();
-            this.searchIndex.filter(s => s.split(';search:')[1].includes(searchValue.toLowerCase().trim())).forEach(f => {
-                const z = f.split(';');
-                const key = z[0].split(':')[1];
-                const index = z[1].split(':')[1];
-
-                if(this.cardsFiltered.has(key)){
-                    this.cardsFiltered.get(key).push( this.cards.get(key)[index]);
-                } else {
-                    this.cardsFiltered.set(key, [this.cards.get(key)[index]]);
-                }
-
-            });
+            this.dashboardSearch
+                .getMatchingSearchIndexes()
+                .forEach(searchIndex => {
+                    if(this.cardsFiltered.has(searchIndex.key)){
+                        this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
+                    } else {
+                        this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
+                    }
+                });
         } else {
             this.cardsFiltered = this.cards;
+        }
+
+        if(preserveEmptyCardList && this.cardsFiltered.size === 0){
+            previous.forEach((v, k) => {
+                this.cardsFiltered.set(k, []);
+            });
         }
     }
 
@@ -468,6 +450,8 @@ export class DynamicHubComponent implements OnInit {
             });
             this.cards = filteredMap;
         }
+        this.dashboardSearch.buildSearchIndex(this.cards);
+        this.filterDashboard(this.dashboardSearch.currentFilter, true);
     }
 
     public getAllowedOrganisations(): string[] {

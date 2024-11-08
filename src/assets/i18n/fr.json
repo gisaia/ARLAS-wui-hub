@@ -60,6 +60,6 @@
 	"Missing permissions to create a dashboard": "Vous n'avez pas les droits suffisants pour créer ou modifier un dashboard",
 	"no_organisation":"",
 	"Choose an organisation": "Choisissez une organisation",
-	"Select": "Sélectionner"
-
+	"Select": "Sélectionner",
+    "searchPlaceholder": "Rechercher..."
 }

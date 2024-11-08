@@ -74,6 +74,7 @@ import { PreviewPipe } from './pipes/preview.pipe';
 import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
 import { CardDropdownComponent } from './components/dynamic-hub/collapse/card-dropdown.component';
+import { DashboardSearchComponent } from './components/dashboard-search/dashboard-search.component';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init('config.json?' + Date.now());
@@ -118,7 +119,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         LeftMenuComponent,
         StaticHubComponent,
         PreviewPipe,
-        CardDropdownComponent
+        CardDropdownComponent,
+        DashboardSearchComponent
     ],
     imports: [
         AppRoutingModule,
