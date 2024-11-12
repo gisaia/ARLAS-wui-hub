@@ -16,15 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@import "~@angular/material/theming";
+import { Component, Input, Renderer2 } from '@angular/core';
 
-$primaryColor: #e33e6b;
-$accentColor: #3e6be3;
-$top-menu-height: 40px;
-$left-menu-width: 48px;
-$menu-border: solid 1px #dadada;
-$default-font-size: 20px;
-$sm-margin: 5px;
-$group-icon-size: 16px;
-$header-height: 26px;
-$search-input-spacing: 2px;
+@Component({
+    selector: '[arlas-card-dropdown]',
+    templateUrl: './card-dropdown.component.html',
+    styles: ['.dynamic-collapse{height: 30px;width: 30px;line-height: 30px;}'],
+})
+export class CardDropdownComponent {
+    @Input('arlas-card-dropdown') public collapsableElement: HTMLElement;
+    public display = true;
+    public constructor(private _r: Renderer2) { }
+
+    public collapse() {
+        this.display = !this.display;
+        if(this.display){
+            this._r.removeStyle(this.collapsableElement, 'display');
+        } else {
+            this._r.setStyle(this.collapsableElement, 'display', 'none');
+        }
+    }
+}

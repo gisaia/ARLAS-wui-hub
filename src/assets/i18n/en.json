@@ -59,5 +59,6 @@
 	"Missing permissions to create a dashboard": "Missing permissions to create or update a dashboard",
 	"no_organisation":"",
 	"Choose an organisation": "Choose an organisation",
-	"Select": "Select"
+	"Select": "Select",
+    "searchPlaceholder": "Search a dashboard..."
 }

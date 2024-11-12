@@ -24,12 +24,13 @@ import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, debounceTime, Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
 import { Action } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
 import { KeyValue } from '@angular/common';
+import { DashboardSearchService } from '../../services/dashboard-search.service';
 
 @Component({
     selector: 'arlas-dynamic-hub',
@@ -43,6 +44,8 @@ export class DynamicHubComponent implements OnInit {
     public action = Action;
     public isLoading = false;
     public cards: Map<string, Card[]>;
+    public cardsFiltered: Map<string, Card[]>;
+    public searchIndex: string[] = []; // indexId: ;research:;
     public cardsRef: Map<string, Card[]>;
     public canCreateDashboardByOrg: Map<string, boolean>;
     public allowedOrganisations: string[] = [];
@@ -69,7 +72,8 @@ export class DynamicHubComponent implements OnInit {
         private arlasSettingsService: ArlasSettingsService,
         private permissionService: PermissionService,
         private persistenceService: PersistenceService,
-        private arlasIamService: ArlasIamService
+        private arlasIamService: ArlasIamService,
+        private dashboardSearch: DashboardSearchService
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -123,6 +127,21 @@ export class DynamicHubComponent implements OnInit {
                 }
             }
         }
+
+        this.initSearch();
+    }
+
+    public initSearch(){
+        this.dashboardSearch.valueChanged$
+            .pipe(
+                tap(() =>  this.isLoading = true),
+                debounceTime(500),
+                map((v) => {
+                    this.filterDashboard(v);
+                    this.isLoading = false;
+                })
+            )
+            .subscribe({error: () => this.isLoading = false});
     }
 
     public add(org?: string) {
@@ -180,6 +199,8 @@ export class DynamicHubComponent implements OnInit {
         }
 
     }
+
+
 
     public import(org?: string) {
 
@@ -366,6 +387,34 @@ export class DynamicHubComponent implements OnInit {
         } else {
             this.cards = this.cardsRef;
         }
+
+        this.dashboardSearch.buildSearchIndex(this.cards);
+        this.filterDashboard(this.dashboardSearch.currentFilter);
+    }
+
+    public filterDashboard(searchValue: string, preserveEmptyCardList = false){
+        let previous;
+        if(searchValue){
+            previous = this.cardsFiltered;
+            this.cardsFiltered = new Map<string, Card[]>();
+            this.dashboardSearch
+                .getMatchingSearchIndices()
+                .forEach(searchIndex => {
+                    if(this.cardsFiltered.has(searchIndex.key)){
+                        this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
+                    } else {
+                        this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
+                    }
+                });
+        } else {
+            this.cardsFiltered = this.cards;
+        }
+
+        if(preserveEmptyCardList && this.cardsFiltered.size === 0){
+            previous.forEach((v, k) => {
+                this.cardsFiltered.set(k, []);
+            });
+        }
     }
 
 
@@ -401,6 +450,8 @@ export class DynamicHubComponent implements OnInit {
             });
             this.cards = filteredMap;
         }
+        this.dashboardSearch.buildSearchIndex(this.cards);
+        this.filterDashboard(this.dashboardSearch.currentFilter, true);
     }
 
     public getAllowedOrganisations(): string[] {

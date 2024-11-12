@@ -18,11 +18,19 @@
  */
 @import "variables.scss";
 
+
+:host {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+}
+$collection-title-height: 28px;
 h2 {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-variant: small-caps;
     font-weight: 400;
     display: flex;
+
     gap: 0 10px;
     background-color: white;
     margin: 10px 0;
@@ -31,6 +39,8 @@ h2 {
 
 .dynamic-hub {
     padding: 10px 20px;
+    max-height: 100%;
+    overflow-x: scroll;
     &__spinner {
         margin: 5px 0;
     }
@@ -38,6 +48,7 @@ h2 {
     &__header {
         display: flex;
         justify-content: space-between;
+        height: $header-height;
         .organisations {
             min-width: 200px;
             border: 1px solid rgba(0, 0, 0, 0.12);
@@ -76,10 +87,36 @@ h2 {
         .collection {
             flex: 1;
 
+            &-wrapper {
+                height: calc(100vh - ($top-menu-height + $header-height));
+                position: sticky;
+                width: 100%;
+                top: $header-height;
+            }
+
             .cards {
                 padding-top: 1px;
+                height: calc(100% - 90px); // top menu height + dynamic hub header height + collection h2 height
+                overflow-x: hidden;
+                overflow-y: scroll;
+                & .scroll-hider {
+                    position: absolute;
+                    background: #F5F5F5;
+                    height: 100%;
+                    top: 0;
+                    right: 0;
+                    width: 6px;
+                    -webkit-transition: all .5s;
+                    opacity: 1;
+                }
+                &:hover .scroll-hider {
+                    opacity: 0;
+                    -webkit-transition: all .5s;
+                }
+
                 .card {
                     margin: 4px 0px;
+                    border-left: 3px solid;
                     border-radius: 0px;
                     padding: 8px 15px;
                     cursor: pointer;
@@ -104,11 +141,10 @@ h2 {
 }
 
 .add-button {
-    color: rgba(0, 0, 0, 0.75);
     color: $primaryColor;
     background-color: white;
     min-width: 40px;
-    padding: 0;
+    padding: 2px 10px;
     line-height: 24px;
 
     &:focus {
@@ -125,6 +161,11 @@ h2 {
             opacity: 0.5;
         }
     }
+}
+
+.collapse {
+    height: 30px;
+    margin-left: auto;
 }
 
 .paginator {
