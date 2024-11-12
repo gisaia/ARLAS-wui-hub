@@ -105,7 +105,8 @@ export class CardService {
             writers: data.doc_writers,
             lastUpdate: +data.last_update_date,
             zone: data.doc_zone,
-            org: organisation
+            org: organisation,
+            displayPublic: false
         };
         actions.push({
             config: config,
