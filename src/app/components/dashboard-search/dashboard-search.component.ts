@@ -17,9 +17,9 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, filter } from 'rxjs';
+import { debounceTime, filter, Subscription } from 'rxjs';
 import { DashboardSearchService } from '../../services/dashboard-search.service';
 import { map } from 'rxjs/operators';
 
@@ -28,20 +28,16 @@ import { map } from 'rxjs/operators';
     templateUrl: './dashboard-search.component.html',
     styleUrls: ['./dashboard-search.component.scss']
 })
-export class DashboardSearchComponent implements OnInit{
+export class DashboardSearchComponent implements OnInit, OnDestroy{
 
-    /**
-     * @Input : Angular
-     * @description Value of the search filter
-     */
-    public searchValue = '';
     @Input() public searchPlaceholder: string;
+    public searchValue = '';
 
     /**
      * @description Form for the search
      */
     public searchCtrl: FormControl = new FormControl<string>(null);
-
+    private _searchSub: Subscription;
 
     public constructor(
         private dashboardSearchService: DashboardSearchService
@@ -51,7 +47,7 @@ export class DashboardSearchComponent implements OnInit{
     }
 
     public ngOnInit(): void {
-        this.searchCtrl.valueChanges.pipe(
+        this._searchSub = this.searchCtrl.valueChanges.pipe(
             debounceTime(400),
             filter(v => v !== null ),
             map((v: string) =>  this.search(v))
@@ -66,5 +62,9 @@ export class DashboardSearchComponent implements OnInit{
     public clearSearch() {
         this.searchCtrl.reset();
         this.dashboardSearchService.emit('');
+    }
+
+    public ngOnDestroy(): void {
+        this._searchSub.unsubscribe();
     }
 }

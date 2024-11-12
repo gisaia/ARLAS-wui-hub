@@ -75,7 +75,7 @@ export class DashboardSearchService {
         return this._currentValue ?? null;
     }
 
-    public getMatchingSearchIndexes(): SearchIndexDashboard[]{
+    public getMatchingSearchIndices(): SearchIndexDashboard[]{
         return this.searchIndex
             .filter(s => {
                 const search = s.split(';search:')[1];
@@ -102,7 +102,7 @@ export class DashboardSearchService {
         this.searchIndex = [];
         cards.forEach((values: Card[], key: string) => {
             values.forEach((c,i) => {
-                const s = `${c.title.toLowerCase().replace(/\s/g, '')}${(c?.organisation) ? c.organisation : '' }`;
+                const s = `${c.title.toLowerCase().replace(/\s/g, '')}${(c && c.organisation) ? c.organisation : '' }`;
                 const searchIndex = `searchIndex:${key};i:${i};search:${s}`;
                 this.searchIndex.push(searchIndex);
             });

@@ -398,7 +398,7 @@ export class DynamicHubComponent implements OnInit {
             previous = this.cardsFiltered;
             this.cardsFiltered = new Map<string, Card[]>();
             this.dashboardSearch
-                .getMatchingSearchIndexes()
+                .getMatchingSearchIndices()
                 .forEach(searchIndex => {
                     if(this.cardsFiltered.has(searchIndex.key)){
                         this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
