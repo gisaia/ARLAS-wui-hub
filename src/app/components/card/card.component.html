@@ -30,13 +30,12 @@
         </div>
         <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {date: card?.last_update_date | date} }}</mat-card-subtitle>
 
-        <mat-chip-list class="card_right">
-            <mat-chip *ngIf="rights.length === 0" class="group text-ellipsis"> -- </mat-chip>
+        <mat-chip-listbox class="card_right" [selectable]="false">
+            <mat-chip-option *ngIf="rights.length === 0" class="group text-ellipsis"> -- </mat-chip-option>
             <ng-container *ngFor="let r of rights" >
-                <mat-chip
-                    *ngIf="r.right ==='Editor'"
-                    matTooltip="{{'Editor' | translate}}"
-                    [matTooltipPosition]="'above'"  class="group" [class.group--mine]="r.in">
+                <mat-chip *ngIf="r.right ==='Editor'"
+                          matTooltip="{{'Editor' | translate}}" [matTooltipPosition]="'above'"
+                          class="group" [class.group--mine]="r.in">
                     <mat-icon>edit</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
                 </mat-chip>
                 <mat-chip *ngIf="r.right ==='Viewer'"

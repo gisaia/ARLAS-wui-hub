@@ -17,18 +17,14 @@
  * under the License.
  */
 
-.create-dashboard {
+
+.dynamic-collapse {
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    padding: 0;
+
     display: flex;
-    flex-direction: column;
-}
-
-.error {
-    color: red;
-    display: block;
-}
-
-.organisations {
-    ::ng-deep.mat-mdc-select-value {
-        height: 16px;
-    }
+    align-items: center;
+    justify-content: center;
 }

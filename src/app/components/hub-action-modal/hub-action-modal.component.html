@@ -11,7 +11,7 @@
       <mat-form-field class="example-form-field">
         <mat-label>{{'Organisation' | translate}}</mat-label>
         <div class="organisations" *ngIf="action.orgs?.length > 0">
-            <mat-select  [(value)]="currentOrga" required>
+            <mat-select [(value)]="currentOrga" required>
                 <mat-option *ngFor="let org of action.orgs" value="{{org.name}}">{{org.displayName}}</mat-option>
             </mat-select>
         </div>
