@@ -40,13 +40,15 @@ h2 {
 .dynamic-hub {
     padding: 10px 20px;
     max-height: 100%;
+    height: calc(100% - 38px); // header height
+    overflow-y: scroll;
     &__spinner-container {
         height: 5px;
     }
 
     &__header {
         display: flex;
-        justify-content: space-between;
+        gap: 6px;
         height: $header-height;
         .organisations {
             min-width: 200px;
@@ -73,7 +75,8 @@ h2 {
             }
             .cards {
                 display: grid;
-                gap: 5px 8px;
+                gap: 8px 8px;
+                grid-auto-rows: minmax(50px, auto);
             }
 
             .no-card {

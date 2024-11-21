@@ -4,18 +4,16 @@
     </div>
 
     <div *ngIf="canCreateDashboard" class="dynamic-hub__header">
-        <div>
-            <button class="add-button" mat-stroked-button (click)="add()"
-                [matTooltip]="'Create a new Exploration Dashboard' | translate">
-                <mat-icon>add</mat-icon>
-                {{'Create a new Exploration Dashboard' | translate}}
-            </button>
-            <button class="add-button" mat-stroked-button (click)="import()"
-                [matTooltip]="'Import an Exploration Dashboard' | translate">
-                <mat-icon>file_upload</mat-icon>
-                {{'Import an Exploration Dashboard' | translate}}
-            </button>
-        </div>
+        <button class="add-button" mat-stroked-button (click)="add()"
+            [matTooltip]="'Create a new Exploration Dashboard' | translate">
+            <mat-icon>add</mat-icon>
+            {{'Create a new Exploration Dashboard' | translate}}
+        </button>
+        <button class="add-button" mat-stroked-button (click)="import()"
+            [matTooltip]="'Import an Exploration Dashboard' | translate">
+            <mat-icon>file_upload</mat-icon>
+            {{'Import an Exploration Dashboard' | translate}}
+        </button>
     </div>
     <div class="dynamic-hub__content">
         <div class="dashboards">
