@@ -104,7 +104,7 @@ h2 {
                 padding-top: 1px;
                 height: calc(100% - 90px); // top menu height + dynamic hub header height + collection h2 height
                 overflow-x: hidden;
-                overflow-y: scroll;
+                overflow-y: auto;
                 & .scroll-hider {
                     position: absolute;
                     background: #F5F5F5;
