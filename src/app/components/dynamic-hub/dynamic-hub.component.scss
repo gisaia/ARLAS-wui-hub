@@ -96,6 +96,10 @@ h2 {
                 top: $header-height;
             }
 
+            &--without-edit-header {
+                top: $header-height - 10px;
+            }
+
             .cards {
                 padding-top: 1px;
                 height: calc(100% - 90px); // top menu height + dynamic hub header height + collection h2 height
