@@ -1,5 +1,8 @@
 <div class="dynamic-hub">
-    <mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="dynamic-hub__spinner"></mat-progress-bar>
+    <div class="dynamic-hub__spinner-container">
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+    </div>
+
     <div *ngIf="canCreateDashboard" class="dynamic-hub__header">
         <div>
             <button class="add-button" mat-stroked-button (click)="add()"
