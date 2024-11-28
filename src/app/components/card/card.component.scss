@@ -48,7 +48,7 @@
     }
 
     &_meta{
-        padding: 6px;
+        padding: 6px 6px 12px 6px;
     }
 
     &_right{
@@ -133,6 +133,11 @@
     text-align: center;
     border-radius: 4px;
     font-weight: 600;
+
+    & mat-icon {
+        font-size: 20px;
+        height: 20px;
+    }
 }
 
 .organisation {
@@ -140,9 +145,12 @@
     align-items: center;
     gap: 4px;
     max-width: 200px;
+    font-size: 12px;
 
     & mat-icon {
         flex: 1 0 auto;
+        font-size: 20px;
+        height: 20px;
     }
 }
 

@@ -1,18 +1,19 @@
 <div class="dynamic-hub">
-    <mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="dynamic-hub__spinner"></mat-progress-bar>
+    <div class="dynamic-hub__spinner-container">
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+    </div>
+
     <div *ngIf="canCreateDashboard" class="dynamic-hub__header">
-        <div>
-            <button class="add-button" mat-stroked-button (click)="add()"
-                [matTooltip]="'Create a new Exploration Dashboard' | translate">
-                <mat-icon>add</mat-icon>
-                {{'Create a new Exploration Dashboard' | translate}}
-            </button>
-            <button class="add-button" mat-stroked-button (click)="import()"
-                [matTooltip]="'Import an Exploration Dashboard' | translate">
-                <mat-icon>file_upload</mat-icon>
-                {{'Import an Exploration Dashboard' | translate}}
-            </button>
-        </div>
+        <button class="add-button" mat-stroked-button (click)="add()"
+            [matTooltip]="'Create a new Exploration Dashboard' | translate">
+            <mat-icon>add</mat-icon>
+            {{'Create a new Exploration Dashboard' | translate}}
+        </button>
+        <button class="add-button" mat-stroked-button (click)="import()"
+            [matTooltip]="'Import an Exploration Dashboard' | translate">
+            <mat-icon>file_upload</mat-icon>
+            {{'Import an Exploration Dashboard' | translate}}
+        </button>
     </div>
     <div class="dynamic-hub__content">
         <div class="dashboards">
@@ -41,8 +42,8 @@
         </div>
 
 
-        <div class="collection" *ngIf="cards?.size > 0">
-            <div class="collection-wrapper">
+        <div class="collection"  *ngIf="cards?.size > 0">
+            <div class="collection-wrapper" [class.collection--without-edit-header]="!canCreateDashboard">
                 <h2>{{'Collections' | translate}}</h2>
                 <div class="cards">
                     <mat-card class="card" [style.borderLeftColor]="col.value.color"

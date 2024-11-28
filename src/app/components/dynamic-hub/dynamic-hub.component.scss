@@ -40,13 +40,15 @@ h2 {
 .dynamic-hub {
     padding: 10px 20px;
     max-height: 100%;
-    &__spinner {
-        margin: 5px 0;
+    height: calc(100% - 38px); // header height
+    overflow-y: scroll;
+    &__spinner-container {
+        height: 5px;
     }
 
     &__header {
         display: flex;
-        justify-content: space-between;
+        gap: 6px;
         height: $header-height;
         .organisations {
             min-width: 200px;
@@ -73,7 +75,8 @@ h2 {
             }
             .cards {
                 display: grid;
-                gap: 5px 8px;
+                gap: 8px 8px;
+                grid-auto-rows: minmax(50px, auto);
             }
 
             .no-card {
@@ -93,11 +96,15 @@ h2 {
                 top: $header-height;
             }
 
+            &--without-edit-header {
+                top: $header-height - 10px;
+            }
+
             .cards {
                 padding-top: 1px;
                 height: calc(100% - 90px); // top menu height + dynamic hub header height + collection h2 height
                 overflow-x: hidden;
-                overflow-y: scroll;
+                overflow-y: auto;
                 & .scroll-hider {
                     position: absolute;
                     background: #F5F5F5;

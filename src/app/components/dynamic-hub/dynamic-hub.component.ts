@@ -351,6 +351,7 @@ export class DynamicHubComponent implements OnInit {
                 .forEach(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
             this.registerCollection(c);
             c.preview$ = this.getPreview$(c.previewId, fetchOptions);
+            c.isPublic = c.readers.find(g => g.name === 'public') !== undefined;
         });
         return cards;
     }
