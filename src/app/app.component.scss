@@ -70,3 +70,8 @@
 ::ng-deep .top-menu {
     border-bottom: $menu-border;
 }
+
+::ng-deep.mat-mdc-tooltip {
+    margin: 5px !important;
+    font-size: 12px;
+}
