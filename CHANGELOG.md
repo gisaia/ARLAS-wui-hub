@@ -1,5 +1,21 @@
 # Change Log
 
+## [v26.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.1.0) (2024-12-02)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.0.3...v26.1.0)
+
+**New stuff:**
+
+- Align collections list with organisation bar [\#211](https://github.com/gisaia/ARLAS-wui-hub/issues/211)
+- When you search, a progress bar appears, shifting everything downwards each time you type a letter [\#208](https://github.com/gisaia/ARLAS-wui-hub/issues/208)
+
+**Fixed bugs:**
+
+- Make some paddings in between cards and creation/import buttons [\#212](https://github.com/gisaia/ARLAS-wui-hub/issues/212)
+- Dashboards searchbar should not be proposed in login page [\#210](https://github.com/gisaia/ARLAS-wui-hub/issues/210)
+- When you do a search and then close the search by clicking on the cross, the last dashboard looks weird [\#209](https://github.com/gisaia/ARLAS-wui-hub/issues/209)
+- Missing dashboard after search [\#207](https://github.com/gisaia/ARLAS-wui-hub/issues/207)
+
 ## [v26.0.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.0.3) (2024-11-14)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.0.2...v26.0.3)
