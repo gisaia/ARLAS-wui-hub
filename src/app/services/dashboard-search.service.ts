@@ -92,7 +92,7 @@ export class DashboardSearchService {
     }
 
     public splitSearchToKeywords(value: string){
-        if(value && value.length > 1){
+        if(value && value.length >= 1){
             return value.split(' ');
         }
         return [];

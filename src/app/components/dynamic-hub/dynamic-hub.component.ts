@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { KeyValue } from '@angular/common';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UserOrgData } from 'arlas-iam-api';
@@ -24,13 +25,12 @@ import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-import { BehaviorSubject, debounceTime, Observable, of } from 'rxjs';
-import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
+import { debounceTime, Observable, of } from 'rxjs';
+import { catchError, filter, map, mergeMap, tap } from 'rxjs/operators';
 import { Card, CardService } from '../../services/card.service';
+import { DashboardSearchService } from '../../services/dashboard-search.service';
 import { Action } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
-import { KeyValue } from '@angular/common';
-import { DashboardSearchService } from '../../services/dashboard-search.service';
 
 @Component({
     selector: 'arlas-dynamic-hub',
@@ -131,17 +131,17 @@ export class DynamicHubComponent implements OnInit {
         this.initSearch();
     }
 
-    public initSearch(){
+    public initSearch() {
         this.dashboardSearch.valueChanged$
             .pipe(
-                tap(() =>  this.isLoading = true),
+                tap(() => this.isLoading = true),
                 debounceTime(500),
                 map((v) => {
-                    this.filterDashboard(v);
+                    this.filterDashboard(v, true);
                     this.isLoading = false;
                 })
             )
-            .subscribe({error: () => this.isLoading = false});
+            .subscribe({ error: () => this.isLoading = false });
     }
 
     public add(org?: string) {
@@ -237,7 +237,7 @@ export class DynamicHubComponent implements OnInit {
     }
 
     public publicAtTheEnd = (a: KeyValue<string, Card[]>, b: KeyValue<string, Card[]>): number => {
-        if (a.key !== this.PUBLIC_ORG && b.key === this.PUBLIC_ORG ) {
+        if (a.key !== this.PUBLIC_ORG && b.key === this.PUBLIC_ORG) {
             return -1;
         }
         if (a.key === this.PUBLIC_ORG && b.key !== this.PUBLIC_ORG) {
@@ -264,8 +264,10 @@ export class DynamicHubComponent implements OnInit {
                         this.canCreateDashboardByOrg.set(o, resources.filter(r => r.verb === 'POST').length > 0);
                         this.allowedOrganisations = this.getAllowedOrganisations();
                         return this.cardService.cardList(fetchOptions)
-                            .pipe(map(cards => this.filterCardsByOrganisation(cards, o)))
-                            .pipe(tap(cards => this.enrichCards(cards, fetchOptions)));
+                            .pipe(
+                                map(cards => this.enrichCards(cards, fetchOptions)),
+                                map(cards => this.filterCardsByOrganisation(cards, o))
+                            );
                     })
                 )
                 .subscribe({
@@ -321,7 +323,7 @@ export class DynamicHubComponent implements OnInit {
                     publicCards = [];
                 }
                 this.registerCollection(c);
-                c.preview$ = this.getPreview$(c.previewId,{});
+                c.preview$ = this.getPreview$(c.previewId, {});
                 this.addCard(c, publicCards);
                 this.cardsRef.set(publicOrg, publicCards);
             }
@@ -351,7 +353,6 @@ export class DynamicHubComponent implements OnInit {
                 .forEach(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
             this.registerCollection(c);
             c.preview$ = this.getPreview$(c.previewId, fetchOptions);
-            c.isPublic = c.readers.find(g => g.name === 'public') !== undefined;
         });
         return cards;
     }
@@ -388,32 +389,29 @@ export class DynamicHubComponent implements OnInit {
         } else {
             this.cards = this.cardsRef;
         }
-
         this.dashboardSearch.buildSearchIndex(this.cards);
-        this.filterDashboard(this.dashboardSearch.currentFilter);
+        this.filterDashboard(this.dashboardSearch.currentFilter, true);
     }
 
-    public filterDashboard(searchValue: string, preserveEmptyCardList = false){
-        let previous;
-        if(searchValue){
-            previous = this.cardsFiltered;
+    public filterDashboard(searchValue: string, preserveEmptyCardList = false) {
+        this.cardsFiltered = this.cards;
+        if (searchValue) {
             this.cardsFiltered = new Map<string, Card[]>();
-            this.dashboardSearch
-                .getMatchingSearchIndices()
-                .forEach(searchIndex => {
-                    if(this.cardsFiltered.has(searchIndex.key)){
-                        this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
-                    } else {
-                        this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
-                    }
-                });
-        } else {
-            this.cardsFiltered = this.cards;
+            const searchResults = this.dashboardSearch.getMatchingSearchIndices();
+            searchResults.forEach(searchIndex => {
+                if (this.cardsFiltered.has(searchIndex.key)) {
+                    this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
+                } else {
+                    this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
+                }
+            });
         }
 
-        if(preserveEmptyCardList && this.cardsFiltered.size === 0){
-            previous.forEach((v, k) => {
-                this.cardsFiltered.set(k, []);
+        if (preserveEmptyCardList && this.cardsFiltered.size === 0) {
+            this.cards.forEach((v, k) => {
+                if (!this.cardsFiltered.has(k)) {
+                    this.cardsFiltered.set(k, []);
+                }
             });
         }
     }
