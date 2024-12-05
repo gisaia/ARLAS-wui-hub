@@ -137,7 +137,7 @@ export class DynamicHubComponent implements OnInit {
                 tap(() =>  this.isLoading = true),
                 debounceTime(500),
                 map((v) => {
-                    this.filterDashboard(v);
+                    this.filterDashboard(v, true);
                     this.isLoading = false;
                 })
             )
@@ -390,30 +390,28 @@ export class DynamicHubComponent implements OnInit {
         }
 
         this.dashboardSearch.buildSearchIndex(this.cards);
-        this.filterDashboard(this.dashboardSearch.currentFilter);
+        this.filterDashboard(this.dashboardSearch.currentFilter,true);
     }
 
     public filterDashboard(searchValue: string, preserveEmptyCardList = false){
-        let previous;
+        this.cardsFiltered = this.cards;
         if(searchValue){
-            previous = this.cardsFiltered;
             this.cardsFiltered = new Map<string, Card[]>();
-            this.dashboardSearch
-                .getMatchingSearchIndices()
-                .forEach(searchIndex => {
+            const searchResults = this.dashboardSearch.getMatchingSearchIndices();
+            searchResults.forEach(searchIndex => {
                     if(this.cardsFiltered.has(searchIndex.key)){
                         this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
                     } else {
                         this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
                     }
                 });
-        } else {
-            this.cardsFiltered = this.cards;
         }
 
         if(preserveEmptyCardList && this.cardsFiltered.size === 0){
-            previous.forEach((v, k) => {
-                this.cardsFiltered.set(k, []);
+            this.cards.forEach((v, k) => {
+                if(!this.cardsFiltered.has(k)) {
+                    this.cardsFiltered.set(k, []);
+                }
             });
         }
     }
