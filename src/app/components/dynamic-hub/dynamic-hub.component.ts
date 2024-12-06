@@ -26,7 +26,7 @@ import {
 } from 'arlas-wui-toolkit';
 import { BehaviorSubject, debounceTime, Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
-import { Card, CardService } from '../../services/card.service';
+import { Card, CardService, Group } from '../../services/card.service';
 import { Action } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
 import { KeyValue } from '@angular/common';
@@ -264,8 +264,10 @@ export class DynamicHubComponent implements OnInit {
                         this.canCreateDashboardByOrg.set(o, resources.filter(r => r.verb === 'POST').length > 0);
                         this.allowedOrganisations = this.getAllowedOrganisations();
                         return this.cardService.cardList(fetchOptions)
-                            .pipe(map(cards => this.filterCardsByOrganisation(cards, o)))
-                            .pipe(tap(cards => this.enrichCards(cards, fetchOptions)));
+                            .pipe(
+                                map(cards => this.enrichCards(cards, fetchOptions)),
+                                map(cards => this.filterCardsByOrganisation(cards, o)),
+                            )
                     })
                 )
                 .subscribe({
@@ -351,7 +353,6 @@ export class DynamicHubComponent implements OnInit {
                 .forEach(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
             this.registerCollection(c);
             c.preview$ = this.getPreview$(c.previewId, fetchOptions);
-            c.isPublic = c.readers.find(g => g.name === 'public') !== undefined;
         });
         return cards;
     }
@@ -388,7 +389,6 @@ export class DynamicHubComponent implements OnInit {
         } else {
             this.cards = this.cardsRef;
         }
-
         this.dashboardSearch.buildSearchIndex(this.cards);
         this.filterDashboard(this.dashboardSearch.currentFilter,true);
     }
