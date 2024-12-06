@@ -15,7 +15,7 @@
 	"No Highlights": "Pas d'analytiques définis",
 	"Create a new Exploration Dashboard": "Créer un nouveau dashboard d'Exploration",
 	"Import an Exploration Dashboard": "Importer un nouveau dashboard d'Exploration",
-	"Dashboards": "Dashboards",
+	"Dashboards": "{{dashboard}}",
 	"Collections": "Collections",
 	"Hide menu": "Cacher le menu",
 	"ARLAS Hub": "ARLAS Hub",

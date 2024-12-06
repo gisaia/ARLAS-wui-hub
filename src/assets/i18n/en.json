@@ -15,7 +15,7 @@
 	"No Highlights": "No Highlights",
 	"Create a new Exploration Dashboard": "Create a new Exploration Dashboard",
 	"Import an Exploration Dashboard": "Import a new Exploration Dashboard",
-	"Dashboards": "Dashboards",
+	"Dashboards": "Dashboards {{dashboard}}",
 	"Collections": "Collections",
 	"Hide menu": "Hide menu",
 	"ARLAS Hub": "ARLAS Hub",
