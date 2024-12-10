@@ -19,7 +19,10 @@
         <div class="dashboards">
             <div class="dashboard" *ngFor="let data of cardsFiltered | keyvalue : publicAtTheEnd " >
                 <h2>
-                    <span class="dashboard-title">{{'Dashboards' | translate:{dashboard: data.key | translate} }}</span>
+                    <span class="dashboard-title" *ngIf="data.key !== 'public'; else publicTitle">{{'Dashboards' | translate:{dashboard: data.key | translate} }}</span>
+                    <ng-template #publicTitle>
+                        <span class="dashboard-title">{{'Public dashboards' | translate }}</span>
+                    </ng-template>
                     <ng-container *ngIf="data.key | getValue:canCreateDashboardByOrg">
                         <button class="add-button" mat-stroked-button (click)="add(data.key)"
                             [matTooltip]="'Create a new Exploration Dashboard' | translate">
