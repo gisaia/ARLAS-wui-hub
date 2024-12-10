@@ -21,7 +21,7 @@ import { Component, Input, Renderer2 } from '@angular/core';
 @Component({
     selector: '[arlas-card-dropdown]',
     templateUrl: './card-dropdown.component.html',
-    styles: ['.dynamic-collapse{height: 30px;width: 30px;line-height: 30px;}'],
+    styleUrls: ['./card-dropdown.component.scss'],
 })
 export class CardDropdownComponent {
     @Input('arlas-card-dropdown') public collapsableElement: HTMLElement;

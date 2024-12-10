@@ -4,7 +4,7 @@
         <input matInput [formControl]="searchCtrl" [value]="searchCtrl.value" class="full-width-input" autocomplete="off"
                placeholder="{{searchPlaceholder | translate}}" name="search">
     </div>
-    <button *ngIf="searchCtrl.value" mat-icon-button type="button"
+    <button *ngIf="searchCtrl.value" mat-icon-button type="button" class="button"
             (click)="clearSearch()" [matTooltip]="'Remove search text' | translate">
         <mat-icon class="icon">close</mat-icon>
     </button>

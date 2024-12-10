@@ -3,10 +3,13 @@
 </div>
 
 <div *ngIf="!useStatic && appReady" class="wrapper">
-  <arlas-top-menu [wuiName]="'ARLAS-Hub'">
+  <arlas-top-menu [wuiName]="'ARLAS-Hub'" [version]="version">
     <div left-menu class="top-left-menu">
       <div class="logo">
-        <img src="assets/hub-icon.png" matTooltip="ARLAS-Hub" />
+        <a matTooltip="{{'Back to home page' | translate }}" [routerLink]="['/']"
+            queryParamsHandling="preserve" [matTooltipPosition]="'right'">
+          <img src="assets/hub-icon.png"/>
+        </a>
       </div>
         <arlas-dashboard-search *ngIf="displayMenu" class="search" [searchPlaceholder]="'searchPlaceholder'"></arlas-dashboard-search>
     </div>

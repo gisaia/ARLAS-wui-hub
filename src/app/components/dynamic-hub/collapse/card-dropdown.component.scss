@@ -16,22 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component, OnInit, Input } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-
-@Component({
-    selector: 'arlas-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss']
-})
-export class HeaderComponent implements OnInit {
 
 
-    @Input() public sidenav: MatSidenav;
+.dynamic-collapse {
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    padding: 0;
 
-    public constructor() { }
-
-    public ngOnInit(): void {
-    }
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

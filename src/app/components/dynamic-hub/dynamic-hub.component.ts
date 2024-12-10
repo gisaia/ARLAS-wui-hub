@@ -18,8 +18,8 @@
  */
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Resource } from 'arlas-permissions-api';
 import { UserOrgData } from 'arlas-iam-api';
+import { Resource } from 'arlas-permissions-api';
 import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
@@ -50,16 +50,16 @@ export class DynamicHubComponent implements OnInit {
     public canCreateDashboardByOrg: Map<string, boolean>;
     public allowedOrganisations: string[] = [];
 
-    public cardCollections: Map<string, { color: string; selected: boolean; }> = new Map<string, { color: string; selected: boolean; }>();
+    public cardCollections = new Map<string, { color: string; selected: boolean; }>();
     public canCreateDashboard = false;
 
     public userGroups: string[] = [];
 
-    public selectedCollection: any[] = [];
+    public selectedCollection: string[] = [];
 
-    public connected;
-    public isAuthentActivated;
-    public authentMode;
+    public connected = false;
+    public isAuthentActivated: boolean;
+    public authentMode: 'openid' | 'iam';
     public orgs: UserOrgData[] = [];
     private orgsSet = new Set<string>();
     public currentOrga = '';
@@ -418,8 +418,7 @@ export class DynamicHubComponent implements OnInit {
         }
     }
 
-
-    public getCheckbox(state, collectionKey) {
+    public getCheckbox(state: boolean, collectionKey: string) {
         if (this.selectedCollection.length === 0) {
             this.cardCollections.forEach(v => v.selected = false);
             this.selectedCollection.push(collectionKey);

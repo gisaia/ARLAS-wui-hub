@@ -2,7 +2,7 @@
 ############   AUTHENTICATION SETTINGS   ###############
 ########################################################
 authentication:
-  use_authent: true
+  use_authent: false
   force_connect: false
   use_discovery: true
   auth_mode: 'iam'
@@ -28,9 +28,9 @@ authentication:
   sign_up_enabled: true
 
 persistence:
-  url: 'https://localhost/persist'
+  url: http://localhost/persist
 permission:
-  url: 'https://localhost/arlas_permissions_server'
+  url: 'http://localhost/arlas_permissions_server'
 arlas_wui_url: "http://localhost:4200"
 arlas_builder_url: "http://localhost:4200"
 links: []

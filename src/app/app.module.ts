@@ -40,7 +40,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { GetValueModule, GetCollectionDisplayModule } from 'arlas-web-components';
+import { GetCollectionDisplayModule, GetValueModule } from 'arlas-web-components';
 import enComponents from 'arlas-web-components/assets/i18n/en.json';
 import frComponents from 'arlas-web-components/assets/i18n/fr.json';
 import {
@@ -66,7 +66,6 @@ import { AppRoutingModule } from './app-routing.modules';
 import { AppComponent } from './app.component';
 import { CardComponent } from './components/card/card.component';
 import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
-import { HeaderComponent } from './components/header/header.component';
 import { HubActionModalComponent } from './components/hub-action-modal/hub-action-modal.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
 import { StaticHubComponent } from './components/static-hub/static-hub.component';
@@ -114,7 +113,6 @@ export class CustomTranslateLoader implements TranslateLoader {
         AppComponent,
         CardComponent,
         DynamicHubComponent,
-        HeaderComponent,
         HubActionModalComponent,
         LeftMenuComponent,
         StaticHubComponent,
