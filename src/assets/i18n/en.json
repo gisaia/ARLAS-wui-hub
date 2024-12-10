@@ -61,5 +61,7 @@
 	"Choose an organisation": "Choose an organisation",
 	"Select": "Select",
     "searchPlaceholder": "Search a dashboard...",
-	"Public dashboards": "Public dashboards"
+	"Public dashboards": "Public dashboards",
+	"No dashboard available": "No dashboard available"
+
 }
