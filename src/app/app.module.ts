@@ -17,7 +17,7 @@
  * under the License.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, forwardRef, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -108,8 +108,7 @@ export class CustomTranslateLoader implements TranslateLoader {
     }
 }
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         CardComponent,
         DynamicHubComponent,
@@ -120,8 +119,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         CardDropdownComponent,
         DashboardSearchComponent
     ],
-    imports: [
-        AppRoutingModule,
+    bootstrap: [AppComponent], imports: [AppRoutingModule,
         ActionModalModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -143,7 +141,6 @@ export class CustomTranslateLoader implements TranslateLoader {
         MatListModule,
         MatTooltipModule,
         MatProgressBarModule,
-        HttpClientModule,
         ConfigMenuModule,
         ArlasToolkitSharedModule,
         ReactiveFormsModule,
@@ -157,9 +154,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         }),
         OAuthModule.forRoot(),
         GetValueModule,
-        GetCollectionDisplayModule
-    ],
-    providers: [
+        GetCollectionDisplayModule], providers: [
         SidenavService,
         forwardRef(() => LoadService),
         forwardRef(() => ArlasStartupService),
@@ -200,8 +195,7 @@ export class CustomTranslateLoader implements TranslateLoader {
             provide: GET_OPTIONS,
             useFactory: getOptionsFactory,
             deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
-        }
-    ],
-    bootstrap: [AppComponent]
-})
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
