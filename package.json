@@ -17,18 +17,18 @@
   },
   "private": true,
   "peerDependencies": {
-    "@angular/animations": "~16.2.12",
-    "@angular/cdk": "~15.2.9",
-    "@angular/common": "~16.2.12",
-    "@angular/compiler": "~16.2.12",
-    "@angular/core": "~16.2.12",
-    "@angular/forms": "~16.2.12",
-    "@angular/material": "~15.2.9",
-    "@angular/platform-browser": "~16.2.12",
-    "@angular/platform-browser-dynamic": "~16.2.12",
-    "@angular/router": "~16.2.12",
+    "@angular/animations": "~17.3.12",
+    "@angular/cdk": "~16.2.14",
+    "@angular/common": "~17.3.12",
+    "@angular/compiler": "~17.3.12",
+    "@angular/core": "~17.3.12",
+    "@angular/forms": "~17.3.12",
+    "@angular/material": "~16.2.14",
+    "@angular/platform-browser": "~17.3.12",
+    "@angular/platform-browser-dynamic": "~17.3.12",
+    "@angular/router": "~17.3.12",
     "rxjs": "~7.4.0",
-    "zone.js": "^0.13.3"
+    "zone.js": "^0.14.10"
   },
   "dependencies": {
     "@ngx-translate/core": "14.0.0",
@@ -42,8 +42,8 @@
     "@angular-eslint/schematics": "15.2.1",
     "@angular-eslint/template-parser": "15.2.1",
     "@angular/cli": "^16.2.16",
-    "@angular/compiler-cli": "^16.2.12",
-    "@angular/language-service": "^16.2.12",
+    "@angular/compiler-cli": "^17.3.12",
+    "@angular/language-service": "^17.3.12",
     "@biesbjerg/ngx-translate-extract-marker": "1.0.0",
     "@types/jasmine": "~3.10.0",
     "@types/jasminewd2": "~2.0.2",
@@ -63,7 +63,7 @@
     "patch-package": "^6.4.7",
     "protractor": "~7.0.0",
     "ts-node": "~10.4.0",
-    "typescript": "4.9.3"
+    "typescript": "5.4.5"
   },
   "overrides": {
     "angular-oauth2-oidc-jwks": {
