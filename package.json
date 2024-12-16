@@ -1,6 +1,6 @@
 {
   "name": "arlas-hub",
-  "version": "25.1.0",
+  "version": "27.0.0",
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
@@ -44,6 +44,8 @@
     "@angular/compiler-cli": "^18.2.13",
     "@angular/language-service": "^18.2.13",
     "@biesbjerg/ngx-translate-extract-marker": "1.0.0",
+    "@stylistic/eslint-plugin": "^2.12.1",
+    "@stylistic/eslint-plugin-ts": "^2.12.1",
     "@types/jasmine": "~3.10.0",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^18.19.0",

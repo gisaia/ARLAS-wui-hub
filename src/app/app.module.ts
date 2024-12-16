@@ -108,7 +108,8 @@ export class CustomTranslateLoader implements TranslateLoader {
     }
 }
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
         CardComponent,
         DynamicHubComponent,
@@ -197,5 +198,6 @@ export class CustomTranslateLoader implements TranslateLoader {
             deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
         },
         provideHttpClient(withInterceptorsFromDi())
-    ] })
+    ]
+})
 export class AppModule { }
