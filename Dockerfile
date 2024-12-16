@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'hub'
-FROM node:16.19.0 as hub
+FROM node:18.20.5 as hub
 
 COPY package.json package-lock.json ./
 

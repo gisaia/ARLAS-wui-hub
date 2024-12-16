@@ -31,8 +31,7 @@
     "zone.js": "^0.14.10"
   },
   "dependencies": {
-    "@ngx-translate/core": "14.0.0",
-    "arlas-wui-toolkit": "27.0.0-beta.6"
+    "arlas-wui-toolkit": "27.0.0-beta.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",
@@ -48,9 +47,8 @@
     "@types/jasmine": "~3.10.0",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^18.19.0",
-    "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "@typescript-eslint/parser": "^5.43.0",
-    "@vendure/ngx-translate-extract": "8.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
     "eslint": "^8.28.0",
     "jasmine-core": "~3.10.0",
     "jasmine-spec-reporter": "~4.2.1",
