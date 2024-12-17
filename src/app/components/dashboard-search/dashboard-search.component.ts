@@ -48,7 +48,7 @@ export class DashboardSearchComponent implements OnInit, OnDestroy{
 
     public ngOnInit(): void {
         this._searchSub = this.searchCtrl.valueChanges.pipe(
-            debounceTime(400),
+            debounceTime(300),
             filter(v => v !== null ),
             map((v: string) =>  this.search(v))
         ).subscribe();
