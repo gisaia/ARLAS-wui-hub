@@ -49,10 +49,9 @@ export class DynamicHubComponent implements OnInit {
     public cardsRef: Map<string, Card[]>;
     public allowedOrganisations: string[] = [];
 
-    public cardCollections = new Map<string, { color: string; selected: boolean; }>();
     public canCreateDashboard = false;
 
-    public selectedCollection: string[] = [];
+    public userGroups: string[] = [];
 
     public connected = false;
     public isAuthentActivated: boolean;
@@ -85,7 +84,6 @@ export class DynamicHubComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.cardCollections.clear();
         if (!this.isAuthentActivated) {
             this.fetchCards();
         } else {
@@ -257,7 +255,7 @@ export class DynamicHubComponent implements OnInit {
                         ));
                         this.cardsRef.set(o, cards);
                         i++;
-                        this.applyCollectionFilter();
+                        this.initFilter();
                         if (i === this.orgs.length) {
                             this.isLoading = false;
                         }
@@ -277,7 +275,7 @@ export class DynamicHubComponent implements OnInit {
                 next: (cards) => {
                     this.storeExternalOrganisationsCards(cards);
                     this.isLoading = false;
-                    this.applyCollectionFilter();
+                    this.initFilter();
                 }
             });
     }
@@ -303,7 +301,6 @@ export class DynamicHubComponent implements OnInit {
                 if (!publicCards) {
                     publicCards = [];
                 }
-                this.registerCollection(c);
                 c.preview$ = this.getPreview$(c.previewId, {});
                 this.addCard(c, publicCards);
                 this.cardsRef.set(publicOrg, publicCards);
@@ -319,11 +316,7 @@ export class DynamicHubComponent implements OnInit {
 
     }
 
-    private registerCollection(c: Card) {
-        if (!this.cardCollections.has(c.collection)) {
-            this.cardCollections.set(c.collection, { color: c.color, selected: true });
-        }
-    }
+
 
     private enrichCards(cards: Card[], fetchOptions?): Card[] {
         cards.forEach(c => {
@@ -332,7 +325,7 @@ export class DynamicHubComponent implements OnInit {
                 .forEach(a => a.url = this.arlasSettingsService.getArlasWuiUrl());
             c.actions.filter(a => a.type === ConfigActionEnum.EDIT)
                 .forEach(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
-            this.registerCollection(c);
+
             c.preview$ = this.getPreview$(c.previewId, fetchOptions);
         });
         return cards;
@@ -359,77 +352,35 @@ export class DynamicHubComponent implements OnInit {
         }
     }
 
-    public applyCollectionFilter() {
-        if (this.selectedCollection.length > 0) {
-            const filteredMap = new Map<string, Card[]>();
-            this.cardsRef.forEach((values: Card[], key: string) => {
-                filteredMap.set(key, values.filter(c => this.selectedCollection.includes(c.collection)));
-            });
-            this.cards = filteredMap;
-        } else {
-            this.cards = this.cardsRef;
-        }
+    public initFilter() {
+        this.cards = this.cardsRef;
         this.dashboardSearch.buildSearchIndex(this.cards);
         this.filterDashboard(this.dashboardSearch.currentFilter, true);
     }
 
     public filterDashboard(searchValue: string, preserveEmptyCardList = false) {
-        this.cardsFiltered = this.cards;
+        let previous;
         if (searchValue) {
+            previous = this.cardsFiltered;
             this.cardsFiltered = new Map<string, Card[]>();
-            const searchResults = this.dashboardSearch.getMatchingSearchIndices();
-            searchResults.forEach(searchIndex => {
-                if (this.cardsFiltered.has(searchIndex.key)) {
-                    this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
-                } else {
-                    this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
-                }
-            });
+            this.dashboardSearch
+                .getMatchingSearchIndices()
+                .forEach(searchIndex => {
+                    if (this.cardsFiltered.has(searchIndex.key)) {
+                        this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
+                    } else {
+                        this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
+                    }
+                });
+        } else {
+            this.cardsFiltered = this.cards;
         }
 
         if (preserveEmptyCardList && this.cardsFiltered.size === 0) {
-            this.cards.forEach((v, k) => {
-                if (!this.cardsFiltered.has(k)) {
-                    this.cardsFiltered.set(k, []);
-                }
+            previous.forEach((v, k) => {
+                this.cardsFiltered.set(k, []);
             });
         }
-    }
-
-    public getCheckbox(state: boolean, collectionKey: string) {
-        if (this.selectedCollection.length === 0) {
-            this.cardCollections.forEach(v => v.selected = false);
-            this.selectedCollection.push(collectionKey);
-            this.cardCollections.get(collectionKey).selected = true;
-        } else {
-            if (state) {
-                this.cardCollections.get(collectionKey).selected = true;
-                if (!this.selectedCollection.includes(collectionKey)) {
-                    this.selectedCollection.push(collectionKey);
-                }
-                if (this.selectedCollection.length === this.cardCollections.size) {
-                    this.selectedCollection = [];
-                }
-            } else {
-                this.selectedCollection = this.selectedCollection.filter(c => c !== collectionKey);
-                this.cardCollections.get(collectionKey).selected = false;
-                if (this.selectedCollection.length === 0) {
-                    this.cardCollections.forEach(v => {
-                        v.selected = true;
-                    });
-                }
-            }
-        }
-        this.cards = this.cardsRef;
-        if (this.selectedCollection.length > 0) {
-            const filteredMap = new Map<string, Card[]>();
-            this.cards.forEach((values: Card[], key: string) => {
-                filteredMap.set(key, values.filter(c => this.selectedCollection.includes(c.collection)));
-            });
-            this.cards = filteredMap;
-        }
-        this.dashboardSearch.buildSearchIndex(this.cards);
-        this.filterDashboard(this.dashboardSearch.currentFilter, true);
     }
 
     public getAllowedOrganisations(): string[] {

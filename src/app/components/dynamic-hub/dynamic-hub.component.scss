@@ -92,61 +92,6 @@ h2 {
                 color: rgba(0, 0, 0, 0.7);
             }
         }
-        .collection {
-            flex: 1;
-            flex-shrink: 0;
-            &-wrapper {
-                height: calc(100vh - ($top-menu-height + $header-height));
-                position: sticky;
-                width: 100%;
-                top: $header-height;
-            }
-
-            &--without-edit-header {
-                top: $header-height - 10px;
-            }
-
-            .cards {
-                padding-top: 1px;
-                height: calc(100% - 90px); // top menu height + dynamic hub header height + collection h2 height
-                overflow-x: hidden;
-                overflow-y: auto;
-                & .scroll-hider {
-                    position: absolute;
-                    background: #F5F5F5;
-                    height: 100%;
-                    top: 0;
-                    right: 0;
-                    width: 6px;
-                    -webkit-transition: all .5s;
-                    transition: all .5s;
-                    opacity: 1;
-                }
-                &:hover .scroll-hider {
-                    opacity: 0;
-                    -webkit-transition: all .5s;
-                    transition: all .5s;
-                }
-
-                .card {
-                    margin: 4px 0px;
-                    border-left: 3px solid;
-                    border-radius: 0px;
-                    padding: 8px 15px;
-                    cursor: pointer;
-                    box-shadow: none;
-
-                    .mat-mdc-card-header {
-                        padding: 0;
-                    }
-
-                    &.disabled {
-                        border-color: whitesmoke !important;
-                        color: rgba(0, 0, 0, 0.54);
-                    }
-                }
-            }
-        }
     }
 }
 
