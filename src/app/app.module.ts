@@ -51,6 +51,7 @@ import {
     ArlasIamService,
     ArlasSettingsService,
     ArlasStartupService,
+    ArlasToolKitModule,
     ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
     CONFIG_UPDATER,
     ConfigMenuModule, configUpdaterFactory,
@@ -71,13 +72,15 @@ import { CardDropdownComponent } from './components/dynamic-hub/collapse/card-dr
 import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
 import { HubActionModalComponent } from './components/hub-action-modal/hub-action-modal.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
-import { StaticHubComponent } from './components/static-hub/static-hub.component';
 import { PreviewPipe } from './pipes/preview.pipe';
 import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
+import { CollectionComponent } from './components/collection/collection.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export function loadServiceFactory(loadService: LoadService) {
-    const load = () => loadService.init('config.json?' + Date.now());
+    const load = () => loadService.init();
     return load;
 
 }
@@ -116,10 +119,10 @@ export class CustomTranslateLoader implements TranslateLoader {
         DynamicHubComponent,
         HubActionModalComponent,
         LeftMenuComponent,
-        StaticHubComponent,
         PreviewPipe,
         CardDropdownComponent,
-        DashboardSearchComponent
+        DashboardSearchComponent,
+        CollectionComponent
     ],
     bootstrap: [AppComponent],
     imports: [AppRoutingModule,
@@ -136,14 +139,17 @@ export class CustomTranslateLoader implements TranslateLoader {
         MatDividerModule,
         MatTooltipModule,
         MatIconModule,
+        MatTableModule,
         MatInputModule,
         MatMenuModule,
         MatSelectModule,
         MatSidenavModule,
+        MatSlideToggleModule,
         MatPaginatorModule,
         MatListModule,
         MatTooltipModule,
         MatProgressBarModule,
+        MarkerModule,
         ConfigMenuModule,
         ArlasToolkitSharedModule,
         ReactiveFormsModule,
@@ -157,11 +163,13 @@ export class CustomTranslateLoader implements TranslateLoader {
         }),
         OAuthModule.forRoot(),
         GetValueModule,
-        GetCollectionDisplayModule], providers: [
+        GetCollectionDisplayModule
+    ],
+    providers: [
         SidenavService,
         forwardRef(() => LoadService),
+        ArlasCollaborativesearchService,
         forwardRef(() => ArlasStartupService),
-        forwardRef(() => ArlasCollaborativesearchService),
         {
             provide: APP_INITIALIZER,
             useFactory: loadServiceFactory,
