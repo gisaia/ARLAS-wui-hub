@@ -22,7 +22,6 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ArlasSettingsService } from 'arlas-wui-toolkit';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
-import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
 
 @Component({
@@ -33,8 +32,6 @@ import { SidenavService } from './services/sidenav.service';
 export class AppComponent implements OnInit, OnDestroy {
 
     public onSideNavChange: boolean;
-    public useStatic: boolean;
-    public appReady = false;
     public title = 'ARLAS-wui-hub';
     public displayMenu = true;
     public version: string;
@@ -42,14 +39,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private _onDestroy$ = new Subject<boolean>();
 
     public constructor(
-        private loadService: LoadService,
         private sidenavService: SidenavService,
         private titleService: Title,
         private arlasSettingsService: ArlasSettingsService,
         private router: Router
     ) {
-        this.useStatic = this.loadService.appData?.static;
-        this.appReady = true;
         this.sidenavService.sideNavState?.subscribe(res => {
             this.onSideNavChange = res;
         });

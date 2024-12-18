@@ -1,8 +1,4 @@
-<div *ngIf="useStatic && appReady" class="wrapper">
-  <arlas-static-hub></arlas-static-hub>
-</div>
-
-<div *ngIf="!useStatic && appReady" class="wrapper">
+<div class="wrapper">
   <arlas-top-menu [wuiName]="'ARLAS-Hub'" [version]="version">
     <div left-menu class="top-left-menu">
       <div class="logo">

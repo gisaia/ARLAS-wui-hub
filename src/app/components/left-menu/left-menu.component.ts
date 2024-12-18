@@ -45,7 +45,20 @@ export class LeftMenuComponent implements OnInit {
         this.expand = this.translate.instant('expand');
     }
 
-    public ngOnInit() {  }
+    public ngOnInit() {
+        this.pages = [
+            {
+                link: 'dashboard',
+                name: 'Dashboards',
+                icon: 'dashboard'
+            },
+            {
+                link: 'collection',
+                name: 'Collections',
+                icon: 'library_books'
+            }
+        ];
+    }
 
     public expandMenu() {
         this.isLabelDisplayed = !this.isLabelDisplayed;
