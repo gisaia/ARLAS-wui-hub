@@ -16,28 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Injectable, Injector, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ArlasStartupService, ArlasSettings } from 'arlas-wui-toolkit';
+import { Injectable } from '@angular/core';
+import { ArlasCollaborativesearchService, ArlasConfigService, ArlasSettings, ArlasStartupService } from 'arlas-wui-toolkit';
 
 @Injectable()
 export class LoadService {
 
-    public appData: any;
-
     public constructor(
-        private arlasStartupService: ArlasStartupService,
-        private https: HttpClient) {
+        private configService: ArlasConfigService,
+        private arlasCss: ArlasCollaborativesearchService,
+        private arlasStartupService: ArlasStartupService
+    ) {
     }
 
-    public init(config: string): Promise<any> {
-        return this.https
-            .get(config)
-            .toPromise()
-            .then(response => this.appData = response)
-            .then(() => this.arlasStartupService.applyAppSettings())
+    public init(): Promise<any> {
+        return this.arlasStartupService.applyAppSettings()
             .then((s: ArlasSettings) => this.arlasStartupService.authenticate(s))
             .then((s: ArlasSettings) => this.arlasStartupService.enrichHeaders(s))
+            .then((s: ArlasSettings) => new Promise((resolve, reject) => {
+                this.configService.setConfig({});
+                resolve('Successfullly initialized app');
+            }))
             .then(() => this.arlasStartupService.translationLoaded({}))
             .catch(error => {
                 console.log(error);

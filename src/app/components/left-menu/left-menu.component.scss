@@ -17,27 +17,21 @@
  * under the License.
  */
 
-@import 'variables.scss';
+@import "../../../variables.scss";
+
+:host {
+    .mdc-list-item {
+        padding: 0 12px !important;
+        .mat-icon {
+            color: rgba(0, 0, 0, 0.75);
+        }
+    }
+}
 
 .menu_container {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: $left-menu-width ;
-    .logo {
-        padding-top: 7px;
-        margin: 0 auto;
-    }
-
-    .toggler {
-        display: flex;
-        justify-content: flex-end;
-        padding: 15px;
-    }
-
-
-    &.hide-label span {
-        display: none;
-    }
+    width: $left-menu-width;
 }

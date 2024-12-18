@@ -2,14 +2,14 @@
 ############   AUTHENTICATION SETTINGS   ###############
 ########################################################
 authentication:
-  use_authent: false
+  use_authent: true
   force_connect: false
-  use_discovery: true
+  use_discovery: false
   auth_mode: 'iam'
   url: 'https://localhost/arlas_iam_server'
   threshold: 60000
   scope: openid
-  issuer: http://mgoun/auth/realms/arlas
+  issuer: https://arlas-cloud-dev.eu.auth0.com/
   client_id: arlasfrontend
   redirect_uri: NOT_CONFIGURED
   silent_refresh_redirect_uri: http://localhost:4200/silent-refresh.html
