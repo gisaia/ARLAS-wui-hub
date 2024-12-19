@@ -27,10 +27,16 @@ authentication:
   custom_query_params: [{"audience":"http://arlas.io/api/server"}]
   sign_up_enabled: true
 
+########################################################
+############   Persistence SETTINGS   ##################
+########################################################
 persistence:
-  url: http://localhost/persist
+  url: https://cloud.arlas.io/arlas/persistence
+########################################################
+############   Permissions SETTINGS   ##################
+########################################################
 permission:
-  url: 'http://localhost/arlas_permissions_server'
+  url: https://cloud.arlas.io/arlas/permissions
 arlas_wui_url: "http://localhost:4200"
 arlas_builder_url: "http://localhost:4200"
 links: []

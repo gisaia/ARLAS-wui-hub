@@ -19,7 +19,7 @@
 
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { marker } from '@biesbjerg/ngx-translate-extract-marker';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { UserOrgData } from 'arlas-iam-api';
 import { PersistenceService } from 'arlas-wui-toolkit';
 

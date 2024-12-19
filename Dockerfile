@@ -1,12 +1,12 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'hub'
-FROM node:16.19.0 as hub
+FROM node:18.20.5 AS hub
 
 COPY package.json package-lock.json ./
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN export NODE_OPTIONS=--max_old_space_size=8192 && npm install && mkdir /ng-app && cp -R ./node_modules ./ng-app
+RUN npm i --ignore-scripts && npm run postinstall && mkdir /ng-app && cp -R ./node_modules ./ng-app
 
 COPY ./scripts/start.sh ./ng-app
 
@@ -15,7 +15,7 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN export NODE_OPTIONS=--max_old_space_size=8192 && $(npm bin)/ng build --configuration production --aot --base-href='$ARLAS_HUB_BASE_HREF/'
+RUN npm run build
 
 ### STAGE 2: Setup ###
 

@@ -5,11 +5,11 @@
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "esModuleInterop": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "target": "ES2022",
     "typeRoots": [
@@ -20,7 +20,7 @@
       "dom"
     ],
     "module": "es2015",
-    "baseUrl": "./",
+    "baseUrl": "src",
     "useDefineForClassFields": false
   }
 }

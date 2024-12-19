@@ -11,7 +11,8 @@
     },
     "plugins": [
         "@angular-eslint/eslint-plugin",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "@stylistic"
     ],
     "rules": {
         "@angular-eslint/component-class-suffix": "error",
@@ -49,7 +50,7 @@
                 "accessibility": "explicit"
             }
         ],
-        "@typescript-eslint/member-delimiter-style": [
+        "@stylistic/member-delimiter-style": [
             "error",
             {
                 "multiline": {
@@ -88,7 +89,7 @@
         ],
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/prefer-function-type": "error",
-        "@typescript-eslint/quotes": [
+        "@stylistic/quotes": [
             2,
             "single",
             {
@@ -96,10 +97,10 @@
               "allowTemplateLiterals": true
             }
         ],
-        "@typescript-eslint/semi": [
+        "@stylistic/semi": [
             "error"
         ],
-        "@typescript-eslint/type-annotation-spacing": "error",
+        "@stylistic/type-annotation-spacing": "error",
         "@typescript-eslint/unified-signatures": "error",
         "arrow-body-style": "error",
         "brace-style": [

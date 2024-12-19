@@ -1,5 +1,5 @@
 <mat-card  class="card mat-elevation-z1">
-    <div (click)="clickOnAction(action.VIEW)" class="card_preview" [class.no-preview]="card?.preview === NO_PREVIEW_ASSET">
+    <div (click)="clickOnAction(action.VIEW)" class="card_preview" [class.no-preview]="card?.preview === NO_PREVIEW_ASSET" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}">
         <div class="preview_info">
             <div class="info_item">
                 <mat-icon matTooltip="{{'Private' | translate}}" *ngIf="status === 'private'" >lock</mat-icon>
@@ -24,7 +24,7 @@
     </div>
     <mat-card-content class="card_meta">
         <div class="meta_title-container">
-            <div class="meta_title text-ellipsis" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}" [matTooltipPosition]="'above'"> {{card?.title | translate}}</div>
+            <div class="meta_title text-ellipsis"> {{card?.title | translate}}</div>
             <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
                                [actions]="card?.actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
         </div>
