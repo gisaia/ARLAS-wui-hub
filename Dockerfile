@@ -1,12 +1,12 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'hub'
-FROM node:18.20.5 as hub
+FROM node:18.20.5 AS hub
 
 COPY package.json package-lock.json ./
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN export NODE_OPTIONS=--max_old_space_size=8192 && npm install && mkdir /ng-app && cp -R ./node_modules ./ng-app
+RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
 
 COPY ./scripts/start.sh ./ng-app
 
