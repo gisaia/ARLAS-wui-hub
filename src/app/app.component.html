@@ -11,7 +11,7 @@
           <img src="assets/hub-icon.png"/>
         </a>
       </div>
-        <arlas-dashboard-search *ngIf="displayMenu" class="search" [searchPlaceholder]="'searchPlaceholder'"></arlas-dashboard-search>
+        <arlas-dashboard-search *ngIf="displayMenu" class="search" [searchPlaceholder]="'searchPlaceholder' | marker"></arlas-dashboard-search>
     </div>
     <div right-menu class="title" id="title">
       <mat-divider vertical class="vertical-divider"></mat-divider>

@@ -98,7 +98,11 @@ export class CardComponent implements AfterViewInit, OnInit {
     }
 
     public initDashboardVisibility() {
-        this.status = this.card.isPublic ? 'public' : (this.rights.length === 0) ? 'private' : 'shared';
+        this.status = this.isPublic(this.rights) ? 'public' : (this.rights.length === 0) ? 'private' : 'shared';
+    }
+
+    private isPublic(readers:  CardRights[]): boolean{
+        return readers.find(g => g.name === 'public') !== undefined;
     }
 
     public ngAfterViewInit() {

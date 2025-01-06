@@ -90,7 +90,7 @@ h2 {
         }
         .collection {
             flex: 1;
-
+            flex-shrink: 0;
             &-wrapper {
                 height: calc(100vh - ($top-menu-height + $header-height));
                 position: sticky;
