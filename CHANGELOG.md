@@ -1,5 +1,63 @@
 # Change Log
 
+## [v26.0.1-1](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.0.1-1) (2025-01-06)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.1.1...v26.0.1-1)
+
+**New stuff:**
+
+- Add a dedicated view to collections [\#190](https://github.com/gisaia/ARLAS-wui-hub/issues/190)
+
+**Fixed bugs:**
+
+- dashboards cannot be shared to public even if the collection is public [\#221](https://github.com/gisaia/ARLAS-wui-hub/issues/221)
+- When we search dashboards and there is no result, display a message mentionning that [\#220](https://github.com/gisaia/ARLAS-wui-hub/issues/220)
+- Fix translation of public dashboards [\#219](https://github.com/gisaia/ARLAS-wui-hub/issues/219)
+- Public dashbords still have the 'shared' icon instead of the 'public' icon [\#218](https://github.com/gisaia/ARLAS-wui-hub/issues/218)
+
+## [v26.1.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.1.1) (2024-12-10)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.1.0...v26.1.1)
+
+## [v26.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.1.0) (2024-12-02)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.0.3...v26.1.0)
+
+**New stuff:**
+
+- Align collections list with organisation bar [\#211](https://github.com/gisaia/ARLAS-wui-hub/issues/211)
+- When you search, a progress bar appears, shifting everything downwards each time you type a letter [\#208](https://github.com/gisaia/ARLAS-wui-hub/issues/208)
+
+**Fixed bugs:**
+
+- Make some paddings in between cards and creation/import buttons [\#212](https://github.com/gisaia/ARLAS-wui-hub/issues/212)
+- Dashboards searchbar should not be proposed in login page [\#210](https://github.com/gisaia/ARLAS-wui-hub/issues/210)
+- When you do a search and then close the search by clicking on the cross, the last dashboard looks weird [\#209](https://github.com/gisaia/ARLAS-wui-hub/issues/209)
+- Missing dashboard after search [\#207](https://github.com/gisaia/ARLAS-wui-hub/issues/207)
+
+## [v26.0.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.0.3) (2024-11-14)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.0.2...v26.0.3)
+
+## [v26.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.0.2) (2024-11-13)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.0.1...v26.0.2)
+
+**New stuff:**
+
+- Pin the collection list to the right. And scroll the dashbords to the left independently [\#199](https://github.com/gisaia/ARLAS-wui-hub/issues/199)
+- Full text search on dashboard titles in ARLAS Hub [\#202](https://github.com/gisaia/ARLAS-wui-hub/issues/202)
+- Add a chevron to collapse dashboards under an organisation [\#196](https://github.com/gisaia/ARLAS-wui-hub/issues/196)
+- Public dashboards should be the last dashboards to explore [\#195](https://github.com/gisaia/ARLAS-wui-hub/issues/195)
+- Rework cards ergonomy [\#191](https://github.com/gisaia/ARLAS-wui-hub/issues/191)
+
+**Fixed bugs:**
+
+- Sharing the dashboard is allowed when one of the collection isn't [\#204](https://github.com/gisaia/ARLAS-wui-hub/issues/204)
+- Collections of public dashboards are not displayed on the collections list to the right [\#198](https://github.com/gisaia/ARLAS-wui-hub/issues/198)
+- When logged in, public previews are not visible [\#197](https://github.com/gisaia/ARLAS-wui-hub/issues/197)
+- Public dashboard preview not working for organisation out of gisaia [\#193](https://github.com/gisaia/ARLAS-wui-hub/issues/193)
+
 ## [v26.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.0.1) (2024-09-11)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.0.0...v26.0.1)
