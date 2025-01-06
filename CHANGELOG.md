@@ -1,5 +1,24 @@
 # Change Log
 
+## [v26.1.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.1.2) (2025-01-06)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.0.1-1...v26.1.2)
+
+## [v26.0.1-1](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.0.1-1) (2025-01-06)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.1.1...v26.0.1-1)
+
+**New stuff:**
+
+- Add a dedicated view to collections [\#190](https://github.com/gisaia/ARLAS-wui-hub/issues/190)
+
+**Fixed bugs:**
+
+- dashboards cannot be shared to public even if the collection is public [\#221](https://github.com/gisaia/ARLAS-wui-hub/issues/221)
+- When we search dashboards and there is no result, display a message mentionning that [\#220](https://github.com/gisaia/ARLAS-wui-hub/issues/220)
+- Fix translation of public dashboards [\#219](https://github.com/gisaia/ARLAS-wui-hub/issues/219)
+- Public dashbords still have the 'shared' icon instead of the 'public' icon [\#218](https://github.com/gisaia/ARLAS-wui-hub/issues/218)
+
 ## [v26.1.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v26.1.1) (2024-12-10)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v26.1.0...v26.1.1)
