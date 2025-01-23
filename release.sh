@@ -118,6 +118,9 @@ if [ "${STAGE}" == "beta" ] || [ "${STAGE}" == "rc" ];
         fi
 fi
 
+git config --local user.email "github-actions[bot]@users.noreply.github.com"
+git config --local user.name "github-actions[bot]"
+
 echo "==> Get ${REF_BRANCH} branch"
 git checkout "${REF_BRANCH}"
 git pull origin "${REF_BRANCH}"
