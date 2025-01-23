@@ -3,6 +3,9 @@ set -e
 
 if  [ -z "$GITHUB_CHANGELOG_TOKEN"  ] ; then echo "Please set GITHUB_CHANGELOG_TOKEN environment variable"; exit -1; fi
 
+echo "=> Docker login"
+echo "${DOCKER_PASSWORD}" | docker login -u ${DOCKER_USERNAME} --password-stdin
+
 function clean {
     ARG=$?
 	echo "==> Exit status = $ARG"
@@ -11,9 +14,8 @@ function clean {
 trap clean EXIT
 
 usage(){
-	echo "Usage: ./release.sh -version=X [--no-tests]"
+	echo "Usage: ./release.sh -version=X"
   echo " -version                             Release ARLAS-hub X version"
-	echo " --no-tests                           Skip running integration tests"
   echo " --not-latest                         Doesn't tag the release version as the latest."
   echo " -s|--stage                           Stage of the release : beta | rc | stable. If --stage is 'rc' or 'beta', there is no merge of develop into master (if -ref_branch=develop)"
   echo " -i|--stage_iteration=n               The released version will be : [x].[y].[z]-beta.[n] OR  [x].[y].[z]-rc.[n] according to the given --stage"
@@ -21,6 +23,17 @@ usage(){
   echo "    Add -ref_branch=develop for a new official release"
   echo "    Add -ref_branch=x.x.x for a maintenance release"
 	exit 1
+}
+
+send_chat_message(){
+    MESSAGE=$1
+    if [ -z "$GOOGLE_CHAT_RELEASE_CHANEL" ] ; then
+        echo "Environement variable GOOGLE_CHAT_RELEASE_CHANEL is not definied ... skipping message publishing"
+    else
+        DATA='{"text":"'${MESSAGE}'"}'
+        echo $DATA
+        curl -X POST --header "Content-Type:application/json" $GOOGLE_CHAT_RELEASE_CHANEL -d "${DATA}"
+    fi
 }
 
 STAGE="stable"
@@ -33,10 +46,6 @@ case $i in
     -version=*)
     VERSION="${i#*=}"
     shift # past argument=value
-    ;;
-    --no-tests)
-    TESTS="NO"
-    shift # past argument with no value
     ;;
     --not-latest)
     IS_LATEST_VERSION="NO"
@@ -113,14 +122,6 @@ echo "==> Get ${REF_BRANCH} branch"
 git checkout "${REF_BRANCH}"
 git pull origin "${REF_BRANCH}"
 
-if [ "$TESTS" == "YES" ]; then
-  ng lint
-  ng test
-  ng e2e
-else
-  echo "==> Skip tests"
-fi
-
 if [ "${STAGE}" == "rc" ] || [ "${STAGE}" == "beta" ];
   then
   VERSION="${VERSION}-${STAGE}.${STAGE_ITERATION}"
@@ -135,7 +136,7 @@ git tag -a v${VERSION} -m "Release prod version ${VERSION}"
 git push origin v${VERSION}
 
 echo "==> Generate CHANGELOG"
-docker run -it --rm -v "$(pwd)":/usr/local/src/your-app gisaia/github-changelog-generator:latest github_changelog_generator \
+docker run --rm -v "$(pwd)":/usr/local/src/your-app gisaia/github-changelog-generator:latest github_changelog_generator \
   -u gisaia -p ARLAS-wui-hub --token ${GITHUB_CHANGELOG_TOKEN} --no-pr-wo-labels --no-issues-wo-labels --no-unreleased \
   --issue-line-labels conf,documentation \
   --exclude-labels type:duplicate,type:question,type:wontfix,type:invalid \
@@ -191,3 +192,8 @@ git commit -a -m "Set development version to ${newDevVersion}-dev"
 git push origin ${REF_BRANCH}
 
 echo "==> Well done :)"
+
+if [ "$STAGE" == "stable" ] || [ "$STAGE" == "rc" ];
+    then
+    send_chat_message "Release of arlas-wui-hub, version ${VERSION}"
+fi
