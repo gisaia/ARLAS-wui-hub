@@ -38,6 +38,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MarkerModule } from '@colsen1991/ngx-translate-extract-marker/extras';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { GetCollectionDisplayModule, GetValueModule } from 'arlas-web-components';
@@ -65,6 +66,8 @@ import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.modules';
 import { AppComponent } from './app.component';
 import { CardComponent } from './components/card/card.component';
+import { DashboardSearchComponent } from './components/dashboard-search/dashboard-search.component';
+import { CardDropdownComponent } from './components/dynamic-hub/collapse/card-dropdown.component';
 import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
 import { HubActionModalComponent } from './components/hub-action-modal/hub-action-modal.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
@@ -72,8 +75,6 @@ import { StaticHubComponent } from './components/static-hub/static-hub.component
 import { PreviewPipe } from './pipes/preview.pipe';
 import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
-import { CardDropdownComponent } from './components/dynamic-hub/collapse/card-dropdown.component';
-import { DashboardSearchComponent } from './components/dashboard-search/dashboard-search.component';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init('config.json?' + Date.now());
@@ -82,11 +83,11 @@ export function loadServiceFactory(loadService: LoadService) {
 }
 export class CustomTranslateLoader implements TranslateLoader {
 
-    public constructor(private http: HttpClient) { }
+    public constructor(private readonly http: HttpClient) { }
 
     public getTranslation(lang: string): Observable<any> {
         const apiAddress = 'assets/i18n/' + lang + '.json?' + Date.now();
-        return Observable.create(observer => {
+        return new Observable(observer => {
             this.http.get(apiAddress).subscribe(
                 res => {
                     let merged = res;
@@ -120,7 +121,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         CardDropdownComponent,
         DashboardSearchComponent
     ],
-    bootstrap: [AppComponent], imports: [AppRoutingModule,
+    bootstrap: [AppComponent],
+    imports: [AppRoutingModule,
         ActionModalModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -197,7 +199,8 @@ export class CustomTranslateLoader implements TranslateLoader {
             useFactory: getOptionsFactory,
             deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
         },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        MarkerModule
     ]
 })
 export class AppModule { }
