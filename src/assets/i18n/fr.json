@@ -10,7 +10,7 @@
 	"Select": "Sélectionner",
 	"Create a new Exploration Dashboard": "Créer un nouveau dashboard d'Exploration",
 	"Import an Exploration Dashboard": "Importer un nouveau dashboard d'Exploration",
-	"Dashboards": "Dashboards",
+	"Dashboards": "{{dashboard}} - Dashboards",
 	"Public dashboards": "Dashboards publics",
 	"No dashboard available": "Aucun dashboard disponible",
 	"Collections": "Collections",
