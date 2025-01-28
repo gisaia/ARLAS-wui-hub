@@ -157,7 +157,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         }),
         OAuthModule.forRoot(),
         GetValueModule,
-        GetCollectionDisplayModule], providers: [
+        GetCollectionDisplayModule, MarkerModule], providers: [
         SidenavService,
         forwardRef(() => LoadService),
         forwardRef(() => ArlasStartupService),

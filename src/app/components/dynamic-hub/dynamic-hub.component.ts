@@ -372,7 +372,7 @@ export class DynamicHubComponent implements OnInit {
         this.cards = new Map<string, Card[]>();
         this.cardsRef = new Map<string, Card[]>();
         this.canCreateDashboardByOrg = new Map<string, boolean>();
-        if (this.authentMode === 'iam' && this.connected) {
+        if (this.authentMode === 'iam' && this.connected && this.orgs.length > 0) {
             this.fetchCardsByUserOrganisation();
         } else {
             this.fetchAllCards();

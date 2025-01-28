@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+      "start:iam": "ng serve --ssl --ssl-cert=$EXPLO_SSL_CERT --ssl-key=$EXPLO_SSL_KEY",
     "build": "ng build --configuration production --aot --base-href='$ARLAS_HUB_BASE_HREF/'",
     "test": "ng test",
     "lint": "ng lint",
