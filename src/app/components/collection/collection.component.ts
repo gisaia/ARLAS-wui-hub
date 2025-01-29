@@ -17,11 +17,17 @@
  * under the License.
  */
 import { Component, model, OnInit, signal, WritableSignal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription } from 'arlas-api';
 import { UserOrgData } from 'arlas-iam-api';
-import { ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService } from 'arlas-wui-toolkit';
-import { forkJoin, Observable } from 'rxjs';
+import {
+    ArlasCollaborativesearchService, ArlasIamService,
+    ArlasSettingsService, ArlasStartupService, ConfirmModalComponent
+} from 'arlas-wui-toolkit';
+import { filter, forkJoin, Observable } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'arlas-collection',
@@ -39,7 +45,7 @@ export class CollectionComponent implements OnInit {
     public isAuthentActivated: boolean;
     public authentMode: 'openid' | 'iam';
 
-    public displayedColumns = ['name', 'display_name', 'owner', 'shared_with', 'is_public', 'action'];
+    public displayedColumns = ['name', 'display_name'];
     public isLoading = false;
 
     // Filters
@@ -51,7 +57,10 @@ export class CollectionComponent implements OnInit {
         private arlasSettingsService: ArlasSettingsService,
         private arlasIamService: ArlasIamService,
         private arlasStartupService: ArlasStartupService,
-        private collabSearchService: ArlasCollaborativesearchService
+        private collabSearchService: ArlasCollaborativesearchService,
+        private dialog: MatDialog,
+        private translate: TranslateService,
+        private router: Router
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -73,14 +82,24 @@ export class CollectionComponent implements OnInit {
         if (this.arlasStartupService.shouldRunApp) {
             if (this.authentMode === 'iam') {
                 if (!!this.arlasIamService.user) {
+                    this.displayedColumns.push(...['owner', 'shared_with', 'is_public']);
+                    if (this.arlasIamService.user.roles.some(r => r.name === 'role/arlas/datasets')) {
+                        this.displayedColumns.push('action');
+                    }
                     this.organisations.set(this.arlasIamService.user.organisations);
                     this.organisationsNames.set(this.organisations().map(o => o.name));
                     this.getCollectionsByOrg();
                     this.connected.set(true);
+                    this.collectionService.setOptions({
+                        headers: {
+                            Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
+                        }
+                    });
                 } else {
                     this.organisations.set([]);
                     this.getCollections();
                     this.connected.set(false);
+                    this.collectionService.setOptions({});
                 }
             }
         }
@@ -89,28 +108,17 @@ export class CollectionComponent implements OnInit {
 
     public getCollectionsByOrg() {
         this.collections.set([]);
-        const collectionsObs: Observable<CollectionReferenceDescription[]>[] = [];
-        this.organisations().map(o => o.name).forEach(o => {
-            const iamHeader = {
-                Authorization: 'Bearer ' + this.arlasIamService.getAccessToken(),
-                'arlas-org-filter': o
-            };
-
-            const fetchOptions = { headers: iamHeader };
-
-            this.collabSearchService.setFetchOptions(fetchOptions);
-            collectionsObs.push(this.collectionService.getCollectionsReferenceDescription());
-        });
-        forkJoin(collectionsObs)
+        const iamHeader = {
+            Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
+        };
+        const fetchOptions = { headers: iamHeader };
+        this.collabSearchService.setFetchOptions(fetchOptions);
+        this.collectionService.getCollectionsReferenceDescription()
             .subscribe({
                 next: (crds) => {
                     const collectionsList: CollectionReferenceDescription[] = [];
-                    crds.forEach(clcts => {
-                        clcts.forEach(c => {
-                            if (!collectionsList.find(col => col.collection_name === c.collection_name)) {
-                                collectionsList.push(c);
-                            }
-                        });
+                    crds.forEach(clc => {
+                        collectionsList.push(clc);
                     });
                     this.collections.set(collectionsList);
                     this.filteredCollections.set(this.collections());
@@ -148,13 +156,31 @@ export class CollectionComponent implements OnInit {
         }
         // filter collections with text
         if (keepIt && this.searchValue !== '') {
-            keepIt = c.collection_name.includes(this.searchValue);
+            keepIt = c.collection_name.includes(this.searchValue) || c.params.display_names.collection.includes(this.searchValue);
         }
         return keepIt;
     }
 
     public filterCollections() {
         this.filteredCollections.set(this.collections().filter(c => this.applyFilters(c)));
+    }
+
+    public openDelete(collectionName: string) {
+        const matDialogRef = this.dialog.open(ConfirmModalComponent, { disableClose: true });
+        matDialogRef.componentInstance.confirmHTLMMessage =
+            this.translate.instant('Delete the collection: ') + '<strong>' + collectionName + '</strong> ?';
+        matDialogRef.afterClosed()
+            .pipe(filter(result => result !== false))
+            .subscribe(result => {
+                this.collectionService.deleteCollection(collectionName).subscribe({
+                    next: () => console.log('deleted')
+                });
+            });
+
+    }
+
+    public openUpdate(collectionName: string) {
+        this.router.navigate(['collection', 'edit', collectionName]);
     }
 
 }

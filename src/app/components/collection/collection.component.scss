@@ -56,5 +56,19 @@
     }
 
     &__content {
+        &__table {
+            .mat-column-is_public,
+            .mat-column-action {
+                width: 100px;
+            }
+
+            .mat-column-owner {
+                width: 200px;
+            }
+
+            .mat-column-shared_with {
+                width: 300px;
+            }
+        }
     }
 }
