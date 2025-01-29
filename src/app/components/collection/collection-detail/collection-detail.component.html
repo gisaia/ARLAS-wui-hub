@@ -1,0 +1,101 @@
+<div class="collection" *ngIf="!!collection">
+    <div class="collection__title">
+        <span>
+            <button mat-stroked-button>« Collections</button>
+        </span>
+        <span class="collection__title__display-name">{{collection.params.display_names.collection}}</span>
+        <span class="collection__title__name">({{collection.collection_name}})</span>
+    </div>
+    <div class="collection__info">
+        <div class="collection__info__visibility">
+            <div class="collection__info__visibility__title">
+                {{'Visibility' | translate}}
+            </div>
+            <div class="collection__info__visibility__items">
+                <div class="collection__info__visibility__items__item">
+                    <span class="prop">{{'Owner' | translate}}</span>
+                    <span class="value">{{collection.params.organisations.owner}}</span>
+                </div>
+                <div class="collection__info__visibility__items__item">
+                    <span class="prop">{{'Shared with' | translate}}</span>
+                    <span class="value">{{collection.params.organisations.shared}}</span>
+                </div>
+                <div class="collection__info__visibility__items__item">
+                    <span class="prop">{{'is Public' | translate}}</span>
+                    <span class="value">{{$any(collection.params.organisations).public}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="collection__info__params">
+            <div class="collection__info__params__title">
+                {{'Parameters' | translate}}
+            </div>
+            <div class="collection__info__params__items">
+                <div class="collection__info__params__items__item">
+                    <span class="prop">{{'id' | translate}}</span>
+                    <span class="value">{{collection.params.id_path}}</span>
+                </div>
+                <div class="collection__info__params__items__item">
+                    <span class="prop">{{'Centroid' | translate}}</span>
+                    <span class="value">{{collection.params.centroid_path}}</span>
+                </div>
+                <div class="collection__info__params__items__item">
+                    <span class="prop">{{'Geometry' | translate}}</span>
+                    <span class="value">{{collection.params.geometry_path}}</span>
+                </div>
+                <div class="collection__info__params__items__item">
+                    <span class="prop">{{'Timestamp' | translate}}</span>
+                    <span class="value">{{collection.params.timestamp_path}}</span>
+                </div>
+                <div class="collection__info__params__items__item">
+                    <span class="prop">{{'Index name' | translate}}</span>
+                    <span class="value">{{collection.params.index_name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collection__fields">
+        <div class="collection__fields__title">{{'Fields' | translate}}</div>
+        <div class="collection__fields__table">
+            <table mat-table [dataSource]="fields">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Name' | translate}} </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.name}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="display_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Display name' | translate}} </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.display_name }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Type' | translate}} </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.type}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="taggable">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Taggable' | translate}} </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.taggable}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="indexed">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Indexed' | translate}} </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.indexed}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

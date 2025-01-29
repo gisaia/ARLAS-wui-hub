@@ -78,6 +78,7 @@ import { CollectionComponent } from './components/collection/collection.componen
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MarkerModule } from '@colsen1991/ngx-translate-extract-marker/extras';
+import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init();
@@ -122,7 +123,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         PreviewPipe,
         CardDropdownComponent,
         DashboardSearchComponent,
-        CollectionComponent
+        CollectionComponent,
+        CollectionDetailComponent
     ],
     bootstrap: [AppComponent],
     imports: [AppRoutingModule,
