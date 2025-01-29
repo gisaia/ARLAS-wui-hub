@@ -17,14 +17,17 @@
  * under the License.
  */
 import { Injectable } from '@angular/core';
-import { CollectionReferenceDescription, Configuration } from 'arlas-api';
+import { CollectionReferenceDescription, Configuration, CollectionsApi, Success, CollectionReference } from 'arlas-api';
 import { ArlasCollaborativesearchService, ArlasExploreApi } from 'arlas-wui-toolkit';
-import { Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CollectionService {
+
+    public arlasCollectionsApi: CollectionsApi;
+    public options;
 
     public constructor(
         private collabSearchService: ArlasCollaborativesearchService
@@ -35,10 +38,32 @@ export class CollectionService {
             'https://localhost/arlas',
             window.fetch
         );
+        const arlasCollectionApi: CollectionsApi = new CollectionsApi(
+            configuration,
+            'https://localhost/arlas',
+            window.fetch
+        );
         this.collabSearchService.setExploreApi(arlasExploreApi);
+        this.arlasCollectionsApi = arlasCollectionApi;
+    }
+
+    public getOptions(){
+        return this.options;
+    }
+
+    public setOptions(options): void {
+        this.options = options;
     }
 
     public getCollectionsReferenceDescription(): Observable<CollectionReferenceDescription[]> {
         return this.collabSearchService.list();
+    }
+
+    public getCollectionReference(collectionName: string, options = this.options): Observable<CollectionReference> {
+        return from(this.arlasCollectionsApi.get(collectionName, false, options));
+    }
+
+    public deleteCollection(name: string, options = this.options): Observable<Success> {
+        return from(this.arlasCollectionsApi._delete(name, false, options));
     }
 }

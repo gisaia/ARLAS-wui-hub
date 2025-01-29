@@ -24,7 +24,7 @@ export class MockPermissionService {
         return of({});
     }
 
-    public createPermissionApiInstance(){
+    public createPermissionApiInstance() {
     }
 
     public setOptions() {
@@ -55,4 +55,20 @@ export class MockArlasSettingsService {
     }
     public setSettings(): void {
     }
+}
+
+export function extractProp(y, separator = '.') {
+    const out = [];
+    function flatten(x, parent = '') {
+        Object.keys(x).forEach(key => {
+            const obj = x[key];
+            if (obj.type === 'OBJECT' && obj.hasOwnProperty('properties')) {
+                flatten(obj.properties, key);
+            } else {
+                out.push({ name: (parent !== '' ? parent + '.' : '') + key, taggable: obj.taggable, indexed: obj.indexed, type: obj.type });
+            }
+        });
+    }
+    flatten(y);
+    return out;
 }
