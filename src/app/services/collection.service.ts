@@ -17,7 +17,7 @@
  * under the License.
  */
 import { Injectable } from '@angular/core';
-import { CollectionReferenceDescription, Configuration, CollectionsApi, Success, CollectionReference } from 'arlas-api';
+import { CollectionReferenceDescription, Configuration, CollectionsApi, Success, CollectionReference, ExploreApi } from 'arlas-api';
 import { ArlasCollaborativesearchService, ArlasExploreApi } from 'arlas-wui-toolkit';
 import { from, Observable, of } from 'rxjs';
 
@@ -27,13 +27,14 @@ import { from, Observable, of } from 'rxjs';
 export class CollectionService {
 
     public arlasCollectionsApi: CollectionsApi;
+    public arlasExploreApi: ExploreApi;
     public options;
 
     public constructor(
         private collabSearchService: ArlasCollaborativesearchService
     ) {
         const configuration: Configuration = new Configuration();
-        const arlasExploreApi: ArlasExploreApi = new ArlasExploreApi(
+        const arlasExploreApi: ExploreApi = new ExploreApi(
             configuration,
             'https://localhost/arlas',
             window.fetch
@@ -43,11 +44,12 @@ export class CollectionService {
             'https://localhost/arlas',
             window.fetch
         );
-        this.collabSearchService.setExploreApi(arlasExploreApi);
         this.arlasCollectionsApi = arlasCollectionApi;
+        this.arlasExploreApi = arlasExploreApi;
+        this.collabSearchService.setExploreApi(this.arlasExploreApi);
     }
 
-    public getOptions(){
+    public getOptions() {
         return this.options;
     }
 
@@ -65,5 +67,9 @@ export class CollectionService {
 
     public deleteCollection(name: string, options = this.options): Observable<Success> {
         return from(this.arlasCollectionsApi._delete(name, false, options));
+    }
+
+    public updateFields(fields: { [key: string]: string; }, collection: string, options = this.options) {
+        return from(this.arlasCollectionsApi.patchFieldsDisplayNames(fields, collection, false, options));
     }
 }
