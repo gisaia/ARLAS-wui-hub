@@ -79,6 +79,7 @@ import { CollectionComponent } from './components/collection/collection.componen
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init();
@@ -147,6 +148,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         MatSelectModule,
         MatSidenavModule,
         MatSlideToggleModule,
+        MatProgressSpinnerModule,
         MatPaginatorModule,
         MatListModule,
         MatTooltipModule,

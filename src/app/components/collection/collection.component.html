@@ -1,4 +1,10 @@
 <div class="collection">
+    @if (isLoading) {
+    <div class="collection--loading">
+        <mat-spinner></mat-spinner>
+    </div>
+    }
+
     <div class="collection__header">
         <div class="collection__header__title">
             {{'Collections' | translate}}

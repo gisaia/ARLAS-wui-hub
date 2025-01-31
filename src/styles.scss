@@ -82,3 +82,23 @@ body {
 ::-webkit-scrollbar-thumb {
     background-color: #b1aeae;
 }
+
+.collection-update--success {
+    .mat-mdc-snackbar-surface {
+        background-color: green !important;
+        color: white;
+    }
+    .mdc-button__label{
+        color: white;
+    }
+}
+
+.collection-update--failed {
+    .mat-mdc-snackbar-surface {
+        background-color: red !important;
+        color: white;
+    }
+    .mdc-button__label{
+        color: white;
+    }
+}

@@ -25,7 +25,7 @@ import {
     ArlasCollaborativesearchService, ArlasIamService,
     ArlasSettingsService, ArlasStartupService, ConfirmModalComponent
 } from 'arlas-wui-toolkit';
-import { filter, forkJoin, Observable } from 'rxjs';
+import { filter, finalize, forkJoin, Observable } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
 import { Router } from '@angular/router';
 
@@ -107,6 +107,7 @@ export class CollectionComponent implements OnInit {
     }
 
     public getCollectionsByOrg() {
+        this.isLoading = true;
         this.collections.set([]);
         const iamHeader = {
             Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
@@ -114,6 +115,7 @@ export class CollectionComponent implements OnInit {
         const fetchOptions = { headers: iamHeader };
         this.collabSearchService.setFetchOptions(fetchOptions);
         this.collectionService.getCollectionsReferenceDescription()
+            .pipe(finalize(() => this.isLoading = false))
             .subscribe({
                 next: (crds) => {
                     const collectionsList: CollectionReferenceDescription[] = [];
