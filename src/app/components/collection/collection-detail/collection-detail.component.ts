@@ -25,7 +25,7 @@ import { CollectionService } from 'app/services/collection.service';
 import { CollectionField, extractProp } from 'app/tools/tools';
 import { CollectionReferenceDescription } from 'arlas-api';
 import { ArlasCollaborativesearchService } from 'arlas-wui-toolkit';
-import { finalize } from 'rxjs';
+import { concat, concatAll, delay, empty, finalize, forkJoin, Observable, of, reduce } from 'rxjs';
 
 @Component({
     selector: 'arlas-collection-detail',
@@ -66,12 +66,9 @@ export class CollectionDetailComponent implements OnInit {
 
                     this.collectionName = params.get('name');
                     if (!!this.collectionName) {
-                        this.collabSearchService.describe(this.collectionName).subscribe({
+                        this.collabSearchService.describe(this.collectionName, false, 0).subscribe({
                             next: (c) => {
-                                this.collection = c;
-                                this.fields = extractProp(c);
-                                this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names.collection);
-                                this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
+                                this.fillForm(c);
                             }
                         });
                     }
@@ -89,42 +86,68 @@ export class CollectionDetailComponent implements OnInit {
 
     public update() {
         this.isLoading = true;
-        const body = {};
-        const fields: CollectionField[] = this.collectionForm.get('display_names').value;
-        fields.filter(field => field.type !== 'OBJECT').forEach(f => body[f.name] = f.display_name);
-        this.collectionService.updateFields(body, this.collection.collection_name)
+
+        let collectionObs = of({});
+        if (this.collectionForm.get('collection_display_name').dirty) {
+            const collectionDisplayName = this.collectionForm.get('collection_display_name').value;
+            collectionObs = this.collectionService.updateCollectionDisplayName(collectionDisplayName, this.collection.collection_name);
+        }
+
+        const fieldsBody = {};
+        let updateFields = false;
+        if (this.collectionForm.get('display_names').dirty) {
+            updateFields = true;
+            const fields: CollectionField[] = this.collectionForm.get('display_names').value;
+            fields.filter(field => field.type !== 'OBJECT').forEach(f => fieldsBody[f.name] = f.display_name);
+        }
+        collectionObs
             .subscribe({
-                next: (collection) => {
-                    this.collabSearchService.describe(collection.collection_name)
-                        .pipe(finalize(() => this.isLoading = false))
-                        .subscribe({
-                            next: (c) => {
-                                this.snackbar.open(
-                                    'Collection updated', 'Ok',
-                                    {
-                                        duration: 30000, panelClass: 'collection-update--success',
-                                        horizontalPosition: 'center', verticalPosition: 'top'
+                next: () => {
+                    const fieldsObs = updateFields ? this.collectionService.updateFields(fieldsBody, this.collection.collection_name) : of({});
+                    fieldsObs.subscribe({
+                        next: () => {
+                            this.collabSearchService.describe(this.collection.collection_name, false, 0)
+                                .pipe(finalize(() => this.isLoading = false))
+                                .subscribe({
+                                    next: (c) => {
+                                        this.snackbar.open(
+                                            'Collection updated', 'Ok',
+                                            {
+                                                duration: 30000, panelClass: 'collection-update--success',
+                                                horizontalPosition: 'center', verticalPosition: 'top'
+                                            }
+                                        );
+                                        this.fillForm(c);
                                     }
-                                );
-                                this.collection = c;
-                                this.fields = extractProp(c);
-                                this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names.collection);
-                                this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
-                            }
-                        });
-                },
-                error: (err) => {
-                    this.isLoading = false;
-                    this.snackbar.open(
-                        'Update fail', 'Ok',
-                        {
-                            duration: 3000, panelClass: 'collection-update--failed',
-                            horizontalPosition: 'center', verticalPosition: 'top'
+                                });
+                        }, error: () => {
+                            this.updateFailed();
                         }
-                    );
-                    console.error(err);
+                    });
+
+                },
+                error: () => {
+                    this.updateFailed();
                 }
             });
+    }
+
+    private fillForm(c: CollectionReferenceDescription) {
+        this.collection = c;
+        this.fields = extractProp(c);
+        this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names.collection);
+        this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
+    }
+
+    private updateFailed() {
+        this.isLoading = false;
+        this.snackbar.open(
+            'Update fail', 'Ok',
+            {
+                duration: 3000, panelClass: 'collection-update--failed',
+                horizontalPosition: 'center', verticalPosition: 'top'
+            }
+        );
     }
 }
 

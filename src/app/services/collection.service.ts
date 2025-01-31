@@ -17,9 +17,17 @@
  * under the License.
  */
 import { Injectable } from '@angular/core';
-import { CollectionReferenceDescription, Configuration, CollectionsApi, Success, CollectionReference, ExploreApi } from 'arlas-api';
-import { ArlasCollaborativesearchService, ArlasExploreApi } from 'arlas-wui-toolkit';
-import { from, Observable, of } from 'rxjs';
+import {
+    CollectionReference,
+    CollectionReferenceDescription,
+    CollectionReferenceUpdateOrg,
+    CollectionsApi,
+    Configuration,
+    ExploreApi,
+    Success
+} from 'arlas-api';
+import { ArlasCollaborativesearchService } from 'arlas-wui-toolkit';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -71,5 +79,13 @@ export class CollectionService {
 
     public updateFields(fields: { [key: string]: string; }, collection: string, options = this.options) {
         return from(this.arlasCollectionsApi.patchFieldsDisplayNames(fields, collection, false, options));
+    }
+
+    public updateCollectionDisplayName(displayName: string, collection: string, options = this.options) {
+        return from(this.arlasCollectionsApi.patchCollectionDisplayName(displayName, collection, false, options));
+    }
+
+    public updateCollectionOrg(collectionOrg: CollectionReferenceUpdateOrg, collection: string, options = this.options) {
+        return from(this.arlasCollectionsApi.patch(collectionOrg, collection, false, options));
     }
 }
