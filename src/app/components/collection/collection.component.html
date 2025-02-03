@@ -62,8 +62,8 @@
             </ng-container>
 
             <ng-container matColumnDef="is_public">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'is Public' | translate}} </th>
-                <td mat-cell *matCellDef="let row"> {{row.params.organisations.public}}
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Visibility' | translate}} </th>
+                <td mat-cell *matCellDef="let row"> {{row.params.organisations.public ? 'Public' : 'Private' | translate}}
                 </td>
             </ng-container>
 
