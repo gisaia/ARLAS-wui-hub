@@ -21,37 +21,34 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    &__back {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 20px;
-        &__btn {
-            background-color: white;
-        }
-        &__update {
-            position: fixed;
-            right: 20px;
-        }
-    }
-
-    &__title {
-        padding: 10px 20px 0;
+    gap: 10px 0;
+    &__top {
+        position: sticky;
+        top: 0px;
+        z-index: 1;
         &__content {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0 10px;
             background-color: white;
-            padding: 5px 10px;
-            height: 40px;
             border: 1px solid rgba(0, 0, 0, 0.12);
-            width: 612px;
-            &__display-name {
-                font-size: 22px;
-                font-weight: bold;
+            border-top: none;
+            padding: 10px 10px;
+            &__btn {
+                background-color: white;
             }
-            &__name {
-                font-size: 16px;
-                color: rgba(0, 0, 0, 0.65);
+            &__title {
+                display: flex;
+                align-items: center;
+                gap: 0 10px;
+                .input-display-name {
+                    height: 24px !important;
+                }
+                &__name {
+                    color: rgba(0, 0, 0, 0.65);
+                }
+            }
+            &__update {
             }
         }
     }
@@ -59,58 +56,37 @@
     &__info {
         display: flex;
         flex-direction: row;
-        padding: 10px 20px;
-        gap: 20px;
-        &__visibility {
-            background-color: white;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            padding: 15px;
-            min-width: 250px;
-            &__title {
-                font-size: 16px;
-                font-weight: 500;
-                padding: 5px 0 10px;
-            }
-            &__items {
-                display: flex;
-                flex-direction: column;
-                gap: 5px 0;
-                &__item {
-                    display: flex;
-                    font-size: 14px;
-                    justify-content: space-between;
-                    .prop {
-                        text-decoration: underline;
-                        text-transform: lowercase;
-                    }
-                    .value {
-                    }
-                }
-            }
-        }
+        gap: 10px;
+        &__visibility,
         &__params {
             background-color: white;
             border: 1px solid rgba(0, 0, 0, 0.12);
             padding: 15px;
             min-width: 300px;
             &__title {
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: 500;
                 padding: 5px 0 10px;
             }
             &__items {
                 display: flex;
                 flex-direction: column;
-                gap: 5px 0;
+                gap: 10px 0;
                 &__item {
                     display: flex;
                     font-size: 14px;
                     justify-content: space-between;
+                    align-items: center;
+                    gap: 0 10px;
                     .prop {
                         text-decoration: underline;
                         text-transform: lowercase;
                     }
                     .value {
+                        .visibility-chip {
+                            background-color: unset;
+                            border: 1px solid rgba(0, 0, 0, 0.12);
+                        }
                     }
                 }
             }
@@ -120,11 +96,12 @@
     &__fields {
         display: flex;
         flex-direction: column;
-        padding: 0px 20px;
 
         &__title {
             background-color: white;
-            padding: 20px 15px;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 500;
             border: 1px solid rgba(0, 0, 0, 0.12);
             border-bottom: unset;
         }
@@ -135,7 +112,27 @@
             .input-display-name {
                 height: 24px !important;
             }
+            ::ng-deep .mat-mdc-table thead {
+                position: sticky;
+                top: 61px;
+                z-index: 1;
+            }
+            .striped-row {
+                background-color: rgba(0, 0, 0, 0.03);
+            }
         }
+    }
+    &--loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 56px;
+        right: 0;
+        background: rgba(0, 0, 0, 0.15);
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 

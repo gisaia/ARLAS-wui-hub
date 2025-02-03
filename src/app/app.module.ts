@@ -80,6 +80,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSortModule } from '@angular/material/sort';
+import { BooleanToTextPipe } from './pipes/booleanToText.pipe';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init();
@@ -125,7 +127,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         CardDropdownComponent,
         DashboardSearchComponent,
         CollectionComponent,
-        CollectionDetailComponent
+        CollectionDetailComponent,
+        BooleanToTextPipe
     ],
     bootstrap: [AppComponent],
     imports: [AppRoutingModule,
@@ -148,6 +151,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         MatSelectModule,
         MatSidenavModule,
         MatSlideToggleModule,
+        MatSortModule,
         MatProgressSpinnerModule,
         MatPaginatorModule,
         MatListModule,
