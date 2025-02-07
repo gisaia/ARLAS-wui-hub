@@ -34,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public onSideNavChange: boolean;
     public title = 'ARLAS-wui-hub';
     public displayMenu = true;
+    public displaySearchBar = true;
     public version: string;
 
     private _onDestroy$ = new Subject<boolean>();
@@ -59,11 +60,14 @@ export class AppComponent implements OnInit, OnDestroy {
                 filter(event => event instanceof NavigationEnd),
                 takeUntil(this._onDestroy$))
             .subscribe(
-                (data) => this.displayMenu = (data as NavigationEnd).url !== '/login'
-                    && (data as NavigationEnd).url !== '/register'
-                    && (data as NavigationEnd).url !== '/password_forgot'
-                    && (data as NavigationEnd).url !== '/verify/'
-                    && (data as NavigationEnd).url !== '/reset/'
+                (data) => {
+                    this.displayMenu = (data as NavigationEnd).url !== '/login'
+                        && (data as NavigationEnd).url !== '/register'
+                        && (data as NavigationEnd).url !== '/password_forgot'
+                        && (data as NavigationEnd).url !== '/verify/'
+                        && (data as NavigationEnd).url !== '/reset/';
+                    this.displaySearchBar = this.displayMenu && !(data as NavigationEnd).url.includes('/collection');
+                }
             );
     }
 

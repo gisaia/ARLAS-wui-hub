@@ -17,6 +17,10 @@
  * under the License.
  */
 
+:host {
+    position: relative;
+}
+
 .collection {
     padding: 10px;
     display: flex;
@@ -126,13 +130,16 @@
         position: absolute;
         top: 0;
         left: 0;
-        bottom: 56px;
+        bottom: 0;
         right: 0;
         background: rgba(0, 0, 0, 0.15);
         z-index: 2;
         display: flex;
-        align-items: center;
         justify-content: center;
+        .mat-mdc-progress-spinner {
+            position: sticky;
+            top: 20%;
+        }
     }
 }
 

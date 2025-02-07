@@ -82,6 +82,7 @@ import { CollectionDetailComponent } from './components/collection/collection-de
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { BooleanToTextPipe } from './pipes/booleanToText.pipe';
+import { FieldTypeToTextPipe } from './pipes/fieldTypeToText.pipe';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init();
@@ -128,7 +129,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         DashboardSearchComponent,
         CollectionComponent,
         CollectionDetailComponent,
-        BooleanToTextPipe
+        BooleanToTextPipe,
+        FieldTypeToTextPipe
     ],
     bootstrap: [AppComponent],
     imports: [AppRoutingModule,
