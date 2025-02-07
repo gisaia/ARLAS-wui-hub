@@ -20,7 +20,6 @@ import { Component, model, OnInit, signal, WritableSignal } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription } from 'arlas-api';
-import { UserOrgData } from 'arlas-iam-api';
 import {
     ArlasCollaborativesearchService, ArlasIamService,
     ArlasSettingsService, ArlasStartupService, ConfirmModalComponent
@@ -28,6 +27,11 @@ import {
 import { filter, finalize, forkJoin, Observable } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
 import { Router } from '@angular/router';
+import { Sort } from '@angular/material/sort';
+
+export interface CollectionInfos extends CollectionReferenceDescription {
+    canEdit?: boolean;
+}
 
 @Component({
     selector: 'arlas-collection',
@@ -36,7 +40,7 @@ import { Router } from '@angular/router';
 })
 export class CollectionComponent implements OnInit {
     public connected: WritableSignal<boolean> = signal(false);
-    public organisations: WritableSignal<UserOrgData[]> = signal([]);
+    public organisations: WritableSignal<string[]> = signal([]);
     public organisationsNames = model([]);
 
     public collections: WritableSignal<CollectionReferenceDescription[]> = signal([]);
@@ -45,7 +49,8 @@ export class CollectionComponent implements OnInit {
     public isAuthentActivated: boolean;
     public authentMode: 'openid' | 'iam';
 
-    public displayedColumns = ['name', 'display_name'];
+    public displayedColumns = ['collection_name', 'display_name'];
+    public datasetRoleOrg: Set<string> = new Set();
     public isLoading = false;
 
     // Filters
@@ -83,11 +88,12 @@ export class CollectionComponent implements OnInit {
             if (this.authentMode === 'iam') {
                 if (!!this.arlasIamService.user) {
                     this.displayedColumns.push(...['owner', 'shared_with', 'is_public']);
-                    if (this.arlasIamService.user.roles.some(r => r.name === 'role/arlas/datasets')) {
+                    this.arlasIamService.user.roles
+                        .filter(r => r.name === 'role/arlas/datasets')
+                        .forEach(r => this.datasetRoleOrg.add(r.organisation.name));
+                    if (this.datasetRoleOrg.size > 0) {
                         this.displayedColumns.push('action');
                     }
-                    this.organisations.set(this.arlasIamService.user.organisations);
-                    this.organisationsNames.set(this.organisations().map(o => o.name));
                     this.getCollectionsByOrg();
                     this.connected.set(true);
                     this.collectionService.setOptions({
@@ -117,11 +123,15 @@ export class CollectionComponent implements OnInit {
             .pipe(finalize(() => this.isLoading = false))
             .subscribe({
                 next: (crds) => {
-                    const collectionsList: CollectionReferenceDescription[] = [];
-                    crds.forEach(clc => {
+                    const collectionsList: CollectionInfos[] = [];
+                    crds.forEach((clc: CollectionInfos) => {
+                        // user can only edit if he has the dataset role for this org
+                        clc.canEdit = this.datasetRoleOrg.has(clc.params.organisations.owner);
                         collectionsList.push(clc);
                     });
                     this.collections.set(collectionsList);
+                    this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
+                    this.organisationsNames.set(this.organisations());
                     this.filteredCollections.set(this.collections());
                 }
             });
@@ -172,9 +182,13 @@ export class CollectionComponent implements OnInit {
             this.translate.instant('Delete the collection: ') + '<strong>' + collectionName + '</strong> ?';
         matDialogRef.afterClosed()
             .pipe(filter(result => result !== false))
-            .subscribe(result => {
+            .subscribe(() => {
                 this.collectionService.deleteCollection(collectionName).subscribe({
-                    next: () => console.log('deleted')
+                    next: () => {
+                        if (this.authentMode === 'iam') {
+                            this.getCollectionsByOrg();
+                        }
+                    }
                 });
             });
 
@@ -184,4 +198,41 @@ export class CollectionComponent implements OnInit {
         this.router.navigate(['collection', 'edit', collectionName]);
     }
 
+    public sortData(sort: Sort) {
+        const data = this.collections().slice();
+        if (!sort.active || sort.direction === '') {
+            this.filteredCollections.set(data.filter(c => this.applyFilters(c)));
+            return;
+        } else {
+            this.filteredCollections.set(
+                data.filter(c => this.applyFilters(c)).sort((a, b) => {
+                    const isAsc = sort.direction === 'asc';
+                    switch (sort.active) {
+                        case 'collection_name':
+                            return this.compareString(a.collection_name, b.collection_name, isAsc);
+                        case 'display_name':
+                            return this.compareString(a.params.display_names.collection, b.params.display_names.collection, isAsc);
+                        case 'owner':
+                            return this.compareString(a.params.organisations.owner, b.params.organisations.owner, isAsc);
+                        case 'is_public':
+                            return this.compareNumber(
+                                (a.params.organisations as any).public,
+                                (b.params.organisations as any).public,
+                                isAsc
+                            );
+                        default:
+                            return 0;
+                    }
+                })
+            );
+        }
+    }
+
+    private compareString(a: string, b: string, isAsc: boolean) {
+        return a.localeCompare(b) * (isAsc ? 1 : -1);
+    }
+
+    private compareNumber(a: number, b: number, isAsc: boolean) {
+        return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    }
 }

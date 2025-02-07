@@ -18,6 +18,7 @@
  */
 /* You can add global styles to this file, and also import other style files */
 @import "styles/material-override.scss";
+@import "variables.scss";
 
 @font-face {
     font-family: "Material Icons";
@@ -88,7 +89,7 @@ body {
         background-color: green !important;
         color: white;
     }
-    .mdc-button__label{
+    .mdc-button__label {
         color: white;
     }
 }
@@ -98,7 +99,14 @@ body {
         background-color: red !important;
         color: white;
     }
-    .mdc-button__label{
+    .mdc-button__label {
         color: white;
     }
+}
+
+.no-data {
+    color: rgba($accentColor, 0.7);
+    padding: 10px;
+    margin: 10px 0;
+    background-color: rgba($accentColor, 0.1);
 }
