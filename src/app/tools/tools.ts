@@ -69,7 +69,7 @@ export function extractProp(collection: CollectionReferenceDescription, separato
                 flatten(obj.properties, objName);
             } else {
                 let displayName = '';
-                if (collection.params.display_names.fields.hasOwnProperty(objName)) {
+                if (collection.params.display_names.fields?.hasOwnProperty(objName)) {
                     displayName = collection.params.display_names.fields[objName];
                 }
                 out.push({ name: objName, taggable: obj.taggable, indexed: obj.indexed, type: obj.type, display_name: displayName });

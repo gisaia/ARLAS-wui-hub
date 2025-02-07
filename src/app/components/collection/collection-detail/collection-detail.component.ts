@@ -36,7 +36,7 @@ import { finalize, of, switchMap } from 'rxjs';
     templateUrl: './collection-detail.component.html',
     styleUrl: './collection-detail.component.scss'
 })
-export class CollectionDetailComponent implements OnInit, AfterViewInit {
+export class CollectionDetailComponent implements OnInit {
     @ViewChild('fieldTableSort', { static: true }) public sort: MatSort;
 
     public collection: CollectionReferenceDescription;
@@ -118,11 +118,6 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
                     }
                 });
         }
-
-    }
-
-    public ngAfterViewInit(): void {
-
     }
 
     public get displayNames(): FormArray {
@@ -159,6 +154,8 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
             updateSharedOrgs = true;
             (sharedOrgsBody as any).public = (this.collection.params.organisations as any).public;
             sharedOrgsBody.shared = sharedOrgsControl.value;
+            // always add the owner org in the shared orgs
+            sharedOrgsBody.shared.push(this.collection.params.organisations.owner);
         }
         // SwitchMap needed to wait the previous observable
         // The same document is updated
@@ -201,6 +198,7 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
 
     private fillForm(c: CollectionReferenceDescription) {
         this.collection = c;
+        this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations.owner));
         this.fields = extractProp(c);
         this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names.collection);
         this.collectionForm.get('shared_orgs').setValue(this.collection.params.organisations.shared);
