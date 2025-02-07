@@ -7,7 +7,8 @@
     <div class="collection">
         <div class="collection__top">
             <div class="collection__top__content">
-                <button class="collection__top__content__btn" mat-stroked-button (click)="back()">« {{'Collections' | translate}}</button>
+                <button class="collection__top__content__btn" mat-stroked-button (click)="back()">« {{'Collections' |
+                    translate}}</button>
                 <div class="collection__top__content__title">
                     <span class="collection__top__content__title__display-name">
                         <mat-form-field class="small with-label" floatLabel="never" [subscriptSizing]="'dynamic'">
@@ -33,18 +34,20 @@
                         <span class="prop">{{'Owner' | translate}}</span>
                         <span class="value">{{collection?.params?.organisations.owner}}</span>
                     </div>
+                    @if(organisations().length > 1){
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Shared with' | translate}}</span>
                         <span class="value">
                             <mat-form-field class="small" [subscriptSizing]="'dynamic'">
                                 <mat-select formControlName="shared_orgs" multiple>
                                     @for (org of organisations(); track $index) {
-                                    <mat-option [value]="org.name">{{org.displayName}}</mat-option>
+                                    <mat-option [value]="org.name">{{org.name}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
                         </span>
                     </div>
+                    }
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Visibility' | translate}}</span>
                         <span class="value">
@@ -94,7 +97,8 @@
                 {{'Fields' | translate}}
                 <div>
                     <mat-form-field class="small filter" floatLabel="never" [subscriptSizing]="'dynamic'">
-                        <input (keyup)="applyFilter($event)" matInput class="input-display-name" [placeholder]="'Filter fields (on identifier, name, type)' | translate">
+                        <input (keyup)="applyFilter($event)" matInput class="input-display-name"
+                            [placeholder]="'Filter fields (on identifier, name, type)' | translate">
                     </mat-form-field>
                 </div>
             </div>
@@ -143,6 +147,14 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; let odd = odd; columns: displayedColumns;"
                             [class.striped-row]="odd"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="5">
+                                @if (!isLoading) {
+                                <div class="no-data">{{'No fields matching the filter' | translate}}</div>
+                                }
+                            </td>
+                        </tr>
                     </table>
                 </ng-container>
 
