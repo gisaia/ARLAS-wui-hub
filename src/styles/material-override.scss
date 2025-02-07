@@ -82,6 +82,10 @@ mat-form-field.small {
             padding: 12px 5px;
         }
     }
+
+    &.filter{
+        width: 300px
+    }
 }
 
 // Disable click on card chips

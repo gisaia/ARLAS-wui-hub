@@ -47,6 +47,7 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
 
     public displayedColumns = ['name', 'display_name', 'type', 'indexed', 'taggable'];
     public isLoading = false;
+    public filterValue = '';
 
     public isAuthentActivated: boolean;
     public authentMode: 'openid' | 'iam';
@@ -193,6 +194,11 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
         });
     }
 
+    public applyFilter(event: Event) {
+        this.filterValue = (event.target as HTMLInputElement).value;
+        this.dataSourceFields.filter = this.filterValue.trim().toLowerCase();
+    }
+
     private fillForm(c: CollectionReferenceDescription) {
         this.collection = c;
         this.fields = extractProp(c);
@@ -218,6 +224,12 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
             }
             return data[sortHeaderId];
         };
+        this.dataSourceFields.filterPredicate = (data, filter: string): boolean =>
+            data.name.toLowerCase().includes(filter) || data.type.toLowerCase().includes(filter)
+            || data.control.value.toLowerCase().includes(filter);
+        if (this.filterValue !== '') {
+            this.dataSourceFields.filter = this.filterValue.trim().toLowerCase();
+        }
     }
 
     private updateFailed() {

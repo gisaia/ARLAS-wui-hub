@@ -35,6 +35,7 @@
 	"Timestamp": "Horodatage",
 	"Index name": "Nom de l'index",
 	"Fields": "Champs",
+	"Filter fields (on identifier, name, type)": "Filter les champs (par identifiant, nom, type)",
 	"Type": "Type",
 	"Taggable": "Taggable",
 	"Indexed": "Indexé",
