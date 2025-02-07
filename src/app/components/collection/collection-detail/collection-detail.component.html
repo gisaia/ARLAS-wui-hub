@@ -90,7 +90,14 @@
         <div class="collection__fields">
 
 
-            <div class="collection__fields__title">{{'Fields' | translate}}</div>
+            <div class="collection__fields__title">
+                {{'Fields' | translate}}
+                <div>
+                    <mat-form-field class="small filter" floatLabel="never" [subscriptSizing]="'dynamic'">
+                        <input (keyup)="applyFilter($event)" matInput class="input-display-name" [placeholder]="'Filter fields (on identifier, name, type)' | translate">
+                    </mat-form-field>
+                </div>
+            </div>
             <div class="collection__fields__table">
 
                 <ng-container formArrayName="display_names">

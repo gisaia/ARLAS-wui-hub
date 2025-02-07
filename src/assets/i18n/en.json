@@ -35,6 +35,7 @@
 	"Timestamp": "Timestamp",
 	"Index name": "Index name",
 	"Fields": "Fields",
+	"Filter fields (on identifier, name, type)": "Filter fields (on identifier, name, type)",
 	"Type": "Type",
 	"Taggable": "Taggable",
 	"Indexed": "Indexed",
