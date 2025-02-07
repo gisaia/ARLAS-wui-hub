@@ -103,11 +103,17 @@
 
         &__title {
             background-color: white;
-            padding: 15px;
+            padding: 10px 15px;
             font-size: 14px;
             font-weight: 500;
             border: 1px solid rgba(0, 0, 0, 0.12);
             border-bottom: unset;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            position: sticky;
+            top: 60px;
+            z-index: 1;
         }
 
         &__table {
@@ -118,7 +124,7 @@
             }
             ::ng-deep .mat-mdc-table thead {
                 position: sticky;
-                top: 61px;
+                top: 110px;
                 z-index: 1;
             }
             .striped-row {
