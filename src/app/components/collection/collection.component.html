@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="collection__content">
-        <table mat-table [dataSource]="filteredCollections()" (matSortChange)="sortData($event)" matSort
+        <table mat-table [dataSource]="collectionDataSource" (matSortChange)="sortData($event)" matSort
             class="collection__content__table">
 
             <ng-container matColumnDef="collection_name">
@@ -90,7 +90,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; let odd = odd; columns: displayedColumns;"
+                            [class.striped-row]="odd"></tr>
 
             <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="6">
@@ -100,7 +101,6 @@
                 </td>
             </tr>
         </table>
-        <!-- <mat-paginator [disabled]="showSpinner" (page)="pageChange($event)" [pageIndex]="this.page - 1" [length]="total"
-            [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 100]"></mat-paginator> -->
+        <mat-paginator #paginator class="collection__content__paginator" [disabled]="isLoading" [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
     </div>
 </div>
