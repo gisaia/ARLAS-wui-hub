@@ -26,7 +26,7 @@ import {
     ExploreApi,
     Success
 } from 'arlas-api';
-import { ArlasCollaborativesearchService } from 'arlas-wui-toolkit';
+import { ArlasCollaborativesearchService, ArlasSettingsService } from 'arlas-wui-toolkit';
 import { from, Observable } from 'rxjs';
 
 @Injectable({
@@ -39,17 +39,18 @@ export class CollectionService {
     public options;
 
     public constructor(
-        private collabSearchService: ArlasCollaborativesearchService
+        private collabSearchService: ArlasCollaborativesearchService,
+        private arlasSettingsService: ArlasSettingsService
     ) {
         const configuration: Configuration = new Configuration();
         const arlasExploreApi: ExploreApi = new ExploreApi(
             configuration,
-            'http://localhost/arlas',
+            (this.arlasSettingsService.getSettings() as any).server.url,
             window.fetch
         );
         const arlasCollectionApi: CollectionsApi = new CollectionsApi(
             configuration,
-            'http://localhost/arlas',
+            (this.arlasSettingsService.getSettings() as any).server.url,
             window.fetch
         );
         this.arlasCollectionsApi = arlasCollectionApi;

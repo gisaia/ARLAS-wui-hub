@@ -84,11 +84,13 @@ export class CollectionDetailComponent implements OnInit {
             if (this.authentMode === 'iam') {
                 if (!!this.arlasIamService.user) {
                     this.organisations.set(this.arlasIamService.user.organisations);
-                    this.collectionService.setOptions({
+                    const headers = {
                         headers: {
                             Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
                         }
-                    });
+                    };
+                    this.collectionService.setOptions(headers);
+                    this.collabSearchService.setFetchOptions(headers);
                 } else {
                     this.organisations.set([]);
                     this.collectionService.setOptions({});
@@ -201,7 +203,9 @@ export class CollectionDetailComponent implements OnInit {
         this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations.owner));
         this.fields = extractProp(c);
         this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names.collection);
-        this.collectionForm.get('shared_orgs').setValue(this.collection.params.organisations.shared);
+        this.collectionForm.get('shared_orgs').setValue(
+            this.collection.params.organisations.shared.filter(o => o !== c.params.organisations.owner)
+        );
         this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
         this.dataSourceFields = new MatTableDataSource(
             (this.collectionForm.get('display_names') as FormArray).controls.map(c => ({
