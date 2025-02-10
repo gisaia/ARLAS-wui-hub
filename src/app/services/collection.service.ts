@@ -44,12 +44,12 @@ export class CollectionService {
         const configuration: Configuration = new Configuration();
         const arlasExploreApi: ExploreApi = new ExploreApi(
             configuration,
-            'https://localhost/arlas',
+            'http://localhost/arlas',
             window.fetch
         );
         const arlasCollectionApi: CollectionsApi = new CollectionsApi(
             configuration,
-            'https://localhost/arlas',
+            'http://localhost/arlas',
             window.fetch
         );
         this.arlasCollectionsApi = arlasCollectionApi;

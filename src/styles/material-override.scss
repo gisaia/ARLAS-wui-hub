@@ -77,14 +77,15 @@ mat-form-field.small {
         padding: 8px 5px;
     }
 
-    &.with-label{
+    &.with-label {
         .mat-mdc-form-field-infix {
             padding: 12px 5px;
         }
     }
 
-    &.filter{
-        width: 300px
+    &.filter {
+        width: 300px;
+        font-size: 13px;
     }
 }
 
