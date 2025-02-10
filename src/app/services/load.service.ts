@@ -25,7 +25,8 @@ export class LoadService {
     public constructor(
         private configService: ArlasConfigService,
         private arlasCss: ArlasCollaborativesearchService,
-        private arlasStartupService: ArlasStartupService
+        private arlasStartupService: ArlasStartupService,
+        private collabSearchService: ArlasCollaborativesearchService
     ) {
     }
 

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component, model, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { AfterViewInit, Component, model, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription } from 'arlas-api';
@@ -40,7 +40,7 @@ export interface CollectionInfos extends CollectionReferenceDescription {
     templateUrl: './collection.component.html',
     styleUrl: './collection.component.scss'
 })
-export class CollectionComponent implements OnInit {
+export class CollectionComponent implements OnInit, AfterViewInit {
 
     @ViewChild('paginator') public paginator: MatPaginator;
 
@@ -49,7 +49,6 @@ export class CollectionComponent implements OnInit {
     public organisationsNames = model([]);
 
     public collections: WritableSignal<CollectionReferenceDescription[]> = signal([]);
-    public filteredCollections: WritableSignal<CollectionReferenceDescription[]> = signal([]);
     public collectionDataSource: MatTableDataSource<CollectionReferenceDescription> = new MatTableDataSource([]);
 
     public isAuthentActivated: boolean;
@@ -127,6 +126,10 @@ export class CollectionComponent implements OnInit {
         }
     }
 
+    public ngAfterViewInit(): void {
+        this.collectionDataSource.paginator = this.paginator;
+    }
+
     public getCollectionsByOrg() {
         this.isLoading = true;
         this.collections.set([]);
@@ -148,9 +151,7 @@ export class CollectionComponent implements OnInit {
                     this.collections.set(collectionsList);
                     this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
                     this.organisationsNames.set(this.organisations());
-                    this.filteredCollections.set(this.collections());
-                    this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
-                    this.collectionDataSource.paginator = this.paginator;
+                    this.collectionDataSource.data = this.collections();
                 }
             });
     }
@@ -166,10 +167,7 @@ export class CollectionComponent implements OnInit {
                         c.canEdit = true;
                         return c;
                     }));
-                    this.filteredCollections.set(this.collections());
-                    this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
-                    this.collectionDataSource.paginator = this.paginator;
-
+                    this.collectionDataSource.data = this.collections();
                 }
             });
     }
@@ -203,9 +201,7 @@ export class CollectionComponent implements OnInit {
     }
 
     public filterCollections() {
-        this.filteredCollections.set(this.collections().filter(c => this.applyFilters(c)));
-        this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
-        this.collectionDataSource.paginator = this.paginator;
+        this.collectionDataSource.data = this.collections().filter(c => this.applyFilters(c));
     }
 
     public openDelete(collectionName: string) {
@@ -233,12 +229,11 @@ export class CollectionComponent implements OnInit {
     public sortData(sort: Sort) {
         const data = this.collections().slice();
         if (!sort.active || sort.direction === '') {
-            this.filteredCollections.set(data.filter(c => this.applyFilters(c)));
-            this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
-            this.collectionDataSource.paginator = this.paginator;
+            this.collectionDataSource.data = data.filter(c => this.applyFilters(c));
+
             return;
         } else {
-            this.filteredCollections.set(
+            this.collectionDataSource.data =
                 data
                     .filter(c => this.applyFilters(c))
                     .sort((a, b) => {
@@ -250,6 +245,12 @@ export class CollectionComponent implements OnInit {
                                 return this.compareString(a.params.display_names.collection, b.params.display_names.collection, isAsc);
                             case 'owner':
                                 return this.compareString(a.params.organisations.owner, b.params.organisations.owner, isAsc);
+                            case 'shared_with':
+                                return this.compareString(
+                                    a.params.organisations.shared.toString(),
+                                    b.params.organisations.shared.toString(),
+                                    isAsc
+                                );
                             case 'is_public':
                                 return this.compareNumber(
                                     (a.params.organisations as any).public,
@@ -259,10 +260,7 @@ export class CollectionComponent implements OnInit {
                             default:
                                 return 0;
                         }
-                    })
-            );
-            this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
-            this.collectionDataSource.paginator = this.paginator;
+                    });
         }
     }
 
