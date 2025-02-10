@@ -90,9 +90,9 @@ mv /usr/share/nginx/html/settings.yaml.tmp /usr/share/nginx/html/settings.yaml
 if [ -z "${ARLAS_SERVER_URL}" ]; then
   ARLAS_SERVER_URL="'http://localhost:9999/arlas'"
   export ARLAS_SERVER_URL
-  echo "The default ARLAS-persistence url '${ARLAS_SERVER_URL}' is used"
+  echo "The default ARLAS-server url '${ARLAS_SERVER_URL}' is used"
 else
-  echo ${ARLAS_SERVER_URL} "is used for 'persistence.url' in settings.yaml file"
+  echo ${ARLAS_SERVER_URL} "is used for 'server.url' in settings.yaml file"
 fi
 envsubst '$ARLAS_SERVER_URL' < /usr/share/nginx/html/settings.yaml > /usr/share/nginx/html/settings.yaml.tmp
 mv /usr/share/nginx/html/settings.yaml.tmp /usr/share/nginx/html/settings.yaml

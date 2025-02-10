@@ -18,7 +18,7 @@
  */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardIamService, ForgotComponent, LoginComponent, RegisterComponent, ResetComponent, VerifyComponent } from 'arlas-wui-toolkit';
+import { ForgotComponent, LoginComponent, RegisterComponent, ResetComponent, VerifyComponent } from 'arlas-wui-toolkit';
 import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
 import { CollectionComponent } from './components/collection/collection.component';
 import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';

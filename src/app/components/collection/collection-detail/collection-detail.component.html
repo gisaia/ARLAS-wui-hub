@@ -39,8 +39,8 @@
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Shared with' | translate}}</span>
                         <span class="value">
-                            <mat-form-field class="small" [subscriptSizing]="'dynamic'">
-                                <mat-select formControlName="shared_orgs" multiple>
+                            <mat-form-field class="small" [subscriptSizing]="'dynamic'" >
+                                <mat-select formControlName="shared_orgs" multiple [placeholder]="'Select organisations' | translate">
                                     @for (org of organisations(); track $index) {
                                     <mat-option [value]="org.name">{{org.name}}</mat-option>
                                     }
