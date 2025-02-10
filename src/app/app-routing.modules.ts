@@ -30,7 +30,6 @@ const routes: Routes = [
     { path: 'dashboard', component: DynamicHubComponent },
     {
         path: 'collection',
-        canActivate: [AuthGuardIamService],
         children: [
             { path: '', component: CollectionComponent },
             { path: 'edit/:name', component: CollectionDetailComponent }

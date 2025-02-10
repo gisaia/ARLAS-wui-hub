@@ -25,6 +25,7 @@
         </div>
 
         <div class="collection__info">
+            @if(isAuthentActivated && authentMode === 'iam'){
             <div class="collection__info__visibility">
                 <div class="collection__info__visibility__title">
                     {{'Visibility' | translate}}
@@ -62,6 +63,7 @@
                     </div>
                 </div>
             </div>
+            }
             <div class="collection__info__params">
                 <div class="collection__info__params__title">
                     {{'Parameters' | translate}}

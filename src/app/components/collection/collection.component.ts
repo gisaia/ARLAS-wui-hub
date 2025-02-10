@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component, model, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, model, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription } from 'arlas-api';
@@ -28,6 +28,8 @@ import { filter, finalize, forkJoin, Observable } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface CollectionInfos extends CollectionReferenceDescription {
     canEdit?: boolean;
@@ -39,12 +41,16 @@ export interface CollectionInfos extends CollectionReferenceDescription {
     styleUrl: './collection.component.scss'
 })
 export class CollectionComponent implements OnInit {
+
+    @ViewChild('paginator') public paginator: MatPaginator;
+
     public connected: WritableSignal<boolean> = signal(false);
     public organisations: WritableSignal<string[]> = signal([]);
     public organisationsNames = model([]);
 
     public collections: WritableSignal<CollectionReferenceDescription[]> = signal([]);
     public filteredCollections: WritableSignal<CollectionReferenceDescription[]> = signal([]);
+    public collectionDataSource: MatTableDataSource<CollectionReferenceDescription> = new MatTableDataSource([]);
 
     public isAuthentActivated: boolean;
     public authentMode: 'openid' | 'iam';
@@ -85,22 +91,32 @@ export class CollectionComponent implements OnInit {
 
     public ngOnInit(): void {
         if (this.arlasStartupService.shouldRunApp) {
-            if (this.authentMode === 'iam') {
-                if (!!this.arlasIamService.user) {
-                    this.displayedColumns.push(...['owner', 'shared_with', 'is_public']);
-                    this.arlasIamService.user.roles
-                        .filter(r => r.name === 'role/arlas/datasets')
-                        .forEach(r => this.datasetRoleOrg.add(r.organisation.name));
-                    if (this.datasetRoleOrg.size > 0) {
-                        this.displayedColumns.push('action');
-                    }
-                    this.getCollectionsByOrg();
-                    this.connected.set(true);
-                    this.collectionService.setOptions({
-                        headers: {
-                            Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
+            if (!this.isAuthentActivated) {
+                this.getCollections();
+                this.displayedColumns.push('action');
+            } else {
+                if (this.authentMode === 'iam') {
+                    if (!!this.arlasIamService.user) {
+                        this.displayedColumns.push(...['owner', 'shared_with', 'is_public']);
+                        this.arlasIamService.user.roles
+                            .filter(r => r.name === 'role/arlas/datasets')
+                            .forEach(r => this.datasetRoleOrg.add(r.organisation.name));
+                        if (this.datasetRoleOrg.size > 0) {
+                            this.displayedColumns.push('action');
                         }
-                    });
+                        this.getCollectionsByOrg();
+                        this.connected.set(true);
+                        this.collectionService.setOptions({
+                            headers: {
+                                Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
+                            }
+                        });
+                    } else {
+                        this.organisations.set([]);
+                        this.getCollections();
+                        this.connected.set(false);
+                        this.collectionService.setOptions({});
+                    }
                 } else {
                     this.organisations.set([]);
                     this.getCollections();
@@ -133,18 +149,29 @@ export class CollectionComponent implements OnInit {
                     this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
                     this.organisationsNames.set(this.organisations());
                     this.filteredCollections.set(this.collections());
+                    this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
+                    this.collectionDataSource.paginator = this.paginator;
                 }
             });
     }
 
     public getCollections() {
+        this.isLoading = true;
         this.collections.set([]);
-        this.collectionService.getCollectionsReferenceDescription().subscribe({
-            next: (collections) => {
-                this.collections.set(collections);
-                this.filteredCollections.set(this.collections());
-            }
-        });
+        this.collectionService.getCollectionsReferenceDescription()
+            .pipe(finalize(() => this.isLoading = false))
+            .subscribe({
+                next: (collections) => {
+                    this.collections.set(collections.map((c: CollectionInfos) => {
+                        c.canEdit = true;
+                        return c;
+                    }));
+                    this.filteredCollections.set(this.collections());
+                    this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
+                    this.collectionDataSource.paginator = this.paginator;
+
+                }
+            });
     }
 
     public search() {
@@ -153,17 +180,20 @@ export class CollectionComponent implements OnInit {
 
     public applyFilters(c: CollectionReferenceDescription) {
         let keepIt = true;
-        const orgsParam = c.params.organisations;
-        // if logged : keep it if collection is shared with at least one of my orgs
-        if (this.connected()) {
-            keepIt = orgsParam.shared.some(so => this.organisationsNames().includes(so));
-        } else { // anonymous : keep collection if it's public
-            keepIt = (orgsParam as any).public;
-        }
 
-        // filter public collections with toggle state
-        if (keepIt && !this.isPublic) {
-            keepIt = !(orgsParam as any).public;
+        if (this.authentMode === 'iam') {
+            const orgsParam = c.params.organisations;
+            // if logged : keep it if collection is shared with at least one of my orgs
+            if (this.connected()) {
+                keepIt = orgsParam.shared.some(so => this.organisationsNames().includes(so));
+            } else { // anonymous : keep collection if it's public
+                keepIt = (orgsParam as any).public;
+            }
+
+            // filter public collections with toggle state
+            if (keepIt && !this.isPublic) {
+                keepIt = !(orgsParam as any).public;
+            }
         }
         // filter collections with text
         if (keepIt && this.searchValue !== '') {
@@ -174,6 +204,8 @@ export class CollectionComponent implements OnInit {
 
     public filterCollections() {
         this.filteredCollections.set(this.collections().filter(c => this.applyFilters(c)));
+        this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
+        this.collectionDataSource.paginator = this.paginator;
     }
 
     public openDelete(collectionName: string) {
@@ -202,29 +234,35 @@ export class CollectionComponent implements OnInit {
         const data = this.collections().slice();
         if (!sort.active || sort.direction === '') {
             this.filteredCollections.set(data.filter(c => this.applyFilters(c)));
+            this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
+            this.collectionDataSource.paginator = this.paginator;
             return;
         } else {
             this.filteredCollections.set(
-                data.filter(c => this.applyFilters(c)).sort((a, b) => {
-                    const isAsc = sort.direction === 'asc';
-                    switch (sort.active) {
-                        case 'collection_name':
-                            return this.compareString(a.collection_name, b.collection_name, isAsc);
-                        case 'display_name':
-                            return this.compareString(a.params.display_names.collection, b.params.display_names.collection, isAsc);
-                        case 'owner':
-                            return this.compareString(a.params.organisations.owner, b.params.organisations.owner, isAsc);
-                        case 'is_public':
-                            return this.compareNumber(
-                                (a.params.organisations as any).public,
-                                (b.params.organisations as any).public,
-                                isAsc
-                            );
-                        default:
-                            return 0;
-                    }
-                })
+                data
+                    .filter(c => this.applyFilters(c))
+                    .sort((a, b) => {
+                        const isAsc = sort.direction === 'asc';
+                        switch (sort.active) {
+                            case 'collection_name':
+                                return this.compareString(a.collection_name, b.collection_name, isAsc);
+                            case 'display_name':
+                                return this.compareString(a.params.display_names.collection, b.params.display_names.collection, isAsc);
+                            case 'owner':
+                                return this.compareString(a.params.organisations.owner, b.params.organisations.owner, isAsc);
+                            case 'is_public':
+                                return this.compareNumber(
+                                    (a.params.organisations as any).public,
+                                    (b.params.organisations as any).public,
+                                    isAsc
+                                );
+                            default:
+                                return 0;
+                        }
+                    })
             );
+            this.collectionDataSource = new MatTableDataSource(this.filteredCollections());
+            this.collectionDataSource.paginator = this.paginator;
         }
     }
 
