@@ -17,15 +17,17 @@
  * under the License.
  */
 
+@import "variables.scss";
+
 :host {
     position: relative;
 }
 
 .collection {
-    padding: 10px;
+    padding: 5px 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px 0;
+    gap: 5px 0;
     &__top {
         position: sticky;
         top: 0px;
@@ -38,21 +40,37 @@
             border: 1px solid rgba(0, 0, 0, 0.12);
             border-top: none;
             padding: 10px 10px;
+            height: 32px;
+            font-size: 14px;
             &__btn {
                 background-color: white;
             }
-            &__title {
+
+            &__actions {
                 display: flex;
-                align-items: center;
-                gap: 0 10px;
-                .input-display-name {
-                    height: 24px !important;
-                }
-                &__name {
-                    color: rgba(0, 0, 0, 0.65);
+                gap: 0 5px;
+                .delete {
+                    border-color: $warnColor;
                 }
             }
-            &__update {
+        }
+    }
+
+    &__title {
+        &__content {
+            width: 642px;
+            height: 24px;
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 0 10px;
+            .input-display-name {
+                height: 24px !important;
+            }
+            &__name {
+                color: rgba(0, 0, 0, 0.65);
             }
         }
     }
@@ -83,13 +101,17 @@
                     align-items: center;
                     gap: 0 10px;
                     .prop {
-                        text-decoration: underline;
                         text-transform: lowercase;
                     }
                     .value {
                         .visibility-chip {
                             background-color: unset;
                             border: 1px solid rgba(0, 0, 0, 0.12);
+                        }
+                        &.shared_orgs {
+                            height: 35px;
+                            display: flex;
+                            align-items: center;
                         }
                     }
                 }
@@ -112,7 +134,7 @@
             justify-content: space-between;
             align-items: baseline;
             position: sticky;
-            top: 60px;
+            top: 52px;
             z-index: 1;
         }
 
@@ -130,6 +152,15 @@
             .striped-row {
                 background-color: rgba(0, 0, 0, 0.03);
             }
+
+            .mat-column-name {
+                width: 450px;
+            }
+            .mat-column-taggable,
+            .mat-column-indexed,
+            .mat-column-type {
+                width: 150px;
+            }
         }
     }
     &--loading {
@@ -146,6 +177,14 @@
             position: sticky;
             top: 20%;
         }
+    }
+    &__advanced {
+        border-top: 1px solid #444c56b3;
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px 0;
     }
 }
 

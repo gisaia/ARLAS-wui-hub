@@ -76,6 +76,11 @@
             .striped-row {
                 background-color: rgba(0, 0, 0, 0.02);
             }
+            .detail-link {
+                color: steelblue;
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
         &__paginator {
             padding: 5px;

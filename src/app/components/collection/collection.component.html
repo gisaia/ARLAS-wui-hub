@@ -15,16 +15,16 @@
                 <mat-slide-toggle (change)="filterCollections()" [(ngModel)]="isPublic">{{'Is Public' |
                     translate}}</mat-slide-toggle>
             </div>
-                @if(organisations().length > 0){
-                <div class="collection__header__filter--org">
-                    <mat-select [multiple]="true" [placeholder]="'Organisations' | translate"
-                        (selectionChange)="filterCollections()" [(value)]="organisationsNames">
-                        @for (org of organisations(); track $index) {
-                        <mat-option [value]="org">{{org}}</mat-option>
-                        }
-                    </mat-select>
-                </div>
-                }
+            @if(organisations().length > 0){
+            <div class="collection__header__filter--org">
+                <mat-select [multiple]="true" [placeholder]="'Organisations' | translate"
+                    (selectionChange)="filterCollections()" [(value)]="organisationsNames">
+                    @for (org of organisations(); track $index) {
+                    <mat-option [value]="org">{{org}}</mat-option>
+                    }
+                </mat-select>
+            </div>
+            }
 
             }
             <div class="collection__header__filter--search">
@@ -40,7 +40,8 @@
             <ng-container matColumnDef="collection_name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Identifier' | translate}} </th>
                 <td mat-cell *matCellDef="let row">
-                    {{row.collection_name}}
+                    <a routerLink="/collection/edit/{{row.collection_name}}" class="detail-link"
+                        routerLinkActive="active">{{row.collection_name}}</a>
                 </td>
             </ng-container>
 
@@ -61,43 +62,22 @@
             <ng-container matColumnDef="shared_with">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Shared with' | translate}} </th>
                 <td mat-cell *matCellDef="let row">
-                    {{row.params.organisations.shared}}
+                    {{row.params.organisations.shared?.length > 0 ? row.params.organisations.shared : '--'}}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="is_public">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Visibility' | translate}} </th>
                 <td mat-cell *matCellDef="let row"> {{row.params.organisations.public ? ('Public' | translate) :
-                    ('Private' |
-                    translate)}}
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
-                <td mat-cell *matCellDef="let row">
-                    @if(row.canEdit){
-                    <button mat-button [disabled]="!row.canEdit" [matMenuTriggerFor]="menu">
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item [disabled]="!row.canEdit" (click)="openUpdate(row.collection_name)">
-                            <mat-icon>edit</mat-icon><span>{{'Edit' | translate}}</span>
-                        </button>
-                        <button mat-menu-item [disabled]="!row.canEdit" (click)="openDelete(row.collection_name)"
-                            [matTooltip]="'Delete' | translate">
-                            <mat-icon>delete</mat-icon><span>{{'Delete' | translate}}</span>
-                        </button>
-                    </mat-menu>
-                    }
+                    ('Private' | translate)}}
                 </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; let odd = odd; columns: displayedColumns;" [class.striped-row]="odd"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="6">
+                <td class="mat-cell" colspan="5">
                     @if (!isLoading) {
                     <div class="no-data">{{'No collection matching the filter' | translate}}</div>
                     }
