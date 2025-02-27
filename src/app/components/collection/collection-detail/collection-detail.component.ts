@@ -19,6 +19,7 @@
 import { AfterViewInit, Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,9 +28,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { CollectionService } from 'app/services/collection.service';
 import { CollectionField, extractProp } from 'app/tools/tools';
 import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'arlas-api';
-import { UserOrgData } from 'arlas-iam-api';
-import { ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService } from 'arlas-wui-toolkit';
-import { finalize, of, switchMap } from 'rxjs';
+import { RoleData, UserOrgData } from 'arlas-iam-api';
+import {
+    ArlasCollaborativesearchService, ArlasIamService,
+    ArlasSettingsService, ArlasStartupService
+} from 'arlas-wui-toolkit';
+import { filter, finalize, of, switchMap } from 'rxjs';
+import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 @Component({
     selector: 'arlas-collection-detail',
@@ -53,6 +59,11 @@ export class CollectionDetailComponent implements OnInit {
     public authentMode: 'openid' | 'iam';
     public organisations: WritableSignal<UserOrgData[]> = signal([]);
     public dataSourceFields: MatTableDataSource<any> = new MatTableDataSource([]);
+    public canEdit = false;
+    private connected = false;
+
+    public editMode = false;
+    public formInitialValues;
 
     public constructor(
         private destroyRef: DestroyRef,
@@ -65,7 +76,8 @@ export class CollectionDetailComponent implements OnInit {
         private translate: TranslateService,
         private arlasIamService: ArlasIamService,
         private arlasStartupService: ArlasStartupService,
-        private arlasSettingsService: ArlasSettingsService
+        private arlasSettingsService: ArlasSettingsService,
+        private dialog: MatDialog
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -83,6 +95,7 @@ export class CollectionDetailComponent implements OnInit {
         if (this.arlasStartupService.shouldRunApp) {
             if (this.authentMode === 'iam') {
                 if (!!this.arlasIamService.user) {
+                    this.connected = true;
                     this.organisations.set(this.arlasIamService.user.organisations);
                     const headers = {
                         headers: {
@@ -92,9 +105,14 @@ export class CollectionDetailComponent implements OnInit {
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
                 } else {
+                    this.connected = false;
                     this.organisations.set([]);
                     this.collectionService.setOptions({});
                 }
+            } else {
+                this.connected = false;
+                this.organisations.set([]);
+                this.collectionService.setOptions({});
             }
             this.collectionForm = this.formBuilder.group({
                 collection_display_name: new FormControl(''),
@@ -105,7 +123,6 @@ export class CollectionDetailComponent implements OnInit {
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe({
                     next: params => {
-
                         this.collectionName = params.get('name');
                         if (!!this.collectionName) {
                             this.isLoading = true;
@@ -171,13 +188,16 @@ export class CollectionDetailComponent implements OnInit {
         ).subscribe({
             next: () => {
                 this.collabSearchService.describe(this.collection.collection_name, false, 0)
-                    .pipe(finalize(() => this.isLoading = false))
+                    .pipe(finalize(() => {
+                        this.isLoading = false;
+                        this.editMode = false;
+                    }))
                     .subscribe({
                         next: (c) => {
                             this.snackbar.open(
                                 this.translate.instant('Collection updated'), 'Ok',
                                 {
-                                    duration: 3000, panelClass: 'collection-update--success',
+                                    duration: 3000, panelClass: 'collection-snack--success',
                                     horizontalPosition: 'center', verticalPosition: 'top'
                                 }
                             );
@@ -198,8 +218,77 @@ export class CollectionDetailComponent implements OnInit {
         this.dataSourceFields.filter = this.filterValue.trim().toLowerCase();
     }
 
+    public resetFormValue() {
+        this.collectionForm.reset(this.formInitialValues);
+    }
+
+    public toggleMode() {
+        this.editMode = !this.editMode;
+    }
+
+    public cancel() {
+        if (this.collectionForm.dirty) {
+            const matDialogRef = this.dialog.open(ConfirmModalComponent, {
+                data: {
+                    title: marker('You have unsaved changes'),
+                    message: marker('Are you sure you want to discard them?')
+                },
+                disableClose: true
+            });
+            matDialogRef.afterClosed()
+                .pipe(filter(result => result !== false))
+                .subscribe(() => {
+                    this.resetFormValue();
+                    this.toggleMode();
+                });
+        } else {
+            this.resetFormValue();
+            this.toggleMode();
+        }
+    }
+
+    public openDelete(collectionName: string) {
+        const matDialogRef = this.dialog.open(ConfirmModalComponent, {
+            data: {
+                title: marker('Delete collection'),
+                message: marker('Are you sure you want to delete the collection named:'),
+                param: collectionName
+            },
+            disableClose: true
+        });
+        matDialogRef.afterClosed()
+            .pipe(filter(result => result !== false))
+            .subscribe(() => {
+                this.collectionService.deleteCollection(collectionName).subscribe({
+                    next: () => {
+                        this.snackbar.open(
+                            this.translate.instant('Collection deleted'), 'Ok',
+                            {
+                                duration: 3000, panelClass: 'collection-snack--success',
+                                horizontalPosition: 'center', verticalPosition: 'top'
+                            }
+                        );
+                        this.router.navigate(['collection']);
+                    },
+                    error: (err) => {
+                        this.snackbar.open(
+                            this.translate.instant('Error:') + err, 'Ok',
+                            {
+                                duration: 3000, panelClass: 'collection-snack--failed',
+                                horizontalPosition: 'center', verticalPosition: 'top'
+                            }
+                        );
+                    }
+                });
+            });
+
+    }
+
     private fillForm(c: CollectionReferenceDescription) {
         this.collection = c;
+        if (this.authentMode === 'iam' && this.connected) {
+            this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user.roles, c.params.organisations.owner);
+        }
         this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations.owner));
         this.fields = extractProp(c);
         this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names.collection);
@@ -207,6 +296,7 @@ export class CollectionDetailComponent implements OnInit {
             this.collection.params.organisations.shared.filter(o => o !== c.params.organisations.owner)
         );
         this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
+        this.formInitialValues = this.collectionForm.value;
         this.dataSourceFields = new MatTableDataSource(
             (this.collectionForm.get('display_names') as FormArray).controls.map(c => ({
                 name: c.get('name').value,
@@ -239,10 +329,14 @@ export class CollectionDetailComponent implements OnInit {
         this.snackbar.open(
             this.translate.instant('Update fail'), 'Ok',
             {
-                duration: 3000, panelClass: 'collection-update--failed',
+                duration: 3000, panelClass: 'collection-snack--failed',
                 horizontalPosition: 'center', verticalPosition: 'top'
             }
         );
+    }
+
+    private checkIfuserCanEdit(roles: RoleData[], orgOnwer: string): boolean {
+        return roles.filter(r => !!r.organisation && r.organisation.name === orgOnwer).map(ro => ro.name).includes('role/arlas/datasets');
     }
 }
 

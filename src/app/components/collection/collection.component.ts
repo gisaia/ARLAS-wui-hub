@@ -55,7 +55,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     public authentMode: 'openid' | 'iam';
 
     public displayedColumns = ['collection_name', 'display_name'];
-    public datasetRoleOrg: Set<string> = new Set();
     public isLoading = false;
 
     // Filters
@@ -96,13 +95,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
             } else {
                 if (this.authentMode === 'iam') {
                     if (!!this.arlasIamService.user) {
-                        this.displayedColumns.push(...['owner', 'shared_with', 'is_public']);
-                        this.arlasIamService.user.roles
-                            .filter(r => r.name === 'role/arlas/datasets')
-                            .forEach(r => this.datasetRoleOrg.add(r.organisation.name));
-                        if (this.datasetRoleOrg.size > 0) {
-                            this.displayedColumns.push('action');
-                        }
+                        this.displayedColumns.push(...['is_public', 'owner', 'shared_with']);
                         this.getCollectionsByOrg();
                         this.connected.set(true);
                         this.collectionService.setOptions({
@@ -144,10 +137,11 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                 next: (crds) => {
                     const collectionsList: CollectionInfos[] = [];
                     crds.forEach((clc: CollectionInfos) => {
-                        // user can only edit if he has the dataset role for this org
-                        clc.canEdit = this.datasetRoleOrg.has(clc.params.organisations.owner);
                         collectionsList.push(clc);
                     });
+                    // remove owner from shared organisations
+                    collectionsList
+                        .map(c => c.params.organisations.shared = c.params.organisations.shared.filter(o => o !== c.params.organisations.owner));
                     this.collections.set(collectionsList);
                     this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
                     this.organisationsNames.set(this.organisations());
@@ -202,24 +196,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
 
     public filterCollections() {
         this.collectionDataSource.data = this.collections().filter(c => this.applyFilters(c));
-    }
-
-    public openDelete(collectionName: string) {
-        const matDialogRef = this.dialog.open(ConfirmModalComponent, { disableClose: true });
-        matDialogRef.componentInstance.confirmHTLMMessage =
-            this.translate.instant('Delete the collection: ') + '<strong>' + collectionName + '</strong> ?';
-        matDialogRef.afterClosed()
-            .pipe(filter(result => result !== false))
-            .subscribe(() => {
-                this.collectionService.deleteCollection(collectionName).subscribe({
-                    next: () => {
-                        if (this.authentMode === 'iam') {
-                            this.getCollectionsByOrg();
-                        }
-                    }
-                });
-            });
-
     }
 
     public openUpdate(collectionName: string) {

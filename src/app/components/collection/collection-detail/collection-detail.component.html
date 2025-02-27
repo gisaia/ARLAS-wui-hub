@@ -9,18 +9,37 @@
             <div class="collection__top__content">
                 <button class="collection__top__content__btn" mat-stroked-button (click)="back()">« {{'Collections' |
                     translate}}</button>
-                <div class="collection__top__content__title">
-                    <span class="collection__top__content__title__display-name">
-                        <mat-form-field class="small with-label" floatLabel="never" [subscriptSizing]="'dynamic'">
-                            <mat-label>{{'Name' | translate}}</mat-label>
-                            <input matInput class="input-display-name" formControlName="collection_display_name">
-                        </mat-form-field>
-                    </span>
-                    <span class="collection__top__content__title__name">({{collection?.collection_name}})</span>
+                @if(canEdit){
+                <div class="collection__top__content__actions">
+                    @if( !editMode){
+                    <button mat-stroked-button (click)="toggleMode()">{{'Edit' |
+                        translate}}</button>
+                    } @else {
+
+                    <button mat-stroked-button (click)="cancel()">{{'Cancel' |
+                        translate}}</button>
+                    <button [class.spinner]="isLoading"
+                        [disabled]="isLoading || (!this.collectionForm.dirty && !this.collectionForm.touched)"
+                        mat-flat-button color="primary" (click)="update()">{{'Save' | translate}}</button>
+
+                    }
                 </div>
-                <button class="collection__top__content__update" [class.spinner]="isLoading"
-                    [disabled]="isLoading || (!this.collectionForm.dirty && !this.collectionForm.touched)"
-                    mat-flat-button color="primary" (click)="update()">{{'Update' | translate}}</button>
+                }
+            </div>
+        </div>
+        <div class="collection_title">
+            <div class="collection__title__content">
+                <span class="collection__title__content__display-name">
+                    @if(editMode){
+                    <mat-form-field class="compact with-label title" floatLabel="never" [subscriptSizing]="'dynamic'">
+                        <mat-label>{{'Name' | translate}}</mat-label>
+                        <input matInput class="input-display-name" formControlName="collection_display_name">
+                    </mat-form-field>
+                    } @else {
+                    {{collectionForm.get('collection_display_name').value}}
+                    }
+                </span>
+                <span class="collection__title__content__name">({{collection?.collection_name}})</span>
             </div>
         </div>
 
@@ -38,15 +57,21 @@
                     @if(organisations().length > 1){
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Shared with' | translate}}</span>
-                        <span class="value">
-                            <mat-form-field class="small" [subscriptSizing]="'dynamic'" >
-                                <mat-select formControlName="shared_orgs" multiple [placeholder]="'Select organisations' | translate">
+                        <div class="value shared_orgs">
+                            @if(this.editMode){
+                            <mat-form-field class="compact" [subscriptSizing]="'dynamic'">
+                                <mat-select formControlName="shared_orgs" multiple
+                                    [placeholder]="'Select organisations' | translate">
                                     @for (org of organisations(); track $index) {
                                     <mat-option [value]="org.name">{{org.name}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
-                        </span>
+                            } @else {
+                            {{collectionForm.get('shared_orgs').value?.length > 0 ?
+                            collectionForm.get('shared_orgs').value : '--' }}
+                            }
+                        </div>
                     </div>
                     }
                     <div class="collection__info__visibility__items__item">
@@ -98,7 +123,7 @@
             <div class="collection__fields__title">
                 {{'Fields' | translate}}
                 <div>
-                    <mat-form-field class="small filter" floatLabel="never" [subscriptSizing]="'dynamic'">
+                    <mat-form-field class="compact filter" floatLabel="never" [subscriptSizing]="'dynamic'">
                         <input (keyup)="applyFilter($event)" matInput class="input-display-name"
                             [placeholder]="'Filter fields (on identifier, name, type)' | translate">
                     </mat-form-field>
@@ -118,10 +143,14 @@
                         <ng-container matColumnDef="display_name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Name' | translate}} </th>
                             <td mat-cell *matCellDef="let row">
-                                <mat-form-field class="small" floatLabel="never" [subscriptSizing]="'dynamic'">
+                                @if(this.editMode){
+                                <mat-form-field class="compact field" floatLabel="never" [subscriptSizing]="'dynamic'">
                                     <input matInput class="input-display-name" placeholder="..."
                                         [formControl]="row.control">
                                 </mat-form-field>
+                                } @else {
+                                {{row.control.value}}
+                                }
                             </td>
                         </ng-container>
 
@@ -162,5 +191,14 @@
 
             </div>
         </div>
+        @if(canEdit){
+        <div class="collection__advanced">
+            <h3>{{'Danger zone' | translate}}</h3>
+            <div>{{'Once you delete a collection, there is no going back. Please be certain.' | translate}}</div>
+            <button color="warn" class="delete" mat-stroked-button (click)="openDelete(collection?.collection_name)">
+                {{'Delete collection' | translate}}
+            </button>
+        </div>
+        }
     </div>
 </form>

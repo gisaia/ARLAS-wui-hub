@@ -16,15 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-$primaryColor: #e33e6b;
-$accentColor: #3e6be3;
-$warnColor: #f44336;
-$top-menu-height: 40px;
-$left-menu-width: 48px;
-$menu-border: solid 1px #dadada;
-$default-font-size: 20px;
-$sm-margin: 5px;
-$group-icon-size: 16px;
-$header-height: 26px;
-$search-input-spacing: 2px;
+@Component({
+    selector: 'arlas-confirm-modal',
+    templateUrl: './confirm-modal.component.html',
+    styleUrls: ['./confirm-modal.component.scss']
+})
+export class ConfirmModalComponent {
+
+    public constructor(
+        public dialogRef: MatDialogRef<ConfirmModalComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: { title: string; message?: string; param?: string; }
+    ) { }
+}

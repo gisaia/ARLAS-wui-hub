@@ -84,6 +84,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { BooleanToTextPipe } from './pipes/booleanToText.pipe';
 import { FieldTypeToTextPipe } from './pipes/fieldTypeToText.pipe';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init();
@@ -124,6 +125,7 @@ export class CustomTranslateLoader implements TranslateLoader {
         CardComponent,
         DynamicHubComponent,
         HubActionModalComponent,
+        ConfirmModalComponent,
         LeftMenuComponent,
         PreviewPipe,
         CardDropdownComponent,

@@ -84,7 +84,7 @@ body {
     background-color: #b1aeae;
 }
 
-.collection-update--success {
+.collection-snack--success {
     .mat-mdc-snackbar-surface {
         background-color: green !important;
         color: white;
@@ -94,7 +94,7 @@ body {
     }
 }
 
-.collection-update--failed {
+.collection-snack--failed {
     .mat-mdc-snackbar-surface {
         background-color: red !important;
         color: white;

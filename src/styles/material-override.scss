@@ -64,7 +64,7 @@
     float: right;
 }
 
-mat-form-field.small {
+mat-form-field.compact {
     --mat-form-field-container-height: 40px;
     --mat-form-field-container-vertical-padding: 8px;
     .mat-mdc-text-field-wrapper {
@@ -85,6 +85,10 @@ mat-form-field.small {
 
     &.filter {
         width: 300px;
+    }
+    &.title,
+    &.field {
+        width: 450px;
     }
 }
 
