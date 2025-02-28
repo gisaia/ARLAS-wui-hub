@@ -85,6 +85,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { BooleanToTextPipe } from './pipes/booleanToText.pipe';
 import { FieldTypeToTextPipe } from './pipes/fieldTypeToText.pipe';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { FieldTypeToIconPipe } from './pipes/fieldTypeToIcon.pipe';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init();
@@ -133,7 +134,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         CollectionComponent,
         CollectionDetailComponent,
         BooleanToTextPipe,
-        FieldTypeToTextPipe
+        FieldTypeToTextPipe,
+        FieldTypeToIconPipe
     ],
     bootstrap: [AppComponent],
     imports: [AppRoutingModule,

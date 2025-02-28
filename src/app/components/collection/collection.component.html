@@ -62,7 +62,7 @@
             <ng-container matColumnDef="shared_with">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Shared with' | translate}} </th>
                 <td mat-cell *matCellDef="let row">
-                    {{row.params.organisations.shared?.length > 0 ? row.params.organisations.shared : '--'}}
+                    {{row.display_shared_orgs?.length > 0 ? row.display_shared_orgs : '--'}}
                 </td>
             </ng-container>
 

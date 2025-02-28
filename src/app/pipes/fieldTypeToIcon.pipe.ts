@@ -19,27 +19,39 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'field_type_to_text'
+    name: 'field_type_to_icon'
 })
-export class FieldTypeToTextPipe implements PipeTransform {
+export class FieldTypeToIconPipe implements PipeTransform {
 
     public transform(input: string): any {
-        let text = '';
+        let icon = '';
         switch (input) {
+            case 'LONG':
+            case 'DOUBLE':
+                icon = 'numbers';
+                break;
+            case 'OBJECT':
+                icon = 'data_object';
+                break;
+            case 'DATE':
+                icon = 'event';
+                break;
             case 'GEO_SHAPE':
-                text = 'Geo Shape';
+                icon = 'hexagon';
                 break;
             case 'GEO_POINT':
-                text = 'Geo Point';
+                icon = 'place';
+                break;
+            case 'KEYWORD':
+                icon = 'vpn_key';
+                break;
+            case 'TEXT':
+                icon = 'text_fields';
                 break;
             default:
-                text = this.capitalizeFirstLetter(input.toLowerCase());
+                icon = 'question_mark';
         }
-        return text;
-    }
-
-    private capitalizeFirstLetter(value) {
-        return String(value).charAt(0).toUpperCase() + String(value).slice(1);
+        return icon;
     }
 
 }

@@ -24,10 +24,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class BooleanToTextPipe implements PipeTransform {
 
-    public constructor(private translate: TranslateService) {}
+    public constructor(private readonly translate: TranslateService) {}
 
     public transform(input: boolean ): any {
-        return input ? this.translate.instant('yes') : this.translate.instant('no');
+        return input === true ? this.translate.instant('yes') : this.translate.instant('no');
     }
 
 }

@@ -395,7 +395,7 @@ export class DynamicHubComponent implements OnInit {
         }
 
         if (preserveEmptyCardList && this.cardsFiltered.size === 0) {
-            if (!!previous) {
+            if (previous) {
                 previous.forEach((v, k) => {
                     this.cardsFiltered.set(k, []);
                 });

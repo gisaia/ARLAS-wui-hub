@@ -157,7 +157,12 @@
                         <ng-container matColumnDef="type">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Type' | translate}} </th>
                             <td mat-cell *matCellDef="let row">
-                                {{row.type | field_type_to_text}}
+                                <div class="field_type">
+                                    <mat-icon fontSet="material-icons-outlined">
+                                        {{ row.type | field_type_to_icon}}
+                                    </mat-icon>
+                                    {{row.type | field_type_to_text}}
+                                </div>
                             </td>
                         </ng-container>
 
