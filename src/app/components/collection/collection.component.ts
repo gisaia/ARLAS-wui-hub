@@ -17,22 +17,20 @@
  * under the License.
  */
 import { AfterViewInit, Component, model, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { CollectionReferenceDescription } from 'arlas-api';
 import {
     ArlasCollaborativesearchService, ArlasIamService,
-    ArlasSettingsService, ArlasStartupService, ConfirmModalComponent
+    ArlasSettingsService, ArlasStartupService
 } from 'arlas-wui-toolkit';
-import { filter, finalize, forkJoin, Observable } from 'rxjs';
+import { finalize } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
-import { Router } from '@angular/router';
-import { Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 
 export interface CollectionInfos extends CollectionReferenceDescription {
-    canEdit?: boolean;
+    display_shared_orgs?: string[];
 }
 
 @Component({
@@ -62,14 +60,12 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     public searchValue = '';
 
     public constructor(
-        private collectionService: CollectionService,
-        private arlasSettingsService: ArlasSettingsService,
-        private arlasIamService: ArlasIamService,
-        private arlasStartupService: ArlasStartupService,
-        private collabSearchService: ArlasCollaborativesearchService,
-        private dialog: MatDialog,
-        private translate: TranslateService,
-        private router: Router
+        private readonly collectionService: CollectionService,
+        private readonly arlasSettingsService: ArlasSettingsService,
+        private readonly arlasIamService: ArlasIamService,
+        private readonly arlasStartupService: ArlasStartupService,
+        private readonly collabSearchService: ArlasCollaborativesearchService,
+        private readonly router: Router
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -92,29 +88,27 @@ export class CollectionComponent implements OnInit, AfterViewInit {
             if (!this.isAuthentActivated) {
                 this.getCollections();
                 this.displayedColumns.push('action');
-            } else {
-                if (this.authentMode === 'iam') {
-                    if (!!this.arlasIamService.user) {
-                        this.displayedColumns.push(...['is_public', 'owner', 'shared_with']);
-                        this.getCollectionsByOrg();
-                        this.connected.set(true);
-                        this.collectionService.setOptions({
-                            headers: {
-                                Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
-                            }
-                        });
-                    } else {
-                        this.organisations.set([]);
-                        this.getCollections();
-                        this.connected.set(false);
-                        this.collectionService.setOptions({});
-                    }
+            } else if (this.authentMode === 'iam') {
+                if (this.arlasIamService.user) {
+                    this.displayedColumns.push(...['is_public', 'owner', 'shared_with']);
+                    this.getCollectionsByOrg();
+                    this.connected.set(true);
+                    this.collectionService.setOptions({
+                        headers: {
+                            Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
+                        }
+                    });
                 } else {
                     this.organisations.set([]);
                     this.getCollections();
                     this.connected.set(false);
                     this.collectionService.setOptions({});
                 }
+            } else {
+                this.organisations.set([]);
+                this.getCollections();
+                this.connected.set(false);
+                this.collectionService.setOptions({});
             }
         }
     }
@@ -141,7 +135,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                     });
                     // remove owner from shared organisations
                     collectionsList
-                        .map(c => c.params.organisations.shared = c.params.organisations.shared.filter(o => o !== c.params.organisations.owner));
+                        .forEach(c => c.display_shared_orgs = c.params.organisations.shared.filter(o => o !== c.params.organisations.owner));
                     this.collections.set(collectionsList);
                     this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
                     this.organisationsNames.set(this.organisations());
@@ -157,10 +151,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
             .pipe(finalize(() => this.isLoading = false))
             .subscribe({
                 next: (collections) => {
-                    this.collections.set(collections.map((c: CollectionInfos) => {
-                        c.canEdit = true;
-                        return c;
-                    }));
+                    this.collections.set(collections);
                     this.collectionDataSource.data = this.collections();
                 }
             });
@@ -206,8 +197,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         const data = this.collections().slice();
         if (!sort.active || sort.direction === '') {
             this.collectionDataSource.data = data.filter(c => this.applyFilters(c));
-
-            return;
         } else {
             this.collectionDataSource.data =
                 data

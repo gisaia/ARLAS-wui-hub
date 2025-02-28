@@ -160,6 +160,12 @@
             .mat-column-indexed,
             .mat-column-type {
                 width: 150px;
+                .field_type {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 0 10px;
+                }
             }
         }
     }

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AfterViewInit, Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,6 +24,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateService } from '@ngx-translate/core';
 import { CollectionService } from 'app/services/collection.service';
 import { CollectionField, extractProp } from 'app/tools/tools';
@@ -35,7 +36,6 @@ import {
 } from 'arlas-wui-toolkit';
 import { filter, finalize, of, switchMap } from 'rxjs';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 @Component({
     selector: 'arlas-collection-detail',
@@ -66,18 +66,18 @@ export class CollectionDetailComponent implements OnInit {
     public formInitialValues;
 
     public constructor(
-        private destroyRef: DestroyRef,
-        private route: ActivatedRoute,
-        private collabSearchService: ArlasCollaborativesearchService,
-        private router: Router,
-        private formBuilder: FormBuilder,
-        private collectionService: CollectionService,
-        private snackbar: MatSnackBar,
-        private translate: TranslateService,
-        private arlasIamService: ArlasIamService,
-        private arlasStartupService: ArlasStartupService,
-        private arlasSettingsService: ArlasSettingsService,
-        private dialog: MatDialog
+        private readonly destroyRef: DestroyRef,
+        private readonly route: ActivatedRoute,
+        private readonly collabSearchService: ArlasCollaborativesearchService,
+        private readonly router: Router,
+        private readonly formBuilder: FormBuilder,
+        private readonly collectionService: CollectionService,
+        private readonly snackbar: MatSnackBar,
+        private readonly translate: TranslateService,
+        private readonly arlasIamService: ArlasIamService,
+        private readonly arlasStartupService: ArlasStartupService,
+        private readonly arlasSettingsService: ArlasSettingsService,
+        private readonly dialog: MatDialog
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -94,7 +94,7 @@ export class CollectionDetailComponent implements OnInit {
     public ngOnInit(): void {
         if (this.arlasStartupService.shouldRunApp) {
             if (this.authentMode === 'iam') {
-                if (!!this.arlasIamService.user) {
+                if (this.arlasIamService.user) {
                     this.connected = true;
                     this.organisations.set(this.arlasIamService.user.organisations);
                     const headers = {
@@ -124,7 +124,7 @@ export class CollectionDetailComponent implements OnInit {
                 .subscribe({
                     next: params => {
                         this.collectionName = params.get('name');
-                        if (!!this.collectionName) {
+                        if (this.collectionName) {
                             this.isLoading = true;
                             this.collabSearchService.describe(this.collectionName, false, 0)
                                 .pipe(finalize(() => this.isLoading = false)).

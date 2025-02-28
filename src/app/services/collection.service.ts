@@ -39,8 +39,8 @@ export class CollectionService {
     public options;
 
     public constructor(
-        private collabSearchService: ArlasCollaborativesearchService,
-        private arlasSettingsService: ArlasSettingsService
+        private readonly collabSearchService: ArlasCollaborativesearchService,
+        private readonly arlasSettingsService: ArlasSettingsService
     ) {
         const configuration: Configuration = new Configuration();
         const arlasExploreApi: ExploreApi = new ExploreApi(

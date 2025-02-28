@@ -17,16 +17,14 @@
  * under the License.
  */
 import { Injectable } from '@angular/core';
-import { ArlasCollaborativesearchService, ArlasConfigService, ArlasSettings, ArlasStartupService } from 'arlas-wui-toolkit';
+import { ArlasConfigService, ArlasSettings, ArlasStartupService } from 'arlas-wui-toolkit';
 
 @Injectable()
 export class LoadService {
 
     public constructor(
-        private configService: ArlasConfigService,
-        private arlasCss: ArlasCollaborativesearchService,
-        private arlasStartupService: ArlasStartupService,
-        private collabSearchService: ArlasCollaborativesearchService
+        private readonly configService: ArlasConfigService,
+        private readonly arlasStartupService: ArlasStartupService
     ) {
     }
 
