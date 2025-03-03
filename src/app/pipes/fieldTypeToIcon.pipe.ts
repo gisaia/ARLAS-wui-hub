@@ -23,7 +23,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FieldTypeToIconPipe implements PipeTransform {
 
-    public transform(input: string): any {
+    public transform(input: string): string {
         let icon = '';
         switch (input) {
             case 'LONG':
@@ -47,6 +47,9 @@ export class FieldTypeToIconPipe implements PipeTransform {
                 break;
             case 'TEXT':
                 icon = 'text_fields';
+                break;
+            case 'BOOLEAN':
+                icon = 'flaky';
                 break;
             default:
                 icon = 'question_mark';

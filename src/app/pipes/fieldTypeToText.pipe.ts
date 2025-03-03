@@ -23,7 +23,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FieldTypeToTextPipe implements PipeTransform {
 
-    public transform(input: string): any {
+    public transform(input: string): string {
         let text = '';
         switch (input) {
             case 'GEO_SHAPE':
