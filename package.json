@@ -63,10 +63,5 @@
     "patch-package": "^6.4.7",
     "ts-node": "~10.4.0",
     "typescript": "5.4.5"
-  },
-  "overrides": {
-    "arlas-web-core": {
-        "arlas-api": "26.0.6"
-    }
   }
 }
