@@ -17,6 +17,7 @@
  * under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateService } from '@ngx-translate/core';
 
 interface Page {
@@ -49,12 +50,12 @@ export class LeftMenuComponent implements OnInit {
         this.pages = [
             {
                 link: 'dashboard',
-                name: 'Dashboards',
+                name: marker('Dashboards'),
                 icon: 'dashboard'
             },
             {
                 link: 'collection',
-                name: 'Collections',
+                name: marker('Collections'),
                 icon: 'library_books'
             }
         ];

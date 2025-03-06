@@ -11,7 +11,7 @@
                     translate}}</button>
                 @if(canEdit){
                 <div class="collection__top__content__actions">
-                    @if( !editMode){
+                    @if(!editMode){
                     <button mat-stroked-button (click)="toggleMode()">{{'Edit' |
                         translate}}</button>
                     } @else {
@@ -118,8 +118,6 @@
             </div>
         </div>
         <div class="collection__fields">
-
-
             <div class="collection__fields__title">
                 {{'Fields' | translate}}
                 <div>

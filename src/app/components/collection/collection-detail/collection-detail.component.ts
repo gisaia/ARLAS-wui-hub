@@ -327,7 +327,7 @@ export class CollectionDetailComponent implements OnInit {
     private updateFailed() {
         this.isLoading = false;
         this.snackbar.open(
-            this.translate.instant('Update fail'), 'Ok',
+            this.translate.instant('Update failed'), 'Ok',
             {
                 duration: 3000, panelClass: 'collection-snack--failed',
                 horizontalPosition: 'center', verticalPosition: 'top'
