@@ -60,13 +60,13 @@ export class AppComponent implements OnInit, OnDestroy {
                 filter(event => event instanceof NavigationEnd),
                 takeUntil(this._onDestroy$))
             .subscribe(
-                (data) => {
-                    this.displayMenu = (data as NavigationEnd).url !== '/login'
-                        && (data as NavigationEnd).url !== '/register'
-                        && (data as NavigationEnd).url !== '/password_forgot'
-                        && (data as NavigationEnd).url !== '/verify/'
-                        && (data as NavigationEnd).url !== '/reset/';
-                    this.displaySearchBar = this.displayMenu && !(data as NavigationEnd).url.includes('/collection');
+                (data: NavigationEnd) => {
+                    this.displayMenu = data.url !== '/login'
+                        && data.url !== '/register'
+                        && data.url !== '/password_forgot'
+                        && data.url !== '/verify/'
+                        && data.url !== '/reset/';
+                    this.displaySearchBar = this.displayMenu && !data.url.includes('/collection');
                 }
             );
     }
