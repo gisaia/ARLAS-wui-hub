@@ -34,8 +34,10 @@ import {
     ArlasCollaborativesearchService, ArlasIamService,
     ArlasSettingsService, ArlasStartupService
 } from 'arlas-wui-toolkit';
-import { filter, finalize, of, switchMap } from 'rxjs';
+import { filter, finalize, mergeMap, of, switchMap } from 'rxjs';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'arlas-collection-detail',
@@ -77,7 +79,9 @@ export class CollectionDetailComponent implements OnInit {
         private readonly arlasIamService: ArlasIamService,
         private readonly arlasStartupService: ArlasStartupService,
         private readonly arlasSettingsService: ArlasSettingsService,
-        private readonly dialog: MatDialog
+        private readonly dialog: MatDialog,
+        private readonly iconRegistry: MatIconRegistry,
+        private readonly sanitizer: DomSanitizer
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -89,6 +93,7 @@ export class CollectionDetailComponent implements OnInit {
         if (isIam) {
             this.authentMode = 'iam';
         }
+        iconRegistry.addSvgIcon('keyword', sanitizer.bypassSecurityTrustResourceUrl(location.origin + '/assets/keyword.svg'));
     }
 
     public ngOnInit(): void {
@@ -120,20 +125,21 @@ export class CollectionDetailComponent implements OnInit {
                 shared_orgs: new FormControl()
             });
             this.route.paramMap
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe({
-                    next: params => {
+                .pipe(
+                    takeUntilDestroyed(this.destroyRef),
+                    mergeMap((params) => {
                         this.collectionName = params.get('name');
                         if (this.collectionName) {
                             this.isLoading = true;
-                            this.collabSearchService.describe(this.collectionName, false, 0)
-                                .pipe(finalize(() => this.isLoading = false)).
-                                subscribe({
-                                    next: (c) => {
-                                        this.fillForm(c);
-                                    }
-                                });
+                            return this.collabSearchService.describe(this.collectionName, false, 0).pipe(
+                                finalize(() => this.isLoading = false)
+                            );
                         }
+                    })
+                )
+                .subscribe({
+                    next: (c) => {
+                        this.fillForm(c);
                     }
                 });
         }
@@ -184,28 +190,25 @@ export class CollectionDetailComponent implements OnInit {
             ),
             switchMap(
                 () => updateSharedOrgs ? this.collectionService.updateCollectionOrg(sharedOrgsBody, this.collection.collection_name) : of({})
+            ),
+            mergeMap(() => this.collabSearchService.describe(this.collection.collection_name, false, 0)
+                .pipe(finalize(() => {
+                    this.isLoading = false;
+                    this.editMode = false;
+                }))
             )
         ).subscribe({
-            next: () => {
-                this.collabSearchService.describe(this.collection.collection_name, false, 0)
-                    .pipe(finalize(() => {
-                        this.isLoading = false;
-                        this.editMode = false;
-                    }))
-                    .subscribe({
-                        next: (c) => {
-                            this.snackbar.open(
-                                this.translate.instant('Collection updated'), 'Ok',
-                                {
-                                    duration: 3000, panelClass: 'collection-snack--success',
-                                    horizontalPosition: 'center', verticalPosition: 'top'
-                                }
-                            );
-                            this.fillForm(c);
-                            this.collectionForm.markAsPristine();
-                            this.collectionForm.markAsUntouched();
-                        }
-                    });
+            next: (c) => {
+                this.snackbar.open(
+                    this.translate.instant('Collection updated'), 'Ok',
+                    {
+                        duration: 3000, panelClass: 'collection-snack--success',
+                        horizontalPosition: 'center', verticalPosition: 'top'
+                    }
+                );
+                this.fillForm(c);
+                this.collectionForm.markAsPristine();
+                this.collectionForm.markAsUntouched();
             },
             error: () => {
                 this.updateFailed();

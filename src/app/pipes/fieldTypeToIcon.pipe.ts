@@ -42,9 +42,6 @@ export class FieldTypeToIconPipe implements PipeTransform {
             case 'GEO_POINT':
                 icon = 'place';
                 break;
-            case 'KEYWORD':
-                icon = 'vpn_key';
-                break;
             case 'TEXT':
                 icon = 'text_fields';
                 break;

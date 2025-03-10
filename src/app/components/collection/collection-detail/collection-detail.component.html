@@ -156,9 +156,13 @@
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Type' | translate}} </th>
                             <td mat-cell *matCellDef="let row">
                                 <div class="field_type">
-                                    <mat-icon fontSet="material-icons-outlined">
-                                        {{ row.type | field_type_to_icon}}
-                                    </mat-icon>
+                                    @if(row.type === 'KEYWORD'){
+                                        <mat-icon svgIcon="keyword"></mat-icon>
+                                    } @else {
+                                        <mat-icon fontSet="material-icons-outlined">
+                                            {{ row.type | field_type_to_icon}}
+                                        </mat-icon>
+                                    }
                                     {{row.type | field_type_to_text}}
                                 </div>
                             </td>
