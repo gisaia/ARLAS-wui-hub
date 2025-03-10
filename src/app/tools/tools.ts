@@ -63,7 +63,7 @@ export class MockArlasSettingsService {
  * recursively extract properties for a CollectionReferenceDescription and flatten them with specific separator
  * @param collection collection reference to parse
  * @param separator separator used to flatten data
- * @returns arrayt of CollectionField
+ * @returns array of CollectionField
  */
 export function extractProp(collection: CollectionReferenceDescription, separator = '.'): CollectionField[] {
     const out = [];
