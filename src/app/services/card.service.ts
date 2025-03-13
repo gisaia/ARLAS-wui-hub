@@ -20,7 +20,7 @@ import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { Injectable } from '@angular/core';
-import { Config, ConfigAction, ConfigActionEnum, NO_ORGANISATION, PersistenceService } from 'arlas-wui-toolkit';
+import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
 import { ArlasColorService } from 'arlas-web-components';
 
 export interface Group {
@@ -52,6 +52,8 @@ export interface Card {
 })
 export class CardService {
 
+    public canCreateDashboardByOrg = new Map<string, boolean>();
+
     public constructor(
         private persistenceService: PersistenceService,
         private colorService: ArlasColorService) {
@@ -80,22 +82,8 @@ export class CardService {
         return this.persistenceService.list('config.json', size, 1, 'desc', undefined, options);
     }
 
-    private getMapCard(data: DataWithLinks[]): Map<string, Card[]> {
-        const dataMap = new Map<string, Card[]>();
-        data.map(d => this.dataWithlinksToCard(d)).forEach(c => {
-            const cardsForOrga = dataMap.get(c.organisation);
-            if (!!cardsForOrga) {
-                cardsForOrga.push(c);
-            } else {
-                dataMap.set(c.organisation, []);
-                dataMap.get(c.organisation).push(c);
-            }
-        });
-        return dataMap;
-    }
-
     private dataWithlinksToCard(data: DataWithLinks): Card {
-        const organisation = (!!data.doc_organization || data.doc_organization !=='')  ? data.doc_organization : NO_ORGANISATION;
+        const organisation = (!!data.doc_organization || data.doc_organization !=='')  ? data.doc_organization : '';
         const actions: Array<ConfigAction> = new Array();
         const config: Config = {
             id: data.id,
@@ -116,30 +104,30 @@ export class CardService {
         actions.push({
             config: config,
             type: ConfigActionEnum.EDIT,
-            enabled: data.updatable
+            enabled: data.updatable && this.canCreateDashboardByOrg.get(organisation)
         });
         actions.push({
             config: config,
             type: ConfigActionEnum.RENAME,
             name: data.doc_key,
-            enabled: data.updatable
+            enabled: data.updatable && this.canCreateDashboardByOrg.get(organisation)
         });
         actions.push({
             config: config,
             type: ConfigActionEnum.DUPLICATE,
             name: data.doc_key,
-            enabled: data.updatable
+            enabled: this.canCreateDashboardByOrg.get(organisation)
         });
         actions.push({
             config: config,
             type: ConfigActionEnum.SHARE,
-            enabled: data.updatable
+            enabled: data.updatable && this.canCreateDashboardByOrg.get(organisation)
 
         });
         actions.push({
             config: config,
             type: ConfigActionEnum.DELETE,
-            enabled: data.updatable
+            enabled: data.updatable && this.canCreateDashboardByOrg.get(organisation)
         });
         const readers = new Array<Group>();
         if (data.doc_readers) {

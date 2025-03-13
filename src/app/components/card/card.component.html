@@ -1,5 +1,5 @@
 <mat-card  class="card mat-elevation-z1">
-    <div (click)="clickOnAction(action.VIEW)" class="card_preview" [class.no-preview]="card?.preview === NO_PREVIEW_ASSET" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}">
+    <div (click)="open()" class="card_preview" [class.no-preview]="card?.preview === NO_PREVIEW_ASSET" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}">
         <div class="preview_info">
             <div class="info_item">
                 <mat-icon matTooltip="{{'Private' | translate}}" *ngIf="status === 'private'" >lock</mat-icon>
@@ -35,12 +35,12 @@
             <ng-container *ngFor="let r of rights" >
                 <mat-chip *ngIf="r.right ==='Editor'"
                           matTooltip="{{'Editor' | translate}}" [matTooltipPosition]="'above'"
-                          class="group" [class.group--mine]="r.in">
+                          class="group">
                     <mat-icon>edit</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
                 </mat-chip>
                 <mat-chip *ngIf="r.right ==='Viewer'"
                           matTooltip="{{'Viewer' | translate}}" [matTooltipPosition]="'above'"
-                          class="group" [class.group--mine]="r.in">
+                          class="group">
                     <mat-icon>visibility</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
                 </mat-chip>
             </ng-container>

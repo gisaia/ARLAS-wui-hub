@@ -17,7 +17,7 @@
  * under the License.
  */
 import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ConfigActionEnum, ConfigMenuComponent, NO_ORGANISATION } from 'arlas-wui-toolkit';
+import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { Card } from '../../services/card.service';
 
@@ -37,7 +37,6 @@ export interface CardAction {
 
 export interface CardRights {
     name: string;
-    in: boolean;
     right: 'Editor' | 'Viewer';
 }
 
@@ -52,13 +51,12 @@ export class CardComponent implements AfterViewInit, OnInit {
 
     @ViewChild('configMenu', {static: false}) public configMenu: ConfigMenuComponent;
     @Input() public card: Card;
-    @Input() public userGroups: string[] = [];
     @Input() public publicOrg = false;
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
     public action = Action;
     public status: DashboardStatus = 'private';
-    public NO_ORGANISATION = NO_ORGANISATION;
+    public NO_ORGANISATION = '';
     public readonly NO_PREVIEW_ASSET = 'assets/no_preview.png';
 
     public rights: Array<CardRights> = [];
@@ -78,22 +76,18 @@ export class CardComponent implements AfterViewInit, OnInit {
         if(this.card && this.card.writers) {
             writers = this.card.writers.map(g => ({
                 name: g.name,
-                in: this.userGroups.indexOf(g.name) > -1,
                 right: 'Editor'
             }));
         }
-
         let readers: CardRights[] = [];
         if(this.card && this.card.readers) {
             readers = this.card.readers
                 .filter(g => !writers.find(w => w.name === g.name))
                 .map(g => ({
                     name: g.name,
-                    in: this.userGroups.indexOf(g.name) > -1,
                     right: 'Viewer'
                 }));
         }
-
         this.rights = [...writers, ...readers];
     }
 
@@ -117,7 +111,7 @@ export class CardComponent implements AfterViewInit, OnInit {
         this.actionOnCard.next(e);
     }
 
-    public clickOnAction(action: Action) {
+    public open() {
         this.configMenu.onActionClick(this.card.actions.find(a => a.type === ConfigActionEnum.VIEW));
     }
 }
