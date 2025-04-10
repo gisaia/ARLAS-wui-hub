@@ -20,9 +20,11 @@ import { Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,12 +34,12 @@ import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'ar
 import { RoleData, UserOrgData } from 'arlas-iam-api';
 import {
     ArlasCollaborativesearchService, ArlasIamService,
-    ArlasSettingsService, ArlasStartupService
+    ArlasSettingsService, ArlasStartupService,
+    AuthentificationService
 } from 'arlas-wui-toolkit';
+import jwt_decode from 'jwt-decode';
 import { filter, finalize, mergeMap, of, switchMap } from 'rxjs';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'arlas-collection-detail',
@@ -80,6 +82,7 @@ export class CollectionDetailComponent implements OnInit {
         private readonly arlasStartupService: ArlasStartupService,
         private readonly arlasSettingsService: ArlasSettingsService,
         private readonly dialog: MatDialog,
+        private readonly authenticationService: AuthentificationService,
         private readonly iconRegistry: MatIconRegistry,
         private readonly sanitizer: DomSanitizer
     ) {
@@ -114,6 +117,15 @@ export class CollectionDetailComponent implements OnInit {
                     this.organisations.set([]);
                     this.collectionService.setOptions({});
                 }
+            } else if (this.authentMode === 'openid') {
+                this.connected = true;
+                const headers = {
+                    headers: {
+                        Authorization: 'bearer ' + this.authenticationService.accessToken
+                    }
+                };
+                this.collectionService.setOptions(headers);
+                this.collabSearchService.setFetchOptions(headers);
             } else {
                 this.connected = false;
                 this.organisations.set([]);
@@ -271,7 +283,8 @@ export class CollectionDetailComponent implements OnInit {
                                 horizontalPosition: 'center', verticalPosition: 'top'
                             }
                         );
-                        this.router.navigate(['collection']);
+                        // Add timeout after DELETE request to prevent listing deleted collection
+                        setTimeout(() => this.router.navigate(['collection']), 500);
                     },
                     error: (err) => {
                         this.snackbar.open(
@@ -289,12 +302,17 @@ export class CollectionDetailComponent implements OnInit {
 
     private fillForm(c: CollectionReferenceDescription) {
         this.collection = c;
-        if (this.authentMode === 'iam' && this.connected) {
-            this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user.roles, c.params.organisations.owner);
+        if (this.connected) {
+            if (this.authentMode === 'iam') {
+                this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user.roles, c.params.organisations.owner);
+            } else if (this.authentMode === 'openid') {
+                this.canEdit = this.roles.includes('role/arlas/datasets');
+            }
         }
+
         this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations.owner));
         this.fields = extractProp(c);
-        this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names.collection);
+        this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names?.collection);
         this.collectionForm.get('shared_orgs').setValue(
             this.collection.params.organisations.shared.filter(o => o !== c.params.organisations.owner)
         );
@@ -340,6 +358,14 @@ export class CollectionDetailComponent implements OnInit {
 
     private checkIfuserCanEdit(roles: RoleData[], orgOnwer: string): boolean {
         return roles.filter(r => !!r.organisation && r.organisation.name === orgOnwer).map(ro => ro.name).includes('role/arlas/datasets');
+    }
+
+    private get roles(): Array<string> {
+        if (this.authenticationService.accessToken) {
+            return jwt_decode<Record<string, any>>(this.authenticationService.accessToken)['resource_access']['arlas-backend']['roles'];
+        } else {
+            return [];
+        }
     }
 }
 

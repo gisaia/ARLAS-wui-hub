@@ -50,8 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
     public ngOnInit(): void {
-        this.title = this.arlasSettingsService.settings['tab_name'] ?
-            this.arlasSettingsService.settings['tab_name'] : 'ARLAS-wui-hub';
+        this.title = this.arlasSettingsService.settings['tab_name'] ?? 'ARLAS-wui-hub';
         this.titleService.setTitle(this.title);
         this.version = environment.VERSION;
 

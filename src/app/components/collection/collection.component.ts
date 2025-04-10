@@ -24,7 +24,8 @@ import { Router } from '@angular/router';
 import { CollectionReferenceDescription } from 'arlas-api';
 import {
     ArlasCollaborativesearchService, ArlasIamService,
-    ArlasSettingsService, ArlasStartupService
+    ArlasSettingsService, ArlasStartupService,
+    AuthentificationService
 } from 'arlas-wui-toolkit';
 import { finalize } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
@@ -65,7 +66,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         private readonly arlasIamService: ArlasIamService,
         private readonly arlasStartupService: ArlasStartupService,
         private readonly collabSearchService: ArlasCollaborativesearchService,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly authenticationService: AuthentificationService
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -87,7 +89,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         if (this.arlasStartupService.shouldRunApp) {
             if (!this.isAuthentActivated) {
                 this.getCollections();
-                this.displayedColumns.push('action');
             } else if (this.authentMode === 'iam') {
                 if (this.arlasIamService.user) {
                     this.displayedColumns.push(...['is_public', 'owner', 'shared_with']);
@@ -104,6 +105,15 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                     this.connected.set(false);
                     this.collectionService.setOptions({});
                 }
+
+            } else if (this.authentMode === 'openid') {
+                this.connected.set(true);
+                this.collectionService.setOptions({
+                    headers: {
+                        Authorization: 'bearer ' + this.authenticationService.accessToken
+                    }
+                });
+                this.getCollections();
             } else {
                 this.organisations.set([]);
                 this.getCollections();
@@ -180,7 +190,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         }
         // filter collections with text
         if (keepIt && this.searchValue !== '') {
-            keepIt = c.collection_name.includes(this.searchValue) || c.params.display_names.collection.includes(this.searchValue);
+            keepIt = c.collection_name.includes(this.searchValue) || c.params.display_names?.collection.includes(this.searchValue);
         }
         return keepIt;
     }
@@ -207,7 +217,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                             case 'collection_name':
                                 return this.compareString(a.collection_name, b.collection_name, isAsc);
                             case 'display_name':
-                                return this.compareString(a.params.display_names.collection, b.params.display_names.collection, isAsc);
+                                return this.compareString(a.params.display_names?.collection, b.params.display_names?.collection, isAsc);
                             case 'owner':
                                 return this.compareString(a.params.organisations.owner, b.params.organisations.owner, isAsc);
                             case 'shared_with':
