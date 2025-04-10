@@ -39,11 +39,15 @@ h2 {
 
 .dynamic-hub {
     padding: 10px 20px;
-    max-height: 100%;
-    height: calc(100% - 38px); // header height
-    overflow-y: scroll;
+    height: 100%;
+    overflow-y: auto;
+
     &__spinner-container {
         height: 5px;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 
     &__header {

@@ -1,12 +1,23 @@
 # Change Log
 
-## [v27.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.0.0) (2025-02-11)
+## [v27.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.0.1) (2025-03-20)
 
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.0.0-rc.1...v27.0.0)
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.0.0...v27.0.1)
 
 **Fixed bugs:**
 
-- Hub is loading indefinitely [\#182](https://github.com/gisaia/ARLAS-wui-hub/issues/182)
+- The app does not work with openid and force\_connect=false [\#245](https://github.com/gisaia/ARLAS-wui-hub/issues/245)
+- openid: Buttons to create/import dashboard are not displayed when using keycloak [\#241](https://github.com/gisaia/ARLAS-wui-hub/issues/241)
+- openid: looping calls to arlas-persistence when using keycloak [\#240](https://github.com/gisaia/ARLAS-wui-hub/issues/240)
+- openid: token refresh doesn't work in case of ARLAS\_AUTHENT\_FORCE\_CONNECT=false [\#239](https://github.com/gisaia/ARLAS-wui-hub/issues/239)
+
+**Miscellaneous:**
+
+- Run the application on port 8080 instead of 80 [\#238](https://github.com/gisaia/ARLAS-wui-hub/issues/238)
+
+## [v27.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.0.0) (2025-02-11)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.0.0-rc.1...v27.0.0)
 
 ## [v27.0.0-rc.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.0.0-rc.1) (2025-01-23)
 
