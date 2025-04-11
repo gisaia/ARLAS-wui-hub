@@ -111,13 +111,19 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                 }
 
             } else if (this.authentMode === 'openid') {
-                this.connected.set(true);
-                this.collectionService.setOptions({
-                    headers: {
-                        Authorization: 'bearer ' + this.authenticationService.accessToken
-                    }
-                });
-                this.getCollections();
+                if (this.authenticationService.hasValidAccessToken()) {
+                    this.connected.set(true);
+                    this.collectionService.setOptions({
+                        headers: {
+                            Authorization: 'bearer ' + this.authenticationService.accessToken
+                        }
+                    });
+                    this.getCollections();
+                } else {
+                    this.connected.set(false);
+                    this.getCollections();
+                    this.collectionService.setOptions({});
+                }
             } else {
                 this.organisations.set([]);
                 this.getCollections();

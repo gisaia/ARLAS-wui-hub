@@ -118,14 +118,20 @@ export class CollectionDetailComponent implements OnInit {
                     this.collectionService.setOptions({});
                 }
             } else if (this.authentMode === 'openid') {
-                this.connected = true;
-                const headers = {
-                    headers: {
-                        Authorization: 'bearer ' + this.authenticationService.accessToken
-                    }
-                };
-                this.collectionService.setOptions(headers);
-                this.collabSearchService.setFetchOptions(headers);
+                if (this.authenticationService.hasValidAccessToken()) {
+                    this.connected = true;
+                    const headers = {
+                        headers: {
+                            Authorization: 'bearer ' + this.authenticationService.accessToken
+                        }
+                    };
+                    this.collectionService.setOptions(headers);
+                    this.collabSearchService.setFetchOptions(headers);
+                } else {
+                    this.connected = false;
+                    this.collectionService.setOptions({});
+                }
+
             } else {
                 this.connected = false;
                 this.organisations.set([]);
