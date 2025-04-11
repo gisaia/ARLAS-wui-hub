@@ -9,7 +9,7 @@ authentication:
   url: 'https://localhost/arlas_iam_server'
   threshold: 60000
   scope: openid
-  issuer: https://arlas-cloud-dev.eu.auth0.com/
+  issuer: http://localhost/auth/realms/arlas
   client_id: arlasfrontend
   redirect_uri: NOT_CONFIGURED
   silent_refresh_redirect_uri: http://localhost:4200/silent-refresh.html
@@ -22,7 +22,7 @@ authentication:
   disable_at_hash_check: false
   show_debug_information: true
   login_url: NOT_CONFIGURED
-  logout_url: http://mgoun/auth/realms/arlas/protocol/openid-connect/logout
+  logout_url: http://localhost/auth/realms/arlas/protocol/openid-connect/logout
   storage: sessionstorage
   custom_query_params: [{"audience":"http://arlas.io/api/server"}]
   sign_up_enabled: true

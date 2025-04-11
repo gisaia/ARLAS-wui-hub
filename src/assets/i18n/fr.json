@@ -60,6 +60,8 @@
 	"Missing permissions to create a dashboard": "Vous n'avez pas les droits suffisants pour créer ou modifier un dashboard",
 	"A configuration with this name exists already, please choose another name": "Un autre dashboad existe déjà avec ce même nom, veuillez en choisir un autre.",
 	"An error occurred, please try later": "Une erreur s'est produite, veuillez réessayer plus tard.",
+	"Error while fetching collections": "Erreur pendant la récupérations des collections",
+	"Error while fetching collection detail": "Erreur pendant la récupérations des informations de la collection",
 	"Collection updated": "Collection modifiée",
 	"Collection deleted": "Collection supprimée",
 	"Error:": "Erreur",

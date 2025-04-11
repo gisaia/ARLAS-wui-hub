@@ -36,7 +36,7 @@
                         <input matInput class="input-display-name" formControlName="collection_display_name">
                     </mat-form-field>
                     } @else {
-                    {{collectionForm.get('collection_display_name').value}}
+                    {{collectionForm.controls['collection_display_name'].value}}
                     }
                 </span>
                 <span class="collection__title__content__name">({{collection?.collection_name}})</span>
@@ -68,8 +68,8 @@
                                 </mat-select>
                             </mat-form-field>
                             } @else {
-                            {{collectionForm.get('shared_orgs').value?.length > 0 ?
-                            collectionForm.get('shared_orgs').value : '--' }}
+                            {{ collectionForm.controls['shared_orgs'].value?.length > 0 ?
+                            collectionForm.controls['shared_orgs'].value : '--' }}
                             }
                         </div>
                     </div>
@@ -157,11 +157,11 @@
                             <td mat-cell *matCellDef="let row">
                                 <div class="field_type">
                                     @if(row.type === 'KEYWORD'){
-                                        <mat-icon svgIcon="keyword"></mat-icon>
+                                    <mat-icon svgIcon="keyword"></mat-icon>
                                     } @else {
-                                        <mat-icon fontSet="material-icons-outlined">
-                                            {{ row.type | field_type_to_icon}}
-                                        </mat-icon>
+                                    <mat-icon fontSet="material-icons-outlined">
+                                        {{ row.type | field_type_to_icon}}
+                                    </mat-icon>
                                     }
                                     {{row.type | field_type_to_text}}
                                 </div>

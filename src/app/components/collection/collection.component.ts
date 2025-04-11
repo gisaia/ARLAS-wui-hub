@@ -29,6 +29,8 @@ import {
 } from 'arlas-wui-toolkit';
 import { finalize } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface CollectionInfos extends CollectionReferenceDescription {
     display_shared_orgs?: string[];
@@ -67,7 +69,9 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         private readonly arlasStartupService: ArlasStartupService,
         private readonly collabSearchService: ArlasCollaborativesearchService,
         private readonly router: Router,
-        private readonly authenticationService: AuthentificationService
+        private readonly authenticationService: AuthentificationService,
+        private readonly snackbar: MatSnackBar,
+        private readonly translate: TranslateService
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -150,6 +154,11 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                     this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
                     this.organisationsNames.set(this.organisations());
                     this.collectionDataSource.data = this.collections();
+                },
+                error: () => {
+                    this.organisations.set([]);
+                    this.organisationsNames.set(this.organisations());
+                    this.fetchFailed();
                 }
             });
     }
@@ -163,6 +172,9 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                 next: (collections) => {
                     this.collections.set(collections);
                     this.collectionDataSource.data = this.collections();
+                },
+                error: () => {
+                    this.fetchFailed();
                 }
             });
     }
@@ -245,5 +257,16 @@ export class CollectionComponent implements OnInit, AfterViewInit {
 
     private compareNumber(a: number, b: number, isAsc: boolean) {
         return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    }
+
+    private fetchFailed() {
+        this.collectionDataSource.data = this.collections();
+        this.snackbar.open(
+            this.translate.instant('Error while fetching collections'), 'Ok',
+            {
+                duration: 3000, panelClass: 'collection-snack--error',
+                horizontalPosition: 'center', verticalPosition: 'top'
+            }
+        );
     }
 }

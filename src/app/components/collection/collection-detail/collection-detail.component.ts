@@ -96,7 +96,7 @@ export class CollectionDetailComponent implements OnInit {
         if (isIam) {
             this.authentMode = 'iam';
         }
-        iconRegistry.addSvgIcon('keyword', sanitizer.bypassSecurityTrustResourceUrl(location.origin + '/assets/keyword.svg'));
+        this.iconRegistry.addSvgIcon('keyword', this.sanitizer.bypassSecurityTrustResourceUrl(location.origin + '/assets/keyword.svg'));
     }
 
     public ngOnInit(): void {
@@ -152,6 +152,15 @@ export class CollectionDetailComponent implements OnInit {
                 .subscribe({
                     next: (c) => {
                         this.fillForm(c);
+                    },
+                    error: () => {
+                        this.snackbar.open(
+                            this.translate.instant('Error while fetching collection detail'), 'Ok',
+                            {
+                                duration: 3000, panelClass: 'collection-snack--error',
+                                horizontalPosition: 'center', verticalPosition: 'top'
+                            }
+                        );
                     }
                 });
         }
