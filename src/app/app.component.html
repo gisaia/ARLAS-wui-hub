@@ -18,7 +18,7 @@
     </div>
   </arlas-top-menu>
   <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #leftSidenav mode="side" class="sidenav" [class.hide]="!displayMenu" opened>
+    <mat-sidenav #leftSidenav mode="side" class="sidenav" [class.hide]="!displayMenu" opened [disableClose]="true">
       <arlas-left-menu *ngIf="displayMenu"></arlas-left-menu>
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content" [class.full]="!displayMenu">
