@@ -1,5 +1,17 @@
 # Change Log
 
+## [v27.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.0.2) (2025-04-28)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.0.1...v27.0.2)
+
+**Fixed bugs:**
+
+- The left sidebar disappears on esc-key click [\#250](https://github.com/gisaia/ARLAS-wui-hub/issues/250)
+
+**Miscellaneous:**
+
+- Update dependencies information in About section [\#251](https://github.com/gisaia/ARLAS-wui-hub/issues/251)
+
 ## [v27.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.0.1) (2025-03-20)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.0.0...v27.0.1)
