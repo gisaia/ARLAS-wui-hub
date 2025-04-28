@@ -31,7 +31,7 @@
     "zone.js": "^0.14.10"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "~27.0.7"
+    "arlas-wui-toolkit": "~27.0.9"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",
