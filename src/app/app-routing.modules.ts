@@ -20,11 +20,21 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ForgotComponent, LoginComponent, RegisterComponent, ResetComponent, VerifyComponent } from 'arlas-wui-toolkit';
 import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
+import { CollectionComponent } from './components/collection/collection.component';
+import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';
 
 
 
 const routes: Routes = [
     { path: '', component: DynamicHubComponent },
+    { path: 'dashboard', component: DynamicHubComponent },
+    {
+        path: 'collection',
+        children: [
+            { path: '', component: CollectionComponent },
+            { path: 'edit/:name', component: CollectionDetailComponent }
+        ]
+    },
     { path: 'callback', redirectTo: '' },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },

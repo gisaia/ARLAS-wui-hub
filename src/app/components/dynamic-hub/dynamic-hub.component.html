@@ -17,8 +17,7 @@
         <div class="dashboards">
             <div class="dashboard" *ngFor="let data of cardsFiltered | keyvalue : publicAtTheEnd ">
                 <h2>
-                    <span class="dashboard-title" *ngIf="data.key !== 'public'; else publicTitle">{{'Dashboards' |
-                        translate:{dashboard: data.key | translate} }}</span>
+                    <span class="dashboard-title" *ngIf="data.key !== 'public'; else publicTitle">{{'Dashboards org' | translate:{dashboard: data.key | translate} }}</span>
                     <ng-template #publicTitle>
                         <span class="dashboard-title">{{'Public dashboards' | translate }}</span>
                     </ng-template>
@@ -40,23 +39,6 @@
                 </div>
                 <div *ngIf="data.value.length === 0 && !isLoading" class="no-card">
                     {{ 'No dashboard available' | translate}}</div>
-            </div>
-        </div>
-
-
-        <div class="collection" *ngIf="isLoading || !isLoading && cards?.size > 0">
-            <div class="collection-wrapper" [class.collection--without-edit-header]="!canCreateDashboard">
-                <h2>{{'Collections' | translate}}</h2>
-                <div class="cards">
-                    <mat-card class="card" [style.borderLeftColor]="col.value.color"
-                        [class.disabled]="!col.value.selected" (click)="getCheckbox(!col.value.selected, col.key)"
-                        *ngFor="let col of cardCollections | keyvalue">
-                        <mat-card-header>
-                            {{col.key | getCollectionDisplayName | translate}}
-                        </mat-card-header>
-                    </mat-card>
-                    <div class="scroll-hider"></div>
-                </div>
             </div>
         </div>
     </div>

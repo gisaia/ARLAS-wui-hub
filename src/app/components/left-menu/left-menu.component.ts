@@ -17,6 +17,7 @@
  * under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateService } from '@ngx-translate/core';
 
 interface Page {
@@ -45,7 +46,20 @@ export class LeftMenuComponent implements OnInit {
         this.expand = this.translate.instant('expand');
     }
 
-    public ngOnInit() {  }
+    public ngOnInit() {
+        this.pages = [
+            {
+                link: 'dashboard',
+                name: marker('Dashboards'),
+                icon: 'dashboard'
+            },
+            {
+                link: 'collection',
+                name: marker('Collections'),
+                icon: 'library_books'
+            }
+        ];
+    }
 
     public expandMenu() {
         this.isLabelDisplayed = !this.isLabelDisplayed;

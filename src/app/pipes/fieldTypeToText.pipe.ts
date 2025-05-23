@@ -16,30 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component } from '@angular/core';
-import { LoadService } from '../../services/load.service';
+import { Pipe, PipeTransform } from '@angular/core';
 
-@Component({
-    selector: 'arlas-static-hub',
-    templateUrl: './static-hub.component.html',
-    styleUrls: ['./static-hub.component.scss']
+@Pipe({
+    name: 'field_type_to_text'
 })
-export class StaticHubComponent {
+export class FieldTypeToTextPipe implements PipeTransform {
 
-    public cards: any;
-    public header: any;
-    public footer: any;
-    public items: any;
-
-    public constructor(private loadService: LoadService) {
-        this.header = this.loadService.appData?.header;
-        this.footer = this.loadService.appData?.footer;
-        this.cards = this.loadService.appData?.cards;
-        this.items = this.footer?.items;
+    public transform(input: string): string {
+        let text = '';
+        switch (input) {
+            case 'GEO_SHAPE':
+                text = 'Geo Shape';
+                break;
+            case 'GEO_POINT':
+                text = 'Geo Point';
+                break;
+            default:
+                text = this.capitalizeFirstLetter(input.toLowerCase());
+        }
+        return text;
     }
 
-    public navigate(url: string) {
-        window.open(url, '_blank');
+    private capitalizeFirstLetter(value) {
+        return String(value).charAt(0).toUpperCase() + String(value).slice(1);
     }
 
 }

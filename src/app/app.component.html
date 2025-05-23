@@ -1,8 +1,4 @@
-<div *ngIf="useStatic && appReady" class="wrapper">
-  <arlas-static-hub></arlas-static-hub>
-</div>
-
-<div *ngIf="!useStatic && appReady" class="wrapper">
+<div class="wrapper">
   <arlas-top-menu [wuiName]="'ARLAS-Hub'" [version]="version">
     <div left-menu class="top-left-menu">
       <div class="logo">
@@ -11,7 +7,7 @@
           <img src="assets/hub-icon.png"/>
         </a>
       </div>
-        <arlas-dashboard-search *ngIf="displayMenu" class="search" [searchPlaceholder]="'searchPlaceholder' | marker"></arlas-dashboard-search>
+        <arlas-dashboard-search *ngIf="displaySearchBar" class="search" [searchPlaceholder]="'searchPlaceholder' | marker"></arlas-dashboard-search>
     </div>
     <div right-menu class="title" id="title">
       <mat-divider vertical class="vertical-divider"></mat-divider>

@@ -22,7 +22,6 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ArlasSettingsService } from 'arlas-wui-toolkit';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
-import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
 
 @Component({
@@ -33,30 +32,25 @@ import { SidenavService } from './services/sidenav.service';
 export class AppComponent implements OnInit, OnDestroy {
 
     public onSideNavChange: boolean;
-    public useStatic: boolean;
-    public appReady = false;
     public title = 'ARLAS-wui-hub';
     public displayMenu = true;
+    public displaySearchBar = true;
     public version: string;
 
     private _onDestroy$ = new Subject<boolean>();
 
     public constructor(
-        private loadService: LoadService,
         private sidenavService: SidenavService,
         private titleService: Title,
         private arlasSettingsService: ArlasSettingsService,
         private router: Router
     ) {
-        this.useStatic = this.loadService.appData?.static;
-        this.appReady = true;
         this.sidenavService.sideNavState?.subscribe(res => {
             this.onSideNavChange = res;
         });
     }
     public ngOnInit(): void {
-        this.title = this.arlasSettingsService.settings['tab_name'] ?
-            this.arlasSettingsService.settings['tab_name'] : 'ARLAS-wui-hub';
+        this.title = this.arlasSettingsService.settings['tab_name'] ?? 'ARLAS-wui-hub';
         this.titleService.setTitle(this.title);
         this.version = environment.VERSION;
 
@@ -65,11 +59,14 @@ export class AppComponent implements OnInit, OnDestroy {
                 filter(event => event instanceof NavigationEnd),
                 takeUntil(this._onDestroy$))
             .subscribe(
-                (data) => this.displayMenu = (data as NavigationEnd).url !== '/login'
-                    && (data as NavigationEnd).url !== '/register'
-                    && (data as NavigationEnd).url !== '/password_forgot'
-                    && (data as NavigationEnd).url !== '/verify/'
-                    && (data as NavigationEnd).url !== '/reset/'
+                (data: NavigationEnd) => {
+                    this.displayMenu = data.url !== '/login'
+                        && data.url !== '/register'
+                        && data.url !== '/password_forgot'
+                        && data.url !== '/verify/'
+                        && data.url !== '/reset/';
+                    this.displaySearchBar = this.displayMenu && !data.url.includes('/collection');
+                }
             );
     }
 
