@@ -49,7 +49,7 @@ export type DashboardStatus = 'private' | 'shared' | 'public';
 })
 export class CardComponent implements AfterViewInit, OnInit {
 
-    @ViewChild('configMenu', {static: false}) public configMenu: ConfigMenuComponent;
+    @ViewChild('configMenu', { static: false }) public configMenu: ConfigMenuComponent;
     @Input() public card: Card;
     @Input() public publicOrg = false;
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
@@ -72,15 +72,15 @@ export class CardComponent implements AfterViewInit, OnInit {
     }
 
     public initDashboardWright() {
-        let  writers: CardRights[] = [];
-        if(this.card && this.card.writers) {
+        let writers: CardRights[] = [];
+        if (this.card && this.card.writers) {
             writers = this.card.writers.map(g => ({
                 name: g.name,
                 right: 'Editor'
             }));
         }
         let readers: CardRights[] = [];
-        if(this.card && this.card.readers) {
+        if (this.card && this.card.readers) {
             readers = this.card.readers
                 .filter(g => !writers.find(w => w.name === g.name))
                 .map(g => ({
@@ -95,7 +95,7 @@ export class CardComponent implements AfterViewInit, OnInit {
         this.status = this.isPublic(this.rights) ? 'public' : (this.rights.length === 0) ? 'private' : 'shared';
     }
 
-    private isPublic(readers:  CardRights[]): boolean{
+    private isPublic(readers: CardRights[]): boolean {
         return readers.find(g => g.name === 'public') !== undefined;
     }
 
@@ -114,4 +114,10 @@ export class CardComponent implements AfterViewInit, OnInit {
     public open() {
         this.configMenu.onActionClick(this.card.actions.find(a => a.type === ConfigActionEnum.VIEW));
     }
+
+    private testregex(n) {
+        const toto = Math.floor(Math.random() * n);
+        const titi = Math.floor((crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296) * n);
+    }
+
 }
