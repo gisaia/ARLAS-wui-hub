@@ -187,14 +187,14 @@ export class CollectionDetailComponent implements OnInit {
         const sharedOrgsControl = this.collectionForm.get('shared_orgs');
 
         let collectionObs = of({});
-        if (collectionControl.dirty && collectionControl.touched) {
+        if (collectionControl.dirty) {
             const collectionDisplayName = collectionControl.value;
             collectionObs = this.collectionService.updateCollectionDisplayName(collectionDisplayName, this.collection.collection_name);
         }
 
         const fieldsBody = {};
         let updateFields = false;
-        if (fieldsControl.dirty && fieldsControl.touched) {
+        if (fieldsControl.dirty) {
             updateFields = true;
             const fields: CollectionField[] = fieldsControl.value;
             fields.forEach(f => fieldsBody[f.name] = f.display_name);
@@ -202,7 +202,7 @@ export class CollectionDetailComponent implements OnInit {
 
         const sharedOrgsBody: CollectionReferenceUpdateOrg = {};
         let updateSharedOrgs = false;
-        if (sharedOrgsControl.dirty && sharedOrgsControl.touched) {
+        if (sharedOrgsControl.dirty) {
             updateSharedOrgs = true;
             (sharedOrgsBody as any).public = (this.collection.params.organisations as any).public;
             sharedOrgsBody.shared = sharedOrgsControl.value;
