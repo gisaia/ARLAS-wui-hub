@@ -122,7 +122,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         DashboardSearchComponent
     ],
     bootstrap: [AppComponent],
-    imports: [AppRoutingModule,
+    imports: [
+        AppRoutingModule,
         ActionModalModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -157,7 +158,10 @@ export class CustomTranslateLoader implements TranslateLoader {
         }),
         OAuthModule.forRoot(),
         GetValueModule,
-        GetCollectionDisplayModule], providers: [
+        GetCollectionDisplayModule,
+        MarkerModule
+    ],
+    providers: [
         SidenavService,
         forwardRef(() => LoadService),
         forwardRef(() => ArlasStartupService),
@@ -199,8 +203,7 @@ export class CustomTranslateLoader implements TranslateLoader {
             useFactory: getOptionsFactory,
             deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        MarkerModule
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class AppModule { }
