@@ -18,13 +18,7 @@
  */
 import { Injectable } from '@angular/core';
 import {
-    CollectionReference,
-    CollectionReferenceDescription,
-    CollectionReferenceUpdateOrg,
-    CollectionsApi,
-    Configuration,
-    ExploreApi,
-    Success
+    CollectionReference, CollectionReferenceDescription, CollectionReferenceUpdateOrg, CollectionsApi, Configuration, ExploreApi, Success
 } from 'arlas-api';
 import { ArlasCollaborativesearchService, ArlasSettingsService } from 'arlas-wui-toolkit';
 import { from, Observable } from 'rxjs';
@@ -34,8 +28,8 @@ import { from, Observable } from 'rxjs';
 })
 export class CollectionService {
 
-    public arlasCollectionsApi: CollectionsApi;
-    public arlasExploreApi: ExploreApi;
+    private readonly arlasCollectionsApi: CollectionsApi;
+    private readonly arlasExploreApi: ExploreApi;
     public options;
 
     public constructor(
@@ -43,18 +37,13 @@ export class CollectionService {
         private readonly arlasSettingsService: ArlasSettingsService
     ) {
         const configuration: Configuration = new Configuration();
-        const arlasExploreApi: ExploreApi = new ExploreApi(
-            configuration,
-            (this.arlasSettingsService.getSettings() as any).server.url,
-            window.fetch
-        );
-        const arlasCollectionApi: CollectionsApi = new CollectionsApi(
-            configuration,
-            (this.arlasSettingsService.getSettings() as any).server.url,
-            window.fetch
-        );
-        this.arlasCollectionsApi = arlasCollectionApi;
-        this.arlasExploreApi = arlasExploreApi;
+        const serverUrl = this.resolveServerUrl((this.arlasSettingsService.getSettings() as any).server.url, window.location.origin);
+
+        this.arlasExploreApi = new ExploreApi(
+            configuration, serverUrl, window.fetch);
+        this.arlasCollectionsApi = new CollectionsApi(
+            configuration, serverUrl, window.fetch);
+
         this.collabSearchService.setExploreApi(this.arlasExploreApi);
     }
 
@@ -88,5 +77,14 @@ export class CollectionService {
 
     public updateCollectionOrg(collectionOrg: CollectionReferenceUpdateOrg, collection: string, options = this.options) {
         return from(this.arlasCollectionsApi.patch(collectionOrg, collection, false, options));
+    }
+
+    private resolveServerUrl(serverUrl: string, baseUrl: string) {
+        try {
+            return new URL(serverUrl, baseUrl).toString();
+        } catch {
+            // fallback in case of a malformed input
+            return serverUrl;
+        }
     }
 }
