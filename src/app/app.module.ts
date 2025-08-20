@@ -33,8 +33,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -45,22 +49,10 @@ import { GetCollectionDisplayModule, GetValueModule } from 'arlas-web-components
 import enComponents from 'arlas-web-components/assets/i18n/en.json';
 import frComponents from 'arlas-web-components/assets/i18n/fr.json';
 import {
-    ActionModalModule,
-    ArlasCollaborativesearchService,
-    ArlasConfigurationUpdaterService,
-    ArlasIamService,
-    ArlasSettingsService,
-    ArlasStartupService,
-    ArlasToolkitSharedModule,
-    auhtentServiceFactory,
-    AuthentificationService,
-    CONFIG_UPDATER,
-    ConfigMenuModule, configUpdaterFactory,
-    FETCH_OPTIONS,
-    GET_OPTIONS,
-    getOptionsFactory,
-    iamServiceFactory,
-    PaginatorI18n
+    ActionModalModule, ArlasCollaborativesearchService, ArlasConfigurationUpdaterService, ArlasIamService,
+    ArlasSettingsService, ArlasStartupService, ArlasToolkitSharedModule, auhtentServiceFactory,
+    AuthentificationService, CONFIG_UPDATER, ConfigMenuModule, configUpdaterFactory,
+    FETCH_OPTIONS, GET_OPTIONS, getOptionsFactory, iamServiceFactory, PaginatorI18n
 } from 'arlas-wui-toolkit';
 import enToolkit from 'arlas-wui-toolkit/assets/i18n/en.json';
 import frToolkit from 'arlas-wui-toolkit/assets/i18n/fr.json';
@@ -68,24 +60,20 @@ import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.modules';
 import { AppComponent } from './app.component';
 import { CardComponent } from './components/card/card.component';
+import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';
+import { CollectionComponent } from './components/collection/collection.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { DashboardSearchComponent } from './components/dashboard-search/dashboard-search.component';
 import { CardDropdownComponent } from './components/dynamic-hub/collapse/card-dropdown.component';
 import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
 import { HubActionModalComponent } from './components/hub-action-modal/hub-action-modal.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
+import { BooleanToTextPipe } from './pipes/booleanToText.pipe';
+import { FieldTypeToIconPipe } from './pipes/fieldTypeToIcon.pipe';
+import { FieldTypeToTextPipe } from './pipes/fieldTypeToText.pipe';
 import { PreviewPipe } from './pipes/preview.pipe';
 import { LoadService } from './services/load.service';
 import { SidenavService } from './services/sidenav.service';
-import { CollectionComponent } from './components/collection/collection.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSortModule } from '@angular/material/sort';
-import { BooleanToTextPipe } from './pipes/booleanToText.pipe';
-import { FieldTypeToTextPipe } from './pipes/fieldTypeToText.pipe';
-import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
-import { FieldTypeToIconPipe } from './pipes/fieldTypeToIcon.pipe';
 
 export function loadServiceFactory(loadService: LoadService) {
     const load = () => loadService.init();
@@ -138,7 +126,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         FieldTypeToIconPipe
     ],
     bootstrap: [AppComponent],
-    imports: [AppRoutingModule,
+    imports: [
+        AppRoutingModule,
         ActionModalModule,
         BrowserModule,
         BrowserAnimationsModule,

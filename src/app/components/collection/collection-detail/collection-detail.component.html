@@ -3,25 +3,24 @@
     <mat-spinner></mat-spinner>
 </div>
 }
-<form [formGroup]="collectionForm" autocomplete="off">
+<form [formGroup]="collectionForm" autocomplete="off" (ngSubmit)="update()">
     <div class="collection">
         <div class="collection__top">
             <div class="collection__top__content">
-                <button class="collection__top__content__btn" mat-stroked-button (click)="back()">« {{'Collections' |
-                    translate}}</button>
+                <button class="collection__top__content__btn" mat-stroked-button (click)="back()" type="button">
+                    « {{'Collections' | translate}}</button>
                 @if(canEdit){
                 <div class="collection__top__content__actions">
                     @if(!editMode){
-                    <button mat-stroked-button (click)="toggleMode()">{{'Edit' |
-                        translate}}</button>
+                    <button mat-stroked-button (click)="toggleMode()">
+                        {{'Edit' | translate}}</button>
                     } @else {
+                    <button mat-stroked-button (click)="cancel()" type="button">
+                        {{'Cancel' | translate}}</button>
 
-                    <button mat-stroked-button (click)="cancel()">{{'Cancel' |
-                        translate}}</button>
-                    <button [class.spinner]="isLoading"
+                    <button [class.spinner]="isLoading" type="submit"
                         [disabled]="isLoading || (!this.collectionForm.dirty && !this.collectionForm.touched)"
                         mat-flat-button color="primary" (click)="update()">{{'Save' | translate}}</button>
-
                     }
                 </div>
                 }
