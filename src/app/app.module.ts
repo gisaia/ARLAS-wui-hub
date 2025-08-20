@@ -167,7 +167,8 @@ export class CustomTranslateLoader implements TranslateLoader {
         }),
         OAuthModule.forRoot(),
         GetValueModule,
-        GetCollectionDisplayModule
+        GetCollectionDisplayModule,
+        MarkerModule
     ],
     providers: [
         SidenavService,
@@ -211,8 +212,7 @@ export class CustomTranslateLoader implements TranslateLoader {
             useFactory: getOptionsFactory,
             deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        MarkerModule
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class AppModule { }
