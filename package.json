@@ -32,7 +32,7 @@
     "zone.js": "^0.14.10"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "27.1.0-rc.2",
+    "arlas-wui-toolkit": "27.1.0-rc.4",
     "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
@@ -67,6 +67,8 @@
     "typescript": "5.4.5"
   },
   "overrides": {
-    "esbuild": "~0.25.1"
+    "esbuild": "~0.25.0",
+    "webpack-dev-server": "~5.2.2",
+    "tmp": "~0.2.5"
   }
 }
