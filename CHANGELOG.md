@@ -1,5 +1,20 @@
 # Change Log
 
+## [v27.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.0) (2025-09-08)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.0-rc.2...v27.1.0)
+
+**New stuff:**
+
+- Handle relative paths for ARLAS\_SERVER\_URL variable [\#258](https://github.com/gisaia/ARLAS-wui-hub/issues/258)
+- Declare new CollectionView component  [\#225](https://github.com/gisaia/ARLAS-wui-hub/issues/225)
+- Remove the collections list to the right [\#224](https://github.com/gisaia/ARLAS-wui-hub/issues/224)
+
+**Fixed bugs:**
+
+- Cards are widely spaced in case of big screens [\#270](https://github.com/gisaia/ARLAS-wui-hub/issues/270)
+- Editing the collection name and pressing ENTER exits the page without saving [\#262](https://github.com/gisaia/ARLAS-wui-hub/issues/262)
+
 ## [v27.1.0-rc.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.0-rc.2) (2025-09-02)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.0.3...v27.1.0-rc.2)
@@ -8,13 +23,8 @@
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.0-rc.1...v27.0.3)
 
-**New stuff:**
-
-- Handle relative paths for ARLAS\_SERVER\_URL variable [\#258](https://github.com/gisaia/ARLAS-wui-hub/issues/258)
-
 **Fixed bugs:**
 
-- Editing the collection name and pressing ENTER exits the page without saving [\#262](https://github.com/gisaia/ARLAS-wui-hub/issues/262)
 - Error on hub loading [\#257](https://github.com/gisaia/ARLAS-wui-hub/issues/257)
 
 ## [v27.1.0-rc.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.0-rc.1) (2025-06-19)
@@ -23,8 +33,6 @@
 
 **New stuff:**
 
-- Declare new CollectionView component  [\#225](https://github.com/gisaia/ARLAS-wui-hub/issues/225)
-- Remove the collections list to the right [\#224](https://github.com/gisaia/ARLAS-wui-hub/issues/224)
 - Add a page to list collections and explore their structure [\#101](https://github.com/gisaia/ARLAS-wui-hub/issues/101)
 
 ## [v27.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.0.2) (2025-04-28)
