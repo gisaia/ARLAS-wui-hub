@@ -28,18 +28,18 @@ authentication:
   sign_up_enabled: true
 
 server:
-  url: https://localhost/arlas
+  url: https://cloud.arlas.io/arlas/server
 
 ########################################################
 ############   Persistence SETTINGS   ##################
 ########################################################
 persistence:
-  url: https://localhost/persist
+  url: https://cloud.arlas.io/arlas/persistence
 ########################################################
 ############   Permissions SETTINGS   ##################
 ########################################################
 permission:
-  url: 'https://localhost/arlas_permissions_server'
+  url: https://cloud.arlas.io/arlas/permissions
 arlas_wui_url: "http://localhost:4200"
 arlas_builder_url: "http://localhost:4200"
 links: []
