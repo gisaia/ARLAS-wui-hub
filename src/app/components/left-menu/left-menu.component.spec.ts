@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ArlasToolKitModule, ArlasToolkitSharedModule } from 'arlas-wui-toolkit';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LeftMenuComponent } from './left-menu.component';
@@ -12,7 +12,7 @@ describe('LeftMenuComponent', () => {
     let component: LeftMenuComponent;
     let fixture: ComponentFixture<LeftMenuComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [LeftMenuComponent],
             imports: [ArlasToolkitSharedModule, ArlasToolKitModule, MatListModule, MatDividerModule, MatIconModule,

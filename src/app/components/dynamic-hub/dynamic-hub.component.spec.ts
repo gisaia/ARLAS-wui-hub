@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +17,7 @@ describe('DynamicHubComponent', () => {
     let component: DynamicHubComponent;
     let fixture: ComponentFixture<DynamicHubComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [DynamicHubComponent],
             imports: [ArlasToolkitSharedModule, ArlasToolKitModule,
