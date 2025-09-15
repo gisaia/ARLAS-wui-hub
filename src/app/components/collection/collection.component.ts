@@ -194,11 +194,17 @@ export class CollectionComponent implements OnInit, AfterViewInit {
 
         if (this.authentMode === 'iam') {
             const orgsParam = c.params.organisations;
+            // keep collection if it's public
+            // By default keepIt is true
+
             // if logged : keep it if collection is shared with at least one of my orgs
-            if (this.connected()) {
-                keepIt = orgsParam.shared.some(so => this.organisationsNames().includes(so));
-            } else { // anonymous : keep collection if it's public
-                keepIt = (orgsParam as any).public;
+            // OR I'm the owner
+            // AND the collection is not public
+            if (this.connected() && !(orgsParam as any).public) {
+
+                keepIt = this.organisationsNames().includes(orgsParam.owner)
+                    || orgsParam.shared.some(so => this.organisationsNames().includes(so));
+
             }
 
             // filter public collections with toggle state
