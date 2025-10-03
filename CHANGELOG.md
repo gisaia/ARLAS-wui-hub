@@ -1,5 +1,21 @@
 # Change Log
 
+## [v27.1.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.1) (2025-09-16)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.1-beta.2...v27.1.1)
+
+**Fixed bugs:**
+
+- Button to display/hide public collections is not working [\#275](https://github.com/gisaia/ARLAS-wui-hub/issues/275)
+
+## [v27.1.1-beta.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.1-beta.2) (2025-09-15)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.1-beta.1...v27.1.1-beta.2)
+
+## [v27.1.1-beta.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.1-beta.1) (2025-09-15)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.0...v27.1.1-beta.1)
+
 ## [v27.1.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.0) (2025-09-08)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.0-rc.2...v27.1.0)
@@ -13,6 +29,7 @@
 **Fixed bugs:**
 
 - Cards are widely spaced in case of big screens [\#270](https://github.com/gisaia/ARLAS-wui-hub/issues/270)
+- The collection view is missing the icon for Keywords [\#261](https://github.com/gisaia/ARLAS-wui-hub/issues/261)
 - Editing the collection name and pressing ENTER exits the page without saving [\#262](https://github.com/gisaia/ARLAS-wui-hub/issues/262)
 
 ## [v27.1.0-rc.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.0-rc.2) (2025-09-02)
