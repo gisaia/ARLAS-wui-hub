@@ -20,12 +20,13 @@ RUN npm run build
 
 ### STAGE 2: Setup ###
 
-FROM nginx:1.28.0-alpine3.21-slim
+FROM nginx:1.29-alpine3.22-slim
 
-RUN apk update && apk upgrade && apk add --no-cache bash jq netcat-openbsd curl && rm -rf /var/cache/apk/*
+RUN apk update && apk upgrade && apk add --no-cache bash curl jq netcat-openbsd && rm -rf /var/cache/apk/*
 
 ## Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
@@ -34,6 +35,20 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=hub /ng-app/dist/ /usr/share/nginx/html
 COPY --from=hub /ng-app/start.sh /usr/share/nginx/
 
+## Fix permissions for template filling at container startup
+## Nginx user must be able to set variables in these files
+RUN touch /usr/share/nginx/html/settings.yaml.tmp && \
+    touch /etc/nginx/conf.d/default.conf.tmp && \
+    touch /usr/share/nginx/html/index.html.tmp &&  \
+    chmod 666 /usr/share/nginx/html/settings.yaml.tmp \
+        /usr/share/nginx/html/settings.yaml \
+        /etc/nginx/conf.d/default.conf.tmp \
+        /etc/nginx/conf.d/default.conf \
+        /usr/share/nginx/html/index.html.tmp \
+        /usr/share/nginx/html/index.html
+
+USER nginx
+
 HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
 
-CMD /usr/share/nginx/start.sh
+CMD ["/usr/share/nginx/start.sh"]
