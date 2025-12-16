@@ -29,8 +29,7 @@
               "src/assets",
               "src/settings.yaml",
               "src/silent-refresh.html",
-              "src/favicon.ico",
-              "src/config.json"
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles/theme.scss",
@@ -69,8 +68,7 @@
                 },
                 "src/assets",
                 "src/silent-refresh.html",
-                "src/favicon.ico",
-                "src/config.json"
+                "src/favicon.ico"
               ]
             }
           }
@@ -112,8 +110,7 @@
               "src/assets",
               "src/settings.yaml",
               "src/silent-refresh.html",
-              "src/favicon.ico",
-              "src/config.json"
+              "src/favicon.ico"
             ]
           }
         },
