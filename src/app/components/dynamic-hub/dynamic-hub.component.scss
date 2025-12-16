@@ -53,6 +53,7 @@ h2 {
         display: flex;
         gap: 6px;
         height: $header-height;
+        padding-bottom: 10px;
 
         .organisations {
             min-width: 200px;
@@ -75,6 +76,12 @@ h2 {
             flex: 4;
         }
         .dashboard {
+            &--first {
+                h2 {
+                    margin-top: 0;
+                }
+            }
+
             &-title {
                 min-width: 265px;
             }

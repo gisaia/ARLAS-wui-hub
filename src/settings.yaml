@@ -4,15 +4,15 @@
 authentication:
   use_authent: true
   force_connect: false
-  use_discovery: false
-  auth_mode: 'iam'
+  use_discovery: true
+  auth_mode: 'openid'
   url: 'https://localhost/arlas_iam_server'
   threshold: 60000
-  scope: openid
-  issuer: http://localhost/auth/realms/arlas
-  client_id: arlasfrontend
-  redirect_uri: NOT_CONFIGURED
-  silent_refresh_redirect_uri: http://localhost:4200/silent-refresh.html
+  scope: profile
+  issuer: https://localhost:9443/auth/realms/arlas
+  client_id: arlas-front
+  redirect_uri: https://localhost:4200/callback
+  silent_refresh_redirect_uri: https://localhost:4200/silent-refresh.html
   require_https: false
   response_type: "code"
   silent_refresh_timeout: 10000
@@ -21,26 +21,26 @@ authentication:
   clear_hash_after_login: true
   disable_at_hash_check: false
   show_debug_information: true
-  login_url: NOT_CONFIGURED
-  logout_url: http://localhost/auth/realms/arlas/protocol/openid-connect/logout
-  storage: sessionstorage
+  login_url: https://localhost:9443/auth/realms/arlas
+  logout_url: https://localhost:9443/auth/realms/arlas/protocol/openid-connect/logout
+  storage: memorystorage
   custom_query_params: [{"audience":"http://arlas.io/api/server"}]
   sign_up_enabled: true
 
 server:
-  url: https://cloud.arlas.io/arlas/server
+  url: https://localhost/arlas/server
 
 ########################################################
 ############   Persistence SETTINGS   ##################
 ########################################################
 persistence:
-  url: https://cloud.arlas.io/arlas/persistence
+  url: https://localhost/persist
 ########################################################
 ############   Permissions SETTINGS   ##################
 ########################################################
 permission:
-  url: https://cloud.arlas.io/arlas/permissions
-arlas_wui_url: "http://localhost:4200"
-arlas_builder_url: "http://localhost:4200"
+  url: https://localhost/arlas_permissions_server
+arlas_wui_url: "https://localhost/wui"
+arlas_builder_url: "https://localhost/builder"
 links: []
 tab_name: "ARLAS Wui hub Dev"
