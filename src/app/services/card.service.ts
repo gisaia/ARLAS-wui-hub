@@ -44,7 +44,6 @@ export interface Card {
     preview$?: Observable<string>;
     previewId?: string;
     organisation?: string;
-    isPublic?: boolean;
 }
 
 @Injectable({
@@ -164,8 +163,7 @@ export class CardService {
             actions: actions,
             color: this.colorService.getColor(this.getCollection(data.doc_value)),
             owner: data.doc_owner,
-            organisation: organisation,
-            isPublic: data.ispublic
+            organisation: organisation
         };
 
         return card;

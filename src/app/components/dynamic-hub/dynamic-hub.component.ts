@@ -25,11 +25,9 @@ import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-import { debounceTime, Observable, of } from 'rxjs';
-import { catchError, filter, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, debounceTime, filter, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { Card, CardService } from '../../services/card.service';
 import { DashboardSearchService } from '../../services/dashboard-search.service';
-import { Action } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
 
 @Component({
@@ -41,7 +39,6 @@ export class DynamicHubComponent implements OnInit {
 
     @ViewChildren('checkBox') public checkBox: QueryList<any>;
 
-    public action = Action;
     public isLoading = false;
     public cards: Map<string, Card[]>;
     public cardsFiltered: Map<string, Card[]>;
@@ -59,17 +56,20 @@ export class DynamicHubComponent implements OnInit {
     public orgs: UserOrgData[] = [];
     private orgsSet = new Set<string>();
     public currentOrga = '';
-    public PUBLIC_ORG = 'public';
+    /** Name of the orpublic organisation */
+    public readonly PUBLIC_ORG = 'public';
+    /** Name of the organisation in a KC deployment for non-public organisations */
+    public readonly PRIVATE_NO_ORG = '__no_org__';
 
     public constructor(
-        public cardService: CardService,
-        private dialog: MatDialog,
-        private authentService: AuthentificationService,
-        private arlasSettingsService: ArlasSettingsService,
-        private permissionService: PermissionService,
-        private persistenceService: PersistenceService,
-        private arlasIamService: ArlasIamService,
-        private dashboardSearch: DashboardSearchService
+        public readonly cardService: CardService,
+        private readonly dialog: MatDialog,
+        private readonly authentService: AuthentificationService,
+        private readonly arlasSettingsService: ArlasSettingsService,
+        private readonly permissionService: PermissionService,
+        private readonly persistenceService: PersistenceService,
+        private readonly arlasIamService: ArlasIamService,
+        private readonly dashboardSearch: DashboardSearchService
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
@@ -273,7 +273,7 @@ export class DynamicHubComponent implements OnInit {
             .pipe(tap(cards => this.enrichCards(cards)))
             .subscribe({
                 next: (cards) => {
-                    this.storeExternalOrganisationsCards(cards);
+                    this.groupCardsPerOrganisation(cards);
                     this.isLoading = false;
                     this.initFilter();
                 }
@@ -281,29 +281,44 @@ export class DynamicHubComponent implements OnInit {
     }
 
     private filterCardsByOrganisation(cards: Card[], o?: string) {
-        this.storeExternalOrganisationsCards(cards.filter(card => card.organisation !== o));
+        this.groupCardsPerOrganisation(cards.filter(card => card.organisation !== o));
         return cards.filter(card => card.organisation === o);
     }
 
-
-    private storeExternalOrganisationsCards(cards: Card[]) {
+    /**
+     * For an IAM deployment, group per organisation of the user. The others go in the 'public' organisation.
+     * For a KC deployment, two "organisations" are created: the public and non-public cards
+     * @param cards
+     */
+    private groupCardsPerOrganisation(cards: Card[]) {
         cards.forEach(c => {
-            if (this.orgsSet.has(c.organisation)) {
-                let cardsOfOrga = this.cardsRef.get(c.organisation);
+            if (this.authentMode === 'iam') {
+                if (this.orgsSet.has(c.organisation)) {
+                    let cardsOfOrga = this.cardsRef.get(c.organisation);
+                    if (!cardsOfOrga) {
+                        cardsOfOrga = [];
+                    }
+                    this.addCard(c, cardsOfOrga);
+                    this.cardsRef.set(c.organisation, cardsOfOrga);
+                } else {
+                    const publicOrg = this.PUBLIC_ORG;
+                    let publicCards = this.cardsRef.get(publicOrg);
+                    if (!publicCards) {
+                        publicCards = [];
+                    }
+                    c.preview$ = this.getPreview$(c.previewId, {});
+                    this.addCard(c, publicCards);
+                    this.cardsRef.set(publicOrg, publicCards);
+                }
+            } else {
+                const rights = [...c.readers, ...c.writers];
+                const fakeOrg = rights.find(g => g.name === 'public') !== undefined ? this.PUBLIC_ORG : this.PRIVATE_NO_ORG;
+                let cardsOfOrga = this.cardsRef.get(fakeOrg);
                 if (!cardsOfOrga) {
                     cardsOfOrga = [];
                 }
                 this.addCard(c, cardsOfOrga);
-                this.cardsRef.set(c.organisation, cardsOfOrga);
-            } else {
-                const publicOrg = this.PUBLIC_ORG;
-                let publicCards = this.cardsRef.get(publicOrg);
-                if (!publicCards) {
-                    publicCards = [];
-                }
-                c.preview$ = this.getPreview$(c.previewId, {});
-                this.addCard(c, publicCards);
-                this.cardsRef.set(publicOrg, publicCards);
+                this.cardsRef.set(fakeOrg, cardsOfOrga);
             }
         });
     }
@@ -315,8 +330,6 @@ export class DynamicHubComponent implements OnInit {
         }
 
     }
-
-
 
     private enrichCards(cards: Card[], fetchOptions?): Card[] {
         cards.forEach(c => {
