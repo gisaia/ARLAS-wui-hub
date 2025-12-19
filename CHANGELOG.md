@@ -1,5 +1,17 @@
 # Change Log
 
+## [v27.1.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.3) (2025-12-16)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.2...v27.1.3)
+
+**New stuff:**
+
+- Add custom-style.css to override styling [\#282](https://github.com/gisaia/ARLAS-wui-hub/issues/282)
+
+**Fixed bugs:**
+
+- Private dashboards with a preview in keycloak deployment throws an error [\#287](https://github.com/gisaia/ARLAS-wui-hub/issues/287)
+
 ## [v27.1.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v27.1.2) (2025-11-28)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v27.1.1...v27.1.2)
