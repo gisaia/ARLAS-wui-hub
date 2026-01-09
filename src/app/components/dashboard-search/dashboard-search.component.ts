@@ -26,7 +26,8 @@ import { map } from 'rxjs/operators';
 @Component({
     selector: 'arlas-dashboard-search',
     templateUrl: './dashboard-search.component.html',
-    styleUrls: ['./dashboard-search.component.scss']
+    styleUrls: ['./dashboard-search.component.scss'],
+    standalone: false
 })
 export class DashboardSearchComponent implements OnInit, OnDestroy{
 

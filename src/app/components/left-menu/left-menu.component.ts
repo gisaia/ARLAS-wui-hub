@@ -30,7 +30,8 @@ interface Page {
 @Component({
     selector: 'arlas-left-menu',
     templateUrl: './left-menu.component.html',
-    styleUrls: ['./left-menu.component.scss']
+    styleUrls: ['./left-menu.component.scss'],
+    standalone: false
 })
 export class LeftMenuComponent implements OnInit {
 

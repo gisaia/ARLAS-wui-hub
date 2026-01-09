@@ -19,7 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'json_to_preview'
+    name: 'json_to_preview',
+    standalone: true
 })
 export class PreviewPipe implements PipeTransform {
 

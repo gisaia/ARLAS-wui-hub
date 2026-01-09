@@ -19,7 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'field_type_to_icon'
+    name: 'field_type_to_icon',
+    standalone: true
 })
 export class FieldTypeToIconPipe implements PipeTransform {
 

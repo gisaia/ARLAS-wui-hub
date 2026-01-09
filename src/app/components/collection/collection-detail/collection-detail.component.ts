@@ -44,7 +44,8 @@ import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.compone
 @Component({
     selector: 'arlas-collection-detail',
     templateUrl: './collection-detail.component.html',
-    styleUrl: './collection-detail.component.scss'
+    styleUrl: './collection-detail.component.scss',
+    standalone: false
 })
 export class CollectionDetailComponent implements OnInit {
     @ViewChild('fieldTableSort', { static: true }) public sort: MatSort;

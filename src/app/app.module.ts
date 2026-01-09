@@ -116,14 +116,10 @@ export class CustomTranslateLoader implements TranslateLoader {
         HubActionModalComponent,
         ConfirmModalComponent,
         LeftMenuComponent,
-        PreviewPipe,
         CardDropdownComponent,
         DashboardSearchComponent,
         CollectionComponent,
-        CollectionDetailComponent,
-        BooleanToTextPipe,
-        FieldTypeToTextPipe,
-        FieldTypeToIconPipe
+        CollectionDetailComponent
     ],
     bootstrap: [AppComponent],
     imports: [
@@ -168,7 +164,11 @@ export class CustomTranslateLoader implements TranslateLoader {
         OAuthModule.forRoot(),
         GetValuePipe,
         GetCollectionDisplayNamePipe,
-        MarkerModule
+        MarkerModule,
+        BooleanToTextPipe,
+        FieldTypeToTextPipe,
+        FieldTypeToIconPipe,
+        PreviewPipe
     ],
     providers: [
         SidenavService,
