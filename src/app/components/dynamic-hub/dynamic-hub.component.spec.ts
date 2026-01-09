@@ -19,27 +19,25 @@ describe('DynamicHubComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [DynamicHubComponent],
-            imports: [ArlasToolkitSharedModule, ArlasToolKitModule,
-                MatCardModule, MatChipsModule, MatIconModule, MatCheckboxModule,
-                TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
-            ],
-            providers: [ ArlasCollaborativesearchService, PersistenceService,
-                {
-                    provide: PermissionService,
-                    useClass: MockPermissionService
-                },
-                {
-                    provide: ErrorService,
-                    useClass: MockErrorService
-                },
-                {
-                    provide: ArlasSettingsService,
-                    useClass: MockArlasSettingsService
-                }
-            ],
-            teardown: { destroyAfterEach: false }
-        })
+    imports: [ArlasToolkitSharedModule, ArlasToolKitModule,
+        MatCardModule, MatChipsModule, MatIconModule, MatCheckboxModule,
+        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } }), DynamicHubComponent],
+    providers: [ArlasCollaborativesearchService, PersistenceService,
+        {
+            provide: PermissionService,
+            useClass: MockPermissionService
+        },
+        {
+            provide: ErrorService,
+            useClass: MockErrorService
+        },
+        {
+            provide: ArlasSettingsService,
+            useClass: MockArlasSettingsService
+        }
+    ],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

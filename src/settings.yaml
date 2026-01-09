@@ -5,8 +5,8 @@ authentication:
   use_authent: true
   force_connect: false
   use_discovery: true
-  auth_mode: 'openid'
-  url: 'https://localhost/arlas_iam_server'
+  auth_mode: "iam"
+  url: "https://localhost/arlas_iam_server"
   threshold: 60000
   scope: profile
   issuer: https://localhost:9443/auth/realms/arlas

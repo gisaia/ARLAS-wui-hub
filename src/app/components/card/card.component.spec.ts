@@ -18,19 +18,16 @@ describe('CardComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CardComponent],
-            imports: [ArlasToolkitSharedModule, ArlasToolKitModule, ConfigMenuModule, MatCardModule, MatChipsModule, MatIconModule,
-                TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
-
-            ],
-            providers: [ArlasColorService, ArlasCollaborativesearchService, PersistenceService,
-                {
-                    provide: PermissionService,
-                    useClass: MockPermissionService
-                }
-            ],
-            teardown: { destroyAfterEach: false }
-        })
+    imports: [ArlasToolkitSharedModule, ArlasToolKitModule, ConfigMenuModule, MatCardModule, MatChipsModule, MatIconModule,
+        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } }), CardComponent],
+    providers: [ArlasColorService, ArlasCollaborativesearchService, PersistenceService,
+        {
+            provide: PermissionService,
+            useClass: MockPermissionService
+        }
+    ],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

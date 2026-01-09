@@ -27,7 +27,8 @@ import { SidenavService } from './services/sidenav.service';
 @Component({
     selector: 'arlas-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
 
