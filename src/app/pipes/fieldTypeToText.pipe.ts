@@ -19,7 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'field_type_to_text'
+    name: 'field_type_to_text',
+    standalone: true
 })
 export class FieldTypeToTextPipe implements PipeTransform {
 

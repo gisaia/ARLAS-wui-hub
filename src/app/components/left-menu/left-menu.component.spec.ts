@@ -14,14 +14,12 @@ describe('LeftMenuComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [LeftMenuComponent],
-            imports: [ArlasToolkitSharedModule, ArlasToolKitModule, MatListModule, MatDividerModule, MatIconModule,
-                MatSidenavModule,
-                TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
-            ],
-            providers: [SidenavService],
-            teardown: { destroyAfterEach: false }
-        })
+    imports: [ArlasToolkitSharedModule, ArlasToolKitModule, MatListModule, MatDividerModule, MatIconModule,
+        MatSidenavModule,
+        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } }), LeftMenuComponent],
+    providers: [SidenavService],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

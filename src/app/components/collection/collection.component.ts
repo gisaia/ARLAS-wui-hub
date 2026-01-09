@@ -39,7 +39,8 @@ export interface CollectionInfos extends CollectionReferenceDescription {
 @Component({
     selector: 'arlas-collection',
     templateUrl: './collection.component.html',
-    styleUrl: './collection.component.scss'
+    styleUrl: './collection.component.scss',
+    standalone: false
 })
 export class CollectionComponent implements OnInit, AfterViewInit {
 

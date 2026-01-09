@@ -8,7 +8,7 @@ describe('DashboardSearchComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ DashboardSearchComponent ]
+            imports: [DashboardSearchComponent]
         })
             .compileComponents();
 

@@ -45,7 +45,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MarkerModule } from '@colsen1991/ngx-translate-extract-marker/extras';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { GetCollectionDisplayModule, GetValueModule } from 'arlas-web-components';
+import { GetCollectionDisplayNamePipe, GetValuePipe } from 'arlas-web-components';
 import enComponents from 'arlas-web-components/assets/i18n/en.json';
 import frComponents from 'arlas-web-components/assets/i18n/fr.json';
 import {
@@ -116,14 +116,10 @@ export class CustomTranslateLoader implements TranslateLoader {
         HubActionModalComponent,
         ConfirmModalComponent,
         LeftMenuComponent,
-        PreviewPipe,
         CardDropdownComponent,
         DashboardSearchComponent,
         CollectionComponent,
-        CollectionDetailComponent,
-        BooleanToTextPipe,
-        FieldTypeToTextPipe,
-        FieldTypeToIconPipe
+        CollectionDetailComponent
     ],
     bootstrap: [AppComponent],
     imports: [
@@ -166,9 +162,13 @@ export class CustomTranslateLoader implements TranslateLoader {
             }
         }),
         OAuthModule.forRoot(),
-        GetValueModule,
-        GetCollectionDisplayModule,
-        MarkerModule
+        GetValuePipe,
+        GetCollectionDisplayNamePipe,
+        MarkerModule,
+        BooleanToTextPipe,
+        FieldTypeToTextPipe,
+        FieldTypeToIconPipe,
+        PreviewPipe
     ],
     providers: [
         SidenavService,

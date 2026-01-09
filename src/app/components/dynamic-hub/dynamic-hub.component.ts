@@ -33,7 +33,8 @@ import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action
 @Component({
     selector: 'arlas-dynamic-hub',
     templateUrl: './dynamic-hub.component.html',
-    styleUrls: ['./dynamic-hub.component.scss']
+    styleUrls: ['./dynamic-hub.component.scss'],
+    standalone: false
 })
 export class DynamicHubComponent implements OnInit {
 

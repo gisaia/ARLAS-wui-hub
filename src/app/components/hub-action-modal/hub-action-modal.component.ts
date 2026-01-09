@@ -37,7 +37,8 @@ export interface HubAction {
 @Component({
     selector: 'arlas-hub-action-modal',
     templateUrl: './hub-action-modal.component.html',
-    styleUrls: ['./hub-action-modal.component.scss']
+    styleUrls: ['./hub-action-modal.component.scss'],
+    standalone: false
 })
 export class HubActionModalComponent {
 
