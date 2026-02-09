@@ -201,7 +201,7 @@
         <div class="collection__advanced">
             <h3>{{'Danger zone' | translate}}</h3>
             <div>{{'Once you delete a collection, there is no going back. Please be certain.' | translate}}</div>
-            <button color="warn" class="delete" mat-stroked-button (click)="openDelete(collection?.collection_name)">
+            <button color="warn" class="delete" type="button" mat-stroked-button (click)="openDelete(collection?.collection_name)">
                 {{'Delete collection' | translate}}
             </button>
         </div>

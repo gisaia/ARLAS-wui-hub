@@ -329,7 +329,7 @@ export class CollectionDetailComponent implements OnInit {
         this.fields = extractProp(c);
         this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names?.collection);
         this.collectionForm.get('shared_orgs').setValue(
-            this.collection.params.organisations.shared.filter(o => o !== c.params.organisations.owner)
+            this.collection.params?.organisations?.shared?.filter(o => o !== c.params?.organisations?.owner)
         );
         this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
         this.formInitialValues = this.collectionForm.value;
