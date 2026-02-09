@@ -155,7 +155,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                     });
                     // remove owner from shared organisations
                     collectionsList
-                        .forEach(c => c.display_shared_orgs = c.params.organisations.shared.filter(o => o !== c.params.organisations.owner));
+                        .forEach(c => c.display_shared_orgs = c.params?.organisations?.shared?.filter(o => o !== c.params?.organisations?.owner));
                     this.collections.set(collectionsList);
                     this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
                     this.organisationsNames.set(this.organisations());
