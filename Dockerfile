@@ -1,10 +1,9 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'hub'
-FROM node:18.20.5 AS hub
+FROM node:24.2.0 AS hub
 
 COPY package.json package-lock.json ./
-COPY ./patches/ ./patches/
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
 RUN npm i --ignore-scripts && npm run postinstall && mkdir /ng-app && cp -R ./node_modules ./ng-app
@@ -20,7 +19,7 @@ RUN npm run build
 
 ### STAGE 2: Setup ###
 
-FROM nginx:1.29-alpine3.22-slim
+FROM nginx:1.29-alpine3.23-slim
 
 RUN apk update && apk upgrade && apk add --no-cache bash curl jq netcat-openbsd && rm -rf /var/cache/apk/*
 

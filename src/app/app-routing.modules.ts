@@ -16,16 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { ForgotComponent, LoginComponent, RegisterComponent, ResetComponent, VerifyComponent } from 'arlas-wui-toolkit';
-import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
-import { CollectionComponent } from './components/collection/collection.component';
 import { CollectionDetailComponent } from './components/collection/collection-detail/collection-detail.component';
+import { CollectionComponent } from './components/collection/collection.component';
+import { DynamicHubComponent } from './components/dynamic-hub/dynamic-hub.component';
 
-
-
-const routes: Routes = [
+export const routes: Routes = [
     { path: '', component: DynamicHubComponent },
     { path: 'dashboard', component: DynamicHubComponent },
     {
@@ -42,9 +39,3 @@ const routes: Routes = [
     { path: 'password_forgot', component: ForgotComponent },
     { path: 'reset/:id/user/:token', component: ResetComponent }
 ];
-
-@NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
-})
-export class AppRoutingModule { }

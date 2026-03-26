@@ -26,7 +26,7 @@ export class PreviewPipe implements PipeTransform {
     public transform(input: string): any {
         try {
             return JSON.parse(input)?.img;
-        } catch(err) {
+        } catch {
             return input;
         }
     }

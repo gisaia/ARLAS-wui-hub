@@ -1,13 +1,14 @@
-import { inject, TestBed } from '@angular/core/testing';
-import {
-    PermissionService, ArlasSettingsService,
-    ArlasToolKitModule, ArlasToolkitSharedModule
-} from 'arlas-wui-toolkit';
-import { MockPermissionService, MockArlasSettingsService } from '../tools/tools';
-import { CardService } from './card.service';
+import { TestBed } from '@angular/core/testing';
 import { ArlasColorService } from 'arlas-web-components';
+import {
+    ArlasSettingsService, ArlasToolKitModule, ArlasToolkitSharedModule, PermissionService
+} from 'arlas-wui-toolkit';
+import { MockArlasSettingsService, MockPermissionService } from '../tools/tools';
+import { CardService } from './card.service';
 
 describe('CardService', () => {
+    let service: CardService;
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [ArlasToolkitSharedModule, ArlasToolKitModule],
@@ -22,13 +23,11 @@ describe('CardService', () => {
                 }],
             teardown: { destroyAfterEach: false }
         });
+
+        service = TestBed.inject(CardService);
     });
 
-
-
-    it('should be created', inject([],
-        () => {
-            const service: CardService = TestBed.get(CardService);
-            expect(service).toBeTruthy();
-        }));
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

@@ -19,7 +19,7 @@
                         {{'Cancel' | translate}}</button>
 
                     <button [class.spinner]="isLoading" type="submit"
-                        [disabled]="isLoading || (!this.collectionForm.dirty && !this.collectionForm.touched)"
+                        [disabled]="isLoading || (!collectionForm.dirty && !collectionForm.touched)"
                         mat-flat-button color="primary" (click)="update()">{{'Save' | translate}}</button>
                     }
                 </div>
@@ -57,7 +57,7 @@
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Shared with' | translate}}</span>
                         <div class="value shared_orgs">
-                            @if(this.editMode){
+                            @if(editMode){
                             <mat-form-field class="compact" [subscriptSizing]="'dynamic'">
                                 <mat-select formControlName="shared_orgs" multiple
                                     [placeholder]="'Select organisations' | translate">
@@ -140,7 +140,7 @@
                         <ng-container matColumnDef="display_name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Name' | translate}} </th>
                             <td mat-cell *matCellDef="let row">
-                                @if(this.editMode){
+                                @if(editMode){
                                 <mat-form-field class="compact field" floatLabel="never" [subscriptSizing]="'dynamic'">
                                     <input matInput class="input-display-name" placeholder="..."
                                         [formControl]="row.control">

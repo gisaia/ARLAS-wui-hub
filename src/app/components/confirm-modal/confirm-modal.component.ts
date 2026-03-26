@@ -16,13 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatButton } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'arlas-confirm-modal',
     templateUrl: './confirm-modal.component.html',
-    styleUrls: ['./confirm-modal.component.scss']
+    styleUrls: ['./confirm-modal.component.scss'],
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class ConfirmModalComponent {
 

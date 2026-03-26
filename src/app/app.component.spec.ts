@@ -7,13 +7,10 @@ import { SidenavService } from './services/sidenav.service';
 describe('AppComponent', () => {
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                AppComponent
-            ],
-            imports: [MatSidenavModule, ArlasToolKitModule, ArlasToolkitSharedModule],
-            providers: [LoadService, SidenavService],
-            teardown: { destroyAfterEach: false }
-        }).compileComponents();
+    imports: [MatSidenavModule, ArlasToolKitModule, ArlasToolkitSharedModule, AppComponent],
+    providers: [LoadService, SidenavService],
+    teardown: { destroyAfterEach: false }
+}).compileComponents();
     }));
     it('should create the app', () => {
         const fixture = TestBed.createComponent(AppComponent);

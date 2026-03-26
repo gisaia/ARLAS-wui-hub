@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { Injectable } from '@angular/core';
+import { DataResource, DataWithLinks } from 'arlas-persistence-api';
+import { ArlasColorService } from 'arlas-web-components';
+import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
 import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { DataResource, DataWithLinks } from 'arlas-persistence-api';
-import { Injectable } from '@angular/core';
-import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
-import { ArlasColorService } from 'arlas-web-components';
 
 export interface Group {
     fullname: string;
@@ -54,8 +54,8 @@ export class CardService {
     public canCreateDashboardByOrg = new Map<string, boolean>();
 
     public constructor(
-        private persistenceService: PersistenceService,
-        private colorService: ArlasColorService) {
+        private readonly persistenceService: PersistenceService,
+        private readonly colorService: ArlasColorService) {
     }
 
     public cardList(options?: any): Observable<Card[]> {

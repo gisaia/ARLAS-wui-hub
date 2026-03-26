@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ArlasToolKitModule, ArlasToolkitSharedModule } from 'arlas-wui-toolkit';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { LeftMenuComponent } from './left-menu.component';
-import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
+import { ArlasToolKitModule, ArlasToolkitSharedModule } from 'arlas-wui-toolkit';
 import { SidenavService } from '../../services/sidenav.service';
+import { LeftMenuComponent } from './left-menu.component';
 
 describe('LeftMenuComponent', () => {
     let component: LeftMenuComponent;
@@ -14,14 +14,12 @@ describe('LeftMenuComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [LeftMenuComponent],
-            imports: [ArlasToolkitSharedModule, ArlasToolKitModule, MatListModule, MatDividerModule, MatIconModule,
-                MatSidenavModule,
-                TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
-            ],
-            providers: [SidenavService],
-            teardown: { destroyAfterEach: false }
-        })
+    imports: [ArlasToolkitSharedModule, ArlasToolKitModule, MatListModule, MatDividerModule, MatIconModule,
+        MatSidenavModule,
+        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateNoOpLoader } }), LeftMenuComponent],
+    providers: [SidenavService],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

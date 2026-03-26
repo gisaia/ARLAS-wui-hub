@@ -17,20 +17,23 @@
  * under the License.
  */
 import { AfterViewInit, Component, model, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription } from 'arlas-api';
 import {
-    ArlasCollaborativesearchService, ArlasIamService,
-    ArlasSettingsService, ArlasStartupService,
-    AuthentificationService
+    ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService, AuthentificationService
 } from 'arlas-wui-toolkit';
 import { finalize } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
 
 export interface CollectionInfos extends CollectionReferenceDescription {
     display_shared_orgs?: string[];
@@ -39,7 +42,10 @@ export interface CollectionInfos extends CollectionReferenceDescription {
 @Component({
     selector: 'arlas-collection',
     templateUrl: './collection.component.html',
-    styleUrl: './collection.component.scss'
+    styleUrl: './collection.component.scss',
+    imports: [
+        MatTableModule, MatProgressSpinner, MatSlideToggle, FormsModule, MatSelect, MatOption,
+        MatInput, MatSort, MatSortHeader, RouterLinkActive, RouterLink, MatPaginator, TranslatePipe]
 })
 export class CollectionComponent implements OnInit, AfterViewInit {
 
@@ -95,7 +101,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                 this.getCollections();
             } else if (this.authentMode === 'iam') {
                 if (this.arlasIamService.user) {
-                    this.displayedColumns.push(...['is_public', 'owner', 'shared_with']);
+                    this.displayedColumns.push('is_public', 'owner', 'shared_with');
                     this.getCollectionsByOrg();
                     this.connected.set(true);
                     this.collectionService.setOptions({

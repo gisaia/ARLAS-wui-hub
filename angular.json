@@ -117,26 +117,12 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": ".eslintrc.json",
+            "eslintConfig": "eslint.config.mjs",
             "lintFilePatterns": [
               "src/**/*.spec.ts",
               "src/**/*.d.ts",
               "src/**/*.ts"
             ]
-          }
-        }
-      }
-    },
-    "arlas-home-e2e": {
-      "root": "e2e",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "arlas-home:serve"
           }
         }
       }
