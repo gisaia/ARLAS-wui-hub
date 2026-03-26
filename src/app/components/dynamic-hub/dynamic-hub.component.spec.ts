@@ -2,16 +2,20 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
 import {
-    ArlasToolkitSharedModule, ArlasToolKitModule,
     ArlasCollaborativesearchService,
-    PermissionService, ArlasSettingsService, PersistenceService, ErrorService
+    ArlasSettingsService,
+    ArlasToolKitModule,
+    ArlasToolkitSharedModule,
+    ErrorService,
+    PermissionService,
+    PersistenceService
 } from 'arlas-wui-toolkit';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-import { DynamicHubComponent } from './dynamic-hub.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MockArlasSettingsService, MockErrorService, MockPermissionService } from '../../tools/tools';
+import { DynamicHubComponent } from './dynamic-hub.component';
 
 describe('DynamicHubComponent', () => {
     let component: DynamicHubComponent;
@@ -21,7 +25,7 @@ describe('DynamicHubComponent', () => {
         TestBed.configureTestingModule({
     imports: [ArlasToolkitSharedModule, ArlasToolKitModule,
         MatCardModule, MatChipsModule, MatIconModule, MatCheckboxModule,
-        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } }), DynamicHubComponent],
+        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateNoOpLoader } }), DynamicHubComponent],
     providers: [ArlasCollaborativesearchService, PersistenceService,
         {
             provide: PermissionService,

@@ -16,11 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { KeyValue } from '@angular/common';
+import { KeyValue, KeyValuePipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { UserOrgData } from 'arlas-iam-api';
 import { Resource } from 'arlas-permissions-api';
+import { GetValuePipe } from 'arlas-web-components';
 import {
     ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
     ConfigActionEnum, PermissionService, PersistenceService
@@ -28,13 +34,15 @@ import {
 import { catchError, debounceTime, filter, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { Card, CardService } from '../../services/card.service';
 import { DashboardSearchService } from '../../services/dashboard-search.service';
+import { CardComponent } from '../card/card.component';
 import { HubAction, HubActionEnum, HubActionModalComponent } from '../hub-action-modal/hub-action-modal.component';
+import { CardDropdownComponent } from './collapse/card-dropdown.component';
 
 @Component({
     selector: 'arlas-dynamic-hub',
     templateUrl: './dynamic-hub.component.html',
     styleUrls: ['./dynamic-hub.component.scss'],
-    standalone: false
+    imports: [NgIf, MatProgressBar, MatButton, MatIcon, NgFor, MatTooltip, CardDropdownComponent, CardComponent, KeyValuePipe, TranslatePipe, GetValuePipe]
 })
 export class DynamicHubComponent implements OnInit {
 

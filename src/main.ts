@@ -16,15 +16,64 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
+import { provideTranslateLoader, provideTranslateService, TranslateService } from '@ngx-translate/core';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { routes } from 'app/app-routing.modules';
+import { SidenavService } from 'app/services/sidenav.service';
+import { ArlasIamService, ArlasSettingsService, ArlasStartupService, ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService, CONFIG_UPDATER, configUpdaterFactory, FETCH_OPTIONS, GET_OPTIONS, getOptionsFactory, iamServiceFactory, PaginatorI18n } from 'arlas-wui-toolkit';
+import { AppComponent } from './app/app.component';
+import { CustomTranslateLoader } from './app/app.module';
+import { LoadService } from './app/services/load.service';
 
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
-
-if (environment.production) {
-    enableProdMode();
-}
-
-platformBrowserDynamic().bootstrapModule(AppModule)
+bootstrapApplication(AppComponent, {
+    providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideAppInitializer(() => inject(LoadService).init()),
+        provideTranslateService({
+            loader: provideTranslateLoader(CustomTranslateLoader)
+        }),
+        {
+            provide: 'AuthentificationService',
+            useFactory: auhtentServiceFactory,
+            deps: [AuthentificationService],
+            multi: true
+        },
+        {
+            provide: 'ArlasIamService',
+            useFactory: iamServiceFactory,
+            deps: [ArlasIamService],
+            multi: true
+        },
+        { provide: FETCH_OPTIONS, useValue: {} },
+        {
+            provide: CONFIG_UPDATER,
+            useValue: configUpdaterFactory
+        },
+        {
+            provide: MatPaginatorIntl,
+            deps: [TranslateService],
+            useFactory: (translateService: TranslateService) => new PaginatorI18n(translateService)
+        },
+        {
+            provide: GET_OPTIONS,
+            useFactory: getOptionsFactory,
+            deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
+        },
+        provideAnimations(),
+        LoadService,
+        ArlasStartupService,
+        importProvidersFrom(
+            OAuthModule.forRoot(),
+            ArlasToolkitSharedModule
+        ),
+        SidenavService,
+        provideRouter(routes)
+    ]
+})
     .catch(err => console.log(err));

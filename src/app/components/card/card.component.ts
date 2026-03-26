@@ -16,9 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
+import { MatCard, MatCardContent, MatCardSubtitle } from '@angular/material/card';
+import { MatChip, MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ConfigActionEnum, ConfigMenuComponent, ConfigMenuModule } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
+import { PreviewPipe } from '../../pipes/preview.pipe';
 import { Card } from '../../services/card.service';
 
 
@@ -46,7 +53,7 @@ export type DashboardStatus = 'private' | 'shared' | 'public';
     selector: 'arlas-card',
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss'],
-    standalone: false
+    imports: [MatCard, MatTooltip, NgIf, MatIcon, MatCardContent, ConfigMenuModule, MatCardSubtitle, MatChipListbox, MatChipOption, NgFor, MatChip, AsyncPipe, DatePipe, TranslatePipe, PreviewPipe]
 })
 export class CardComponent implements AfterViewInit, OnInit {
 
@@ -66,7 +73,7 @@ export class CardComponent implements AfterViewInit, OnInit {
     }
 
     public ngOnInit(): void {
-        if (Boolean(this.card)) {
+        if (this.card) {
             this.initDashboardWright();
             this.initDashboardVisibility();
         }
@@ -74,14 +81,14 @@ export class CardComponent implements AfterViewInit, OnInit {
 
     public initDashboardWright() {
         let  writers: CardRights[] = [];
-        if(this.card && this.card.writers) {
+        if(this.card?.writers) {
             writers = this.card.writers.map(g => ({
                 name: g.name,
                 right: 'Editor'
             }));
         }
         let readers: CardRights[] = [];
-        if(this.card && this.card.readers) {
+        if(this.card?.readers) {
             readers = this.card.readers
                 .filter(g => !writers.find(w => w.name === g.name))
                 .map(g => ({
@@ -97,11 +104,11 @@ export class CardComponent implements AfterViewInit, OnInit {
     }
 
     private isPublic(readers:  CardRights[]): boolean{
-        return readers.find(g => g.name === 'public') !== undefined;
+        return readers.some(g => g.name === 'public');
     }
 
     public ngAfterViewInit() {
-        if (!!this.card) {
+        if (this.card) {
             const c = Object.assign(this.card.actions);
             this.card.actions = [];
             this.card.actions = c;

@@ -20,8 +20,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-    name: 'boolean_to_text',
-    standalone: true
+    name: 'boolean_to_text'
 })
 export class BooleanToTextPipe implements PipeTransform {
 

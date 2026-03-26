@@ -6,7 +6,7 @@
                 <mat-icon matTooltip="{{'Public' | translate}}" *ngIf="status === 'public'" >public</mat-icon>
                 <mat-icon matTooltip="{{'Shared' | translate}}" *ngIf="status === 'shared'" >share</mat-icon>
             </div>
-            <div [matTooltip]="card?.organisation" [matTooltipPosition]="'below'" class="info_item organisation" *ngIf="!!card.organisation && card.organisation !== NO_ORGANISATION && publicOrg">
+            <div [matTooltip]="card?.organisation" [matTooltipPosition]="'below'" class="info_item organisation" *ngIf="card?.organisation && card.organisation !== NO_ORGANISATION && publicOrg">
                 <mat-icon>groups</mat-icon>
                 <div class="text-ellipsis">
                     {{card?.organisation}}

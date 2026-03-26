@@ -17,9 +17,18 @@
  * under the License.
  */
 
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatOption, MatSelect } from '@angular/material/select';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe } from '@ngx-translate/core';
 import { UserOrgData } from 'arlas-iam-api';
 import { PersistenceService } from 'arlas-wui-toolkit';
 
@@ -38,7 +47,7 @@ export interface HubAction {
     selector: 'arlas-hub-action-modal',
     templateUrl: './hub-action-modal.component.html',
     styleUrls: ['./hub-action-modal.component.scss'],
-    standalone: false
+    imports: [NgIf, MatDialogTitle, CdkScrollable, MatDialogContent, MatFormField, MatLabel, MatInput, FormsModule, MatButton, MatIconButton, MatSuffix, MatIcon, MatSelect, NgFor, MatOption, MatDialogActions, MatDialogClose, TranslatePipe]
 })
 export class HubActionModalComponent {
 

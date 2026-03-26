@@ -19,15 +19,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'json_to_preview',
-    standalone: true
+    name: 'json_to_preview'
 })
 export class PreviewPipe implements PipeTransform {
 
     public transform(input: string): any {
         try {
             return JSON.parse(input)?.img;
-        } catch(err) {
+        } catch {
             return input;
         }
     }

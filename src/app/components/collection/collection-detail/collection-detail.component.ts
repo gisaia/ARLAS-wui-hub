@@ -18,16 +18,22 @@
  */
 import { Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatChip, MatChipSet } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatIcon, MatIconRegistry } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CollectionService } from 'app/services/collection.service';
 import { CollectionField, extractProp } from 'app/tools/tools';
 import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'arlas-api';
@@ -39,13 +45,16 @@ import {
 } from 'arlas-wui-toolkit';
 import jwt_decode from 'jwt-decode';
 import { filter, finalize, mergeMap, of, switchMap } from 'rxjs';
+import { BooleanToTextPipe } from '../../../pipes/booleanToText.pipe';
+import { FieldTypeToIconPipe } from '../../../pipes/fieldTypeToIcon.pipe';
+import { FieldTypeToTextPipe } from '../../../pipes/fieldTypeToText.pipe';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'arlas-collection-detail',
     templateUrl: './collection-detail.component.html',
     styleUrl: './collection-detail.component.scss',
-    standalone: false
+    imports: [MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton, MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe]
 })
 export class CollectionDetailComponent implements OnInit {
     @ViewChild('fieldTableSort', { static: true }) public sort: MatSort;

@@ -16,9 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatListItem, MatNavList } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 interface Page {
     link: string;
@@ -31,7 +36,7 @@ interface Page {
     selector: 'arlas-left-menu',
     templateUrl: './left-menu.component.html',
     styleUrls: ['./left-menu.component.scss'],
-    standalone: false
+    imports: [MatNavList, NgFor, MatListItem, RouterLinkActive, MatTooltip, RouterLink, MatIcon, TranslatePipe]
 })
 export class LeftMenuComponent implements OnInit {
 
@@ -42,7 +47,7 @@ export class LeftMenuComponent implements OnInit {
     public expand: string;
     public isLabelDisplayed = false;
 
-    public constructor(private translate: TranslateService) {
+    public constructor(private readonly translate: TranslateService) {
         this.reduce = this.translate.instant('reduce');
         this.expand = this.translate.instant('expand');
     }

@@ -17,17 +17,23 @@
  * under the License.
  */
 
+import { NgIf } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { debounceTime, filter, Subscription } from 'rxjs';
-import { DashboardSearchService } from '../../services/dashboard-search.service';
 import { map } from 'rxjs/operators';
+import { DashboardSearchService } from '../../services/dashboard-search.service';
 
 @Component({
     selector: 'arlas-dashboard-search',
     templateUrl: './dashboard-search.component.html',
     styleUrls: ['./dashboard-search.component.scss'],
-    standalone: false
+    imports: [MatIcon, MatInput, FormsModule, ReactiveFormsModule, NgIf, MatIconButton, MatTooltip, TranslatePipe]
 })
 export class DashboardSearchComponent implements OnInit, OnDestroy{
 

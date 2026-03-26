@@ -1,5 +1,10 @@
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterModule } from '@angular/router';
+import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { ArlasStartupService } from 'arlas-wui-toolkit';
+import { CollectionService } from '../../../services/collection.service';
 import { CollectionDetailComponent } from './collection-detail.component';
 
 describe('CollectionDetailComponent', () => {
@@ -8,7 +13,29 @@ describe('CollectionDetailComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [CollectionDetailComponent]
+            imports: [
+                CollectionDetailComponent,
+                RouterModule.forRoot([]),
+                TranslateModule.forRoot({
+                    loader: { provide: TranslateLoader, useClass: TranslateNoOpLoader }
+                }),
+                OAuthModule.forRoot()
+            ],
+            providers: [
+                {
+                    provide: CollectionService,
+                    useValue: {
+                        setOptions: (headers: any) => {}
+                    }
+                },
+                {
+                    provide: ArlasStartupService,
+                    useValue: {
+                        shouldRunApp: true
+                    }
+                },
+                provideHttpClient(withInterceptors([])),
+            ]
         })
             .compileComponents();
 

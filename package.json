@@ -32,7 +32,7 @@
     "zone.js": "^0.15.0"
   },
   "dependencies": {
-    "arlas-wui-toolkit": "28.0.0-beta.2",
+    "arlas-wui-toolkit": "28.0.0-rc.1",
     "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
@@ -69,6 +69,8 @@
   "overrides": {
     "license-check-and-add": {
       "globby": "^11.0.0"
-    }
+    },
+    "underscore": "^1.13.8",
+    "picomatch": "4.0.4"
   }
 }

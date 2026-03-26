@@ -16,19 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDivider } from '@angular/material/divider';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Title } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
-import { ArlasSettingsService } from 'arlas-wui-toolkit';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { MarkerModule } from '@colsen1991/ngx-translate-extract-marker/extras';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ArlasSettingsService, ArlasToolkitSharedModule } from 'arlas-wui-toolkit';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
+import { DashboardSearchComponent } from './components/dashboard-search/dashboard-search.component';
+import { LeftMenuComponent } from './components/left-menu/left-menu.component';
 import { SidenavService } from './services/sidenav.service';
 
 @Component({
     selector: 'arlas-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    standalone: false
+    imports: [ArlasToolkitSharedModule, MatTooltip, RouterLink, NgIf, DashboardSearchComponent, MatDivider, MatSidenavContainer, MatSidenav, LeftMenuComponent, MatSidenavContent, RouterOutlet, MarkerModule, TranslatePipe]
 })
 export class AppComponent implements OnInit, OnDestroy {
 
@@ -38,13 +46,13 @@ export class AppComponent implements OnInit, OnDestroy {
     public displaySearchBar = true;
     public version: string;
 
-    private _onDestroy$ = new Subject<boolean>();
+    private readonly _onDestroy$ = new Subject<boolean>();
 
     public constructor(
-        private sidenavService: SidenavService,
-        private titleService: Title,
-        private arlasSettingsService: ArlasSettingsService,
-        private router: Router
+        private readonly sidenavService: SidenavService,
+        private readonly titleService: Title,
+        private readonly arlasSettingsService: ArlasSettingsService,
+        private readonly router: Router
     ) {
         this.sidenavService.sideNavState?.subscribe(res => {
             this.onSideNavChange = res;

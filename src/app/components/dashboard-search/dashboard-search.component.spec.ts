@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
 import { DashboardSearchComponent } from './dashboard-search.component';
 
 describe('DashboardSearchComponent', () => {
@@ -8,7 +8,12 @@ describe('DashboardSearchComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [DashboardSearchComponent]
+            imports: [
+                DashboardSearchComponent,
+                TranslateModule.forRoot({
+                    loader: { provide: TranslateLoader, useClass: TranslateNoOpLoader }
+                })
+            ]
         })
             .compileComponents();
 
