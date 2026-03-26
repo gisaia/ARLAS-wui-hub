@@ -42,7 +42,9 @@ import { CardDropdownComponent } from './collapse/card-dropdown.component';
     selector: 'arlas-dynamic-hub',
     templateUrl: './dynamic-hub.component.html',
     styleUrls: ['./dynamic-hub.component.scss'],
-    imports: [NgIf, MatProgressBar, MatButton, MatIcon, NgFor, MatTooltip, CardDropdownComponent, CardComponent, KeyValuePipe, TranslatePipe, GetValuePipe]
+    imports: [
+        NgIf, MatProgressBar, MatButton, MatIcon, NgFor, MatTooltip,
+        CardDropdownComponent, CardComponent, KeyValuePipe, TranslatePipe, GetValuePipe]
 })
 export class DynamicHubComponent implements OnInit {
 

@@ -29,7 +29,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
-import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -39,9 +39,7 @@ import { CollectionField, extractProp } from 'app/tools/tools';
 import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'arlas-api';
 import { RoleData, UserOrgData } from 'arlas-iam-api';
 import {
-    ArlasCollaborativesearchService, ArlasIamService,
-    ArlasSettingsService, ArlasStartupService,
-    AuthentificationService
+    ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService, AuthentificationService
 } from 'arlas-wui-toolkit';
 import jwt_decode from 'jwt-decode';
 import { filter, finalize, mergeMap, of, switchMap } from 'rxjs';
@@ -54,7 +52,10 @@ import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.compone
     selector: 'arlas-collection-detail',
     templateUrl: './collection-detail.component.html',
     styleUrl: './collection-detail.component.scss',
-    imports: [MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton, MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe]
+    imports: [
+        MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
+        MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
+        MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe]
 })
 export class CollectionDetailComponent implements OnInit {
     @ViewChild('fieldTableSort', { static: true }) public sort: MatSort;

@@ -25,14 +25,12 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
-import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription } from 'arlas-api';
 import {
-    ArlasCollaborativesearchService, ArlasIamService,
-    ArlasSettingsService, ArlasStartupService,
-    AuthentificationService
+    ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService, AuthentificationService
 } from 'arlas-wui-toolkit';
 import { finalize } from 'rxjs';
 import { CollectionService } from '../../services/collection.service';
@@ -45,7 +43,9 @@ export interface CollectionInfos extends CollectionReferenceDescription {
     selector: 'arlas-collection',
     templateUrl: './collection.component.html',
     styleUrl: './collection.component.scss',
-    imports: [MatProgressSpinner, MatSlideToggle, FormsModule, MatSelect, MatOption, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLinkActive, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, TranslatePipe]
+    imports: [
+        MatTableModule, MatProgressSpinner, MatSlideToggle, FormsModule, MatSelect, MatOption,
+        MatInput, MatSort, MatSortHeader, RouterLinkActive, RouterLink, MatPaginator, TranslatePipe]
 })
 export class CollectionComponent implements OnInit, AfterViewInit {
 
@@ -101,7 +101,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                 this.getCollections();
             } else if (this.authentMode === 'iam') {
                 if (this.arlasIamService.user) {
-                    this.displayedColumns.push(...['is_public', 'owner', 'shared_with']);
+                    this.displayedColumns.push('is_public', 'owner', 'shared_with');
                     this.getCollectionsByOrg();
                     this.connected.set(true);
                     this.collectionService.setOptions({

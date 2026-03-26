@@ -53,7 +53,9 @@ export type DashboardStatus = 'private' | 'shared' | 'public';
     selector: 'arlas-card',
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss'],
-    imports: [MatCard, MatTooltip, NgIf, MatIcon, MatCardContent, ConfigMenuModule, MatCardSubtitle, MatChipListbox, MatChipOption, NgFor, MatChip, AsyncPipe, DatePipe, TranslatePipe, PreviewPipe]
+    imports: [
+        MatCard, MatTooltip, NgIf, MatIcon, MatCardContent, ConfigMenuModule, MatCardSubtitle,
+        MatChipListbox, MatChipOption, NgFor, MatChip, AsyncPipe, DatePipe, TranslatePipe, PreviewPipe]
 })
 export class CardComponent implements AfterViewInit, OnInit {
 

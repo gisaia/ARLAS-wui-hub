@@ -36,7 +36,9 @@ import { SidenavService } from './services/sidenav.service';
     selector: 'arlas-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    imports: [ArlasToolkitSharedModule, MatTooltip, RouterLink, NgIf, DashboardSearchComponent, MatDivider, MatSidenavContainer, MatSidenav, LeftMenuComponent, MatSidenavContent, RouterOutlet, MarkerModule, TranslatePipe]
+    imports: [
+        ArlasToolkitSharedModule, MatTooltip, RouterLink, NgIf, DashboardSearchComponent, MatDivider,
+        MatSidenavContainer, MatSidenav, LeftMenuComponent, MatSidenavContent, RouterOutlet, MarkerModule, TranslatePipe]
 })
 export class AppComponent implements OnInit, OnDestroy {
 

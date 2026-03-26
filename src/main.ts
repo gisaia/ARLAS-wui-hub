@@ -26,7 +26,10 @@ import { provideTranslateLoader, provideTranslateService, TranslateService } fro
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { routes } from 'app/app-routing.modules';
 import { SidenavService } from 'app/services/sidenav.service';
-import { ArlasIamService, ArlasSettingsService, ArlasStartupService, ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService, CONFIG_UPDATER, configUpdaterFactory, FETCH_OPTIONS, GET_OPTIONS, getOptionsFactory, iamServiceFactory, PaginatorI18n } from 'arlas-wui-toolkit';
+import {
+    ArlasIamService, ArlasSettingsService, ArlasStartupService, ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
+    CONFIG_UPDATER, configUpdaterFactory, FETCH_OPTIONS, GET_OPTIONS, getOptionsFactory, iamServiceFactory, PaginatorI18n
+} from 'arlas-wui-toolkit';
 import { AppComponent } from './app/app.component';
 import { CustomTranslateLoader } from './app/app.module';
 import { LoadService } from './app/services/load.service';

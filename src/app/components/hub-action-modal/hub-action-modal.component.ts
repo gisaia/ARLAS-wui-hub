@@ -47,7 +47,10 @@ export interface HubAction {
     selector: 'arlas-hub-action-modal',
     templateUrl: './hub-action-modal.component.html',
     styleUrls: ['./hub-action-modal.component.scss'],
-    imports: [NgIf, MatDialogTitle, CdkScrollable, MatDialogContent, MatFormField, MatLabel, MatInput, FormsModule, MatButton, MatIconButton, MatSuffix, MatIcon, MatSelect, NgFor, MatOption, MatDialogActions, MatDialogClose, TranslatePipe]
+    imports: [
+        NgIf, NgFor, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose,
+        MatButton, MatIconButton, MatIcon, MatInput, FormsModule,  MatSuffix, MatFormField, MatLabel,
+        CdkScrollable, MatSelect, MatOption, TranslatePipe]
 })
 export class HubActionModalComponent {
 
@@ -59,8 +62,8 @@ export class HubActionModalComponent {
 
     public constructor(
         @Inject(MAT_DIALOG_DATA) data: HubAction,
-        private dialogRef: MatDialogRef<HubActionModalComponent>,
-        private persistenceService: PersistenceService
+        private readonly dialogRef: MatDialogRef<HubActionModalComponent>,
+        private readonly persistenceService: PersistenceService
     ) {
         this.action = data;
     }
