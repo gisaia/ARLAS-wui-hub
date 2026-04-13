@@ -3,11 +3,13 @@
     <div left-menu class="top-left-menu">
       <div class="logo">
         <a matTooltip="{{'Back to home page' | translate }}" [routerLink]="['/']"
-            queryParamsHandling="preserve" [matTooltipPosition]="'right'">
+          queryParamsHandling="preserve" [matTooltipPosition]="'right'">
           <img src="assets/hub-icon.png"/>
         </a>
       </div>
-        <arlas-dashboard-search *ngIf="displaySearchBar" class="search" [searchPlaceholder]="'searchPlaceholder' | marker"></arlas-dashboard-search>
+      @if (displaySearchBar) {
+        <arlas-dashboard-search class="search" [searchPlaceholder]="'searchPlaceholder' | marker"></arlas-dashboard-search>
+      }
     </div>
     <div right-menu class="title" id="title">
       <mat-divider vertical class="vertical-divider"></mat-divider>
@@ -15,7 +17,9 @@
   </arlas-top-menu>
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #leftSidenav mode="side" class="sidenav" [class.hide]="!displayMenu" opened [disableClose]="true">
-      <arlas-left-menu *ngIf="displayMenu"></arlas-left-menu>
+      @if (displayMenu) {
+        <arlas-left-menu></arlas-left-menu>
+      }
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content" [class.full]="!displayMenu">
       <div class="main_content">

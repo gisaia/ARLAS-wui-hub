@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import { NgIf } from '@angular/common';
+
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
@@ -33,7 +33,7 @@ import { DashboardSearchService } from '../../services/dashboard-search.service'
     selector: 'arlas-dashboard-search',
     templateUrl: './dashboard-search.component.html',
     styleUrls: ['./dashboard-search.component.scss'],
-    imports: [MatIcon, MatInput, FormsModule, ReactiveFormsModule, NgIf, MatIconButton, MatTooltip, TranslatePipe]
+    imports: [MatIcon, MatInput, FormsModule, ReactiveFormsModule, MatIconButton, MatTooltip, TranslatePipe]
 })
 export class DashboardSearchComponent implements OnInit, OnDestroy{
 

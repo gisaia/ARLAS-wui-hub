@@ -1,49 +1,54 @@
 <mat-card  class="card mat-elevation-z1">
-    <div (click)="open()" class="card_preview" [class.no-preview]="card?.preview === NO_PREVIEW_ASSET" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}">
-        <div class="preview_info">
-            <div class="info_item">
-                <mat-icon matTooltip="{{'Private' | translate}}" *ngIf="status === 'private'" >lock</mat-icon>
-                <mat-icon matTooltip="{{'Public' | translate}}" *ngIf="status === 'public'" >public</mat-icon>
-                <mat-icon matTooltip="{{'Shared' | translate}}" *ngIf="status === 'shared'" >share</mat-icon>
-            </div>
-            <div [matTooltip]="card?.organisation" [matTooltipPosition]="'below'" class="info_item organisation" *ngIf="card?.organisation && card.organisation !== NO_ORGANISATION && publicOrg">
-                <mat-icon>groups</mat-icon>
-                <div class="text-ellipsis">
-                    {{card?.organisation}}
-                </div>
-
-            </div>
+  <div (click)="open()" class="card_preview" [class.no-preview]="card?.preview === NO_PREVIEW_ASSET" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}">
+    <div class="preview_info">
+      <div class="info_item">
+        @if (status === 'private') {
+          <mat-icon [matTooltip]="'Private' | translate" >lock</mat-icon>
+        } @else if (status === 'public') {
+          <mat-icon [matTooltip]="'Public' | translate">public</mat-icon>
+        } @else if (status === 'shared') {
+          <mat-icon [matTooltip]="'Shared' | translate">share</mat-icon>
+        }
+      </div>
+      @if (card?.organisation && card.organisation !== NO_ORGANISATION && publicOrg) {
+        <div [matTooltip]="card?.organisation" [matTooltipPosition]="'below'" class="info_item organisation">
+          <mat-icon>groups</mat-icon>
+          <div class="text-ellipsis">
+            {{card?.organisation}}
+          </div>
         </div>
-        <div class="preview_holder"></div>
-        <ng-container *ngIf="card?.preview$ | async | json_to_preview; let preview; else notPreview">
-            <img src="{{preview}}" class="preview_image" />
-        </ng-container>
-        <ng-template #notPreview>
-            <img [src]="NO_PREVIEW_ASSET" class="preview_image" />
-        </ng-template>
+      }
     </div>
-    <mat-card-content class="card_meta">
-        <div class="meta_title-container">
-            <div class="meta_title text-ellipsis"> {{card?.title | translate}}</div>
-            <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
-                               [actions]="card?.actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
-        </div>
-        <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {date: card?.last_update_date | date} }}</mat-card-subtitle>
+    <div class="preview_holder"></div>
+    @if (card?.preview$ | async | json_to_preview; as preview) {
+      <img src="{{preview}}" class="preview_image" />
+    } @else {
+      <img [src]="NO_PREVIEW_ASSET" class="preview_image" />
+    }
+  </div>
+  <mat-card-content class="card_meta">
+    <div class="meta_title-container">
+      <div class="meta_title text-ellipsis"> {{card?.title | translate}}</div>
+      <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
+        [actions]="card?.actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
+    </div>
+    <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {date: card?.last_update_date | date} }}</mat-card-subtitle>
 
-        <mat-chip-listbox class="card_right" [selectable]="false">
-            <mat-chip-option *ngIf="rights.length === 0" class="group text-ellipsis"> -- </mat-chip-option>
-            <ng-container *ngFor="let r of rights" >
-                <mat-chip *ngIf="r.right ==='Editor'"
-                          matTooltip="{{'Editor' | translate}}" [matTooltipPosition]="'above'"
-                          class="group">
-                    <mat-icon>edit</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
-                </mat-chip>
-                <mat-chip *ngIf="r.right ==='Viewer'"
-                          matTooltip="{{'Viewer' | translate}}" [matTooltipPosition]="'above'"
-                          class="group">
-                    <mat-icon>visibility</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
-                </mat-chip>
-            </ng-container>
-        </mat-chip-listbox>
-    </mat-card-content>
+    <mat-chip-listbox class="card_right" [selectable]="false">
+      @if (rights.length === 0) {
+        <mat-chip-option class="group text-ellipsis"> -- </mat-chip-option>
+      }
+      @for (r of rights; track r) {
+        @if (r.right ==='Editor') {
+          <mat-chip [matTooltip]="'Editor' | translate" [matTooltipPosition]="'above'" class="group">
+            <mat-icon>edit</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
+          </mat-chip>
+        } @else if (r.right ==='Viewer') {
+          <mat-chip [matTooltip]="'Viewer' | translate" [matTooltipPosition]="'above'" class="group">
+            <mat-icon>visibility</mat-icon> <div class="text-ellipsis">{{r.name}}</div>
+          </mat-chip>
+        }
+      }
+    </mat-chip-listbox>
+  </mat-card-content>
 </mat-card>

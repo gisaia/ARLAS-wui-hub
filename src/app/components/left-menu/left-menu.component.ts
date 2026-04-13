@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { NgFor } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItem, MatNavList } from '@angular/material/list';
@@ -36,7 +36,7 @@ interface Page {
     selector: 'arlas-left-menu',
     templateUrl: './left-menu.component.html',
     styleUrls: ['./left-menu.component.scss'],
-    imports: [MatNavList, NgFor, MatListItem, RouterLinkActive, MatTooltip, RouterLink, MatIcon, TranslatePipe]
+    imports: [MatNavList, MatListItem, RouterLinkActive, MatTooltip, RouterLink, MatIcon, TranslatePipe]
 })
 export class LeftMenuComponent implements OnInit {
 
