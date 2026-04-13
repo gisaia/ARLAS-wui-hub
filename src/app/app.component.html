@@ -2,8 +2,8 @@
   <arlas-top-menu [wuiName]="'ARLAS-Hub'" [version]="version">
     <div left-menu class="top-left-menu">
       <div class="logo">
-        <a matTooltip="{{'Back to home page' | translate }}" [routerLink]="['/']"
-          queryParamsHandling="preserve" [matTooltipPosition]="'right'">
+        <a [matTooltip]="'Back to home page' | translate" [routerLink]="['/']"
+            queryParamsHandling="preserve" [matTooltipPosition]="'right'">
           <img src="assets/hub-icon.png"/>
         </a>
       </div>

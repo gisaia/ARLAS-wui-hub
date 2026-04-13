@@ -1,49 +1,55 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { mockArlasSettingsService, mockErrorService, mockPermissionService, mockPersistenceService } from 'app/test/mock';
+import { AwcColorGeneratorLoader, ColorGeneratorLoader, ColorGeneratorModule } from 'arlas-web-components';
 import {
-    ArlasCollaborativesearchService,
-    ArlasSettingsService,
-    ArlasToolKitModule,
-    ArlasToolkitSharedModule,
-    ErrorService,
-    PermissionService,
-    PersistenceService
+    ArlasCollaborativesearchService, ArlasSettingsService,
+    ErrorService, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
-
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MockArlasSettingsService, MockErrorService, MockPermissionService } from '../../tools/tools';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { DynamicHubComponent } from './dynamic-hub.component';
 
 describe('DynamicHubComponent', () => {
     let component: DynamicHubComponent;
     let fixture: ComponentFixture<DynamicHubComponent>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({
-    imports: [ArlasToolkitSharedModule, ArlasToolKitModule,
-        MatCardModule, MatChipsModule, MatIconModule, MatCheckboxModule,
-        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateNoOpLoader } }), DynamicHubComponent],
-    providers: [ArlasCollaborativesearchService, PersistenceService,
-        {
-            provide: PermissionService,
-            useClass: MockPermissionService
-        },
-        {
-            provide: ErrorService,
-            useClass: MockErrorService
-        },
-        {
-            provide: ArlasSettingsService,
-            useClass: MockArlasSettingsService
-        }
-    ],
-    teardown: { destroyAfterEach: false }
-})
+            imports: [
+                TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateNoOpLoader } }),
+                DynamicHubComponent,
+                ColorGeneratorModule.forRoot({
+                    loader: {
+                        provide: ColorGeneratorLoader,
+                        useClass: AwcColorGeneratorLoader
+                    }
+                }),
+                OAuthModule.forRoot()
+            ],
+            providers: [
+                ArlasCollaborativesearchService,
+                {
+                    provide: PersistenceService,
+                    useValue: mockPersistenceService
+                },
+                {
+                    provide: PermissionService,
+                    useValue: mockPermissionService
+                },
+                {
+                    provide: ErrorService,
+                    useValue: mockErrorService
+                },
+                {
+                    provide: ArlasSettingsService,
+                    useValue: mockArlasSettingsService
+                }
+            ],
+            teardown: { destroyAfterEach: false }
+        })
             .compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DynamicHubComponent);

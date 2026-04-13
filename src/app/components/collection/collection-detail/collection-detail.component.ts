@@ -35,7 +35,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CollectionService } from 'app/services/collection.service';
-import { CollectionField, extractProp } from 'app/tools/tools';
 import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'arlas-api';
 import { RoleData, UserOrgData } from 'arlas-iam-api';
 import {
@@ -47,6 +46,7 @@ import { BooleanToTextPipe } from '../../../pipes/booleanToText.pipe';
 import { FieldTypeToIconPipe } from '../../../pipes/fieldTypeToIcon.pipe';
 import { FieldTypeToTextPipe } from '../../../pipes/fieldTypeToText.pipe';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
+import { CollectionField, extractProp } from './collection-field';
 
 @Component({
     selector: 'arlas-collection-detail',
