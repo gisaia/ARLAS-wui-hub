@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatCard, MatCardContent, MatCardSubtitle } from '@angular/material/card';
 import { MatChip, MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ConfigActionEnum, ConfigMenuComponent, ConfigMenuModule } from 'arlas-wui-toolkit';
+import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { PreviewPipe } from '../../pipes/preview.pipe';
 import { Card } from '../../services/card.service';
@@ -54,8 +54,20 @@ export type DashboardStatus = 'private' | 'shared' | 'public';
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss'],
     imports: [
-        MatCard, MatTooltip, NgIf, MatIcon, MatCardContent, ConfigMenuModule, MatCardSubtitle,
-        MatChipListbox, MatChipOption, NgFor, MatChip, AsyncPipe, DatePipe, TranslatePipe, PreviewPipe]
+        MatCard,
+        MatTooltip,
+        MatIcon,
+        MatCardContent,
+        MatCardSubtitle,
+        MatChipListbox,
+        MatChipOption,
+        MatChip,
+        AsyncPipe,
+        DatePipe,
+        TranslatePipe,
+        PreviewPipe,
+        ConfigMenuComponent
+    ]
 })
 export class CardComponent implements AfterViewInit, OnInit {
 

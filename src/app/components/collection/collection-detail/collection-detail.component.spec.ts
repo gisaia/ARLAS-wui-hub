@@ -3,7 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { mockArlasStartupService, mockCollectionService } from 'app/test/mock';
 import { ArlasStartupService } from 'arlas-wui-toolkit';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { CollectionService } from '../../../services/collection.service';
 import { CollectionDetailComponent } from './collection-detail.component';
 
@@ -24,15 +26,11 @@ describe('CollectionDetailComponent', () => {
             providers: [
                 {
                     provide: CollectionService,
-                    useValue: {
-                        setOptions: (headers: any) => {}
-                    }
+                    useValue: mockCollectionService
                 },
                 {
                     provide: ArlasStartupService,
-                    useValue: {
-                        shouldRunApp: true
-                    }
+                    useValue: mockArlasStartupService
                 },
                 provideHttpClient(withInterceptors([])),
             ]

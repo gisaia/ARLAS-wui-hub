@@ -16,51 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Observable, of } from 'rxjs';
-import { ArlasSettings } from 'arlas-wui-toolkit';
-import { CollectionReferenceDescription } from 'arlas-api';
+
 import { FormControl, FormGroup } from '@angular/forms';
-
-export class MockPermissionService {
-    public get(): Observable<any> {
-        return of({});
-    }
-
-    public createPermissionApiInstance() {
-    }
-
-    public setOptions() {
-
-    }
-}
-
-export class MockErrorService {
-    public emitUnavailableService(): Observable<any> {
-        return of({});
-    }
-}
-
-export class MockArlasSettingsService {
-    public getSettings(): ArlasSettings {
-        return {};
-    }
-
-    public getPersistenceSettings(): any {
-        return {};
-    }
-
-    public getAuthentSettings(): any {
-        return {};
-    }
-    public getArlasHubUrl(): string {
-        return '';
-    }
-    public setSettings(): void {
-    }
-}
+import { CollectionReferenceDescription } from 'arlas-api';
 
 /**
- * recursively extract properties for a CollectionReferenceDescription and flatten them with specific separator
+ * Recursively extracts properties for a CollectionReferenceDescription and flatten them with specific separator
  * @param collection collection reference to parse
  * @param separator separator used to flatten data
  * @returns array of CollectionField

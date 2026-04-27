@@ -1,8 +1,10 @@
 <div class="menu_container">
-    <mat-nav-list>
-        <mat-list-item *ngFor="let page of pages" [matTooltip]="page?.name | translate" [routerLink]="page?.link"
-            queryParamsHandling="preserve" [disabled]="page?.disabled" routerLinkActive="mat-accent">
-                <mat-icon >{{ page?.icon }}</mat-icon>
-        </mat-list-item>
-    </mat-nav-list>
+  <mat-nav-list>
+    @for (page of pages; track page) {
+      <mat-list-item [matTooltip]="page?.name | translate" [routerLink]="page?.link"
+        queryParamsHandling="preserve" [disabled]="page?.disabled" routerLinkActive="mat-accent">
+        <mat-icon >{{ page?.icon }}</mat-icon>
+      </mat-list-item>
+    }
+  </mat-nav-list>
 </div>

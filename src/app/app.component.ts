@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { NgIf } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDivider } from '@angular/material/divider';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
@@ -37,8 +37,19 @@ import { SidenavService } from './services/sidenav.service';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     imports: [
-        ArlasToolkitSharedModule, MatTooltip, RouterLink, NgIf, DashboardSearchComponent, MatDivider,
-        MatSidenavContainer, MatSidenav, LeftMenuComponent, MatSidenavContent, RouterOutlet, MarkerModule, TranslatePipe]
+        ArlasToolkitSharedModule,
+        MatTooltip,
+        RouterLink,
+        DashboardSearchComponent,
+        MatDivider,
+        MatSidenavContainer,
+        MatSidenav,
+        LeftMenuComponent,
+        MatSidenavContent,
+        RouterOutlet,
+        MarkerModule,
+        TranslatePipe
+    ]
 })
 export class AppComponent implements OnInit, OnDestroy {
 

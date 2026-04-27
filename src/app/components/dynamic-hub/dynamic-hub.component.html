@@ -1,51 +1,59 @@
 <div class="dynamic-hub">
-    <div class="dynamic-hub__spinner-container">
-        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+  <div class="dynamic-hub__spinner-container">
+    @if (isLoading) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+  </div>
+
+  @if (canCreateDashboard) {
+    <div class="dynamic-hub__header">
+      <button class="add-button" mat-stroked-button (click)="add()">
+        <mat-icon>add</mat-icon>
+        {{'Create a new Exploration Dashboard' | translate}}
+      </button>
+      <button class="add-button" mat-stroked-button (click)="import()">
+        <mat-icon>file_upload</mat-icon>
+        {{'Import an Exploration Dashboard' | translate}}
+      </button>
     </div>
-
-    <div *ngIf="canCreateDashboard" class="dynamic-hub__header">
-        <button class="add-button" mat-stroked-button (click)="add()">
-            <mat-icon>add</mat-icon>
-            {{'Create a new Exploration Dashboard' | translate}}
-        </button>
-        <button class="add-button" mat-stroked-button (click)="import()">
-            <mat-icon>file_upload</mat-icon>
-            {{'Import an Exploration Dashboard' | translate}}
-        </button>
-    </div>
-    <div class="dynamic-hub__content">
-        <div class="dashboards">
-            <div class="dashboard" [class.dashboard--first]="first" *ngFor="let data of cardsFiltered | keyvalue : publicAtTheEnd; let first=first;">
-                <!-- For KC deployment and for non-public dashboards, no header -->
-                @if (data.key !== PRIVATE_NO_ORG) {
-                    <h2>
-                        @if (data.key === PUBLIC_ORG) {
-                            <span class="dashboard-title">{{'Public dashboards' | translate }}</span>
-                        } @else {
-                            {{'Dashboards org' | translate:{dashboard: data.key | translate} }}
-                        }
-
-                        <ng-container *ngIf="data.key | getValue:cardService.canCreateDashboardByOrg">
-                            <button class="add-button" mat-stroked-button (click)="add(data.key)"
-                                [matTooltip]="'Create a new Exploration Dashboard' | translate">
-                                <mat-icon class="add-button--icon">add</mat-icon>
-                            </button>
-                            <button class="add-button" mat-stroked-button (click)="import(data.key)"
-                                [matTooltip]="'Import an Exploration Dashboard' | translate">
-                                <mat-icon class="add-button--icon">file_upload</mat-icon>
-                            </button>
-                        </ng-container>
-                        <div class="collapse" [arlas-card-dropdown]="cards"></div>
-                    </h2>
-                }
-
-                <div #cards class="cards">
-                    <arlas-card *ngFor="let card of data.value" (actionOnCard)="fetchCards()" [card]="card"
-                        [publicOrg]="data.key === PUBLIC_ORG"></arlas-card>
-                </div>
-                <div *ngIf="data.value.length === 0 && !isLoading" class="no-card">
-                    {{ 'No dashboard available' | translate}}</div>
-            </div>
+  }
+  <div class="dynamic-hub__content">
+    <div class="dashboards">
+      @for (data of cardsFiltered | keyvalue : publicAtTheEnd; track data; let first = $first) {
+        <div class="dashboard" [class.dashboard--first]="first">
+          <!-- For KC deployment and for non-public dashboards, no header -->
+          @if (data.key !== PRIVATE_NO_ORG) {
+            <h2>
+              @if (data.key === PUBLIC_ORG) {
+                <span class="dashboard-title">{{'Public dashboards' | translate }}</span>
+              } @else {
+                {{'Dashboards org' | translate:{dashboard: data.key | translate} }}
+              }
+              @if (data.key | getValue:cardService.canCreateDashboardByOrg) {
+                <button class="add-button" mat-stroked-button (click)="add(data.key)"
+                    [matTooltip]="'Create a new Exploration Dashboard' | translate">
+                  <mat-icon class="add-button--icon">add</mat-icon>
+                </button>
+                <button class="add-button" mat-stroked-button (click)="import(data.key)"
+                    [matTooltip]="'Import an Exploration Dashboard' | translate">
+                  <mat-icon class="add-button--icon">file_upload</mat-icon>
+                </button>
+              }
+              <div class="collapse" [arlas-card-dropdown]="cards"></div>
+            </h2>
+          }
+          <div #cards class="cards">
+            @for (card of data.value; track card) {
+              <arlas-card (actionOnCard)="fetchCards()" [card]="card"
+                [publicOrg]="data.key === PUBLIC_ORG"></arlas-card>
+            }
+          </div>
+          @if (data.value.length === 0 && !isLoading) {
+            <div class="no-card">
+              {{ 'No dashboard available' | translate}}</div>
+          }
         </div>
+      }
     </div>
+  </div>
 </div>

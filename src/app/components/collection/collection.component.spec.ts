@@ -2,8 +2,9 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { mockArlasStartupService, mockCollectionService } from 'app/test/mock';
 import { ArlasStartupService } from 'arlas-wui-toolkit';
-import { of } from 'rxjs';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { CollectionService } from '../../services/collection.service';
 import { CollectionComponent } from './collection.component';
 
@@ -23,15 +24,11 @@ describe('CollectionComponent', () => {
             providers: [
                 {
                     provide: CollectionService,
-                    useValue: {
-                        getCollectionsReferenceDescription: () => of([])
-                    }
+                    useValue: mockCollectionService
                 },
                 {
                     provide: ArlasStartupService,
-                    useValue: {
-                        shouldRunApp: true
-                    }
+                    useValue: mockArlasStartupService
                 },
                 provideHttpClient(withInterceptors([])),
             ]

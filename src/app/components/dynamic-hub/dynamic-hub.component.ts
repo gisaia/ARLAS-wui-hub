@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { KeyValue, KeyValuePipe, NgFor, NgIf } from '@angular/common';
+import { KeyValue, KeyValuePipe } from '@angular/common';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -43,8 +43,16 @@ import { CardDropdownComponent } from './collapse/card-dropdown.component';
     templateUrl: './dynamic-hub.component.html',
     styleUrls: ['./dynamic-hub.component.scss'],
     imports: [
-        NgIf, MatProgressBar, MatButton, MatIcon, NgFor, MatTooltip,
-        CardDropdownComponent, CardComponent, KeyValuePipe, TranslatePipe, GetValuePipe]
+    MatProgressBar,
+    MatButton,
+    MatIcon,
+    MatTooltip,
+    CardDropdownComponent,
+    CardComponent,
+    KeyValuePipe,
+    TranslatePipe,
+    GetValuePipe
+]
 })
 export class DynamicHubComponent implements OnInit {
 

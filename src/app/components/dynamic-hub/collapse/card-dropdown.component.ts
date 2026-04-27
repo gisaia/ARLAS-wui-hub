@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { NgIf } from '@angular/common';
+
 import { Component, Input, Renderer2 } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -25,7 +25,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: '[arlas-card-dropdown]',
     templateUrl: './card-dropdown.component.html',
     styleUrls: ['./card-dropdown.component.scss'],
-    imports: [MatIconButton, NgIf, MatIcon]
+    imports: [MatIconButton, MatIcon]
 })
 export class CardDropdownComponent {
     @Input('arlas-card-dropdown') public collapsableElement: HTMLElement;

@@ -18,7 +18,7 @@
  */
 
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -48,9 +48,23 @@ export interface HubAction {
     templateUrl: './hub-action-modal.component.html',
     styleUrls: ['./hub-action-modal.component.scss'],
     imports: [
-        NgIf, NgFor, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose,
-        MatButton, MatIconButton, MatIcon, MatInput, FormsModule,  MatSuffix, MatFormField, MatLabel,
-        CdkScrollable, MatSelect, MatOption, TranslatePipe]
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIconButton,
+    MatIcon,
+    MatInput,
+    FormsModule,
+    MatSuffix,
+    MatFormField,
+    MatLabel,
+    CdkScrollable,
+    MatSelect,
+    MatOption,
+    TranslatePipe
+]
 })
 export class HubActionModalComponent {
 

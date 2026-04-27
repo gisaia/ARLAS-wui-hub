@@ -1,17 +1,33 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { ArlasSettingsService } from 'arlas-wui-toolkit';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { AppComponent } from './app.component';
 import { LoadService } from './services/load.service';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { ArlasToolKitModule, ArlasToolkitSharedModule } from 'arlas-wui-toolkit';
 import { SidenavService } from './services/sidenav.service';
+import { mockArlasSettingsService } from './test/mock';
+
 describe('AppComponent', () => {
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({
-    imports: [MatSidenavModule, ArlasToolKitModule, ArlasToolkitSharedModule, AppComponent],
-    providers: [LoadService, SidenavService],
-    teardown: { destroyAfterEach: false }
-}).compileComponents();
-    }));
+            imports: [
+                AppComponent,
+                OAuthModule.forRoot(),
+                RouterModule.forRoot([])
+            ],
+            providers: [
+                LoadService,
+                SidenavService,
+                {
+                    provide: ArlasSettingsService,
+                    useValue: mockArlasSettingsService
+                }
+            ],
+            teardown: { destroyAfterEach: false }
+        }).compileComponents();
+    });
+
     it('should create the app', () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
