@@ -16,18 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { forwardRef, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
-import { provideTranslateLoader, provideTranslateService, TranslateService } from '@ngx-translate/core';
+import { provideTranslateService, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { routes } from 'app/app-routing.modules';
-import { SidenavService } from 'app/services/sidenav.service';
 import {
-    ArlasIamService, ArlasSettingsService, ArlasStartupService, ArlasToolkitSharedModule, auhtentServiceFactory, AuthentificationService,
+    ArlasIamService, ArlasSettingsService, ArlasStartupService,
+    ArlasToolkitSharedModule,
+    auhtentServiceFactory, AuthentificationService,
     CONFIG_UPDATER, configUpdaterFactory, FETCH_OPTIONS, GET_OPTIONS, getOptionsFactory, iamServiceFactory, PaginatorI18n
 } from 'arlas-wui-toolkit';
 import { AppComponent } from './app/app.component';
@@ -36,11 +37,19 @@ import { LoadService } from './app/services/load.service';
 
 bootstrapApplication(AppComponent, {
     providers: [
+        importProvidersFrom(
+            OAuthModule.forRoot(),
+            ArlasToolkitSharedModule
+        ),
+        provideTranslateService({
+            loader: {
+                provide: TranslateLoader,
+                useClass: CustomTranslateLoader,
+                deps: [HttpClient]
+            }
+        }),
         provideHttpClient(withInterceptorsFromDi()),
         provideAppInitializer(() => inject(LoadService).init()),
-        provideTranslateService({
-            loader: provideTranslateLoader(CustomTranslateLoader)
-        }),
         {
             provide: 'AuthentificationService',
             useFactory: auhtentServiceFactory,
@@ -69,13 +78,8 @@ bootstrapApplication(AppComponent, {
             deps: [ArlasSettingsService, AuthentificationService, ArlasIamService]
         },
         provideAnimations(),
-        LoadService,
-        ArlasStartupService,
-        importProvidersFrom(
-            OAuthModule.forRoot(),
-            ArlasToolkitSharedModule
-        ),
-        SidenavService,
+        forwardRef(() => LoadService),
+        forwardRef(() => ArlasStartupService),
         provideRouter(routes)
     ]
 })

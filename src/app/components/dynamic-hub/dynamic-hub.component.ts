@@ -17,7 +17,7 @@
  * under the License.
  */
 import { KeyValue, KeyValuePipe } from '@angular/common';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
@@ -43,22 +43,22 @@ import { CardDropdownComponent } from './collapse/card-dropdown.component';
     templateUrl: './dynamic-hub.component.html',
     styleUrls: ['./dynamic-hub.component.scss'],
     imports: [
-    MatProgressBar,
-    MatButton,
-    MatIcon,
-    MatTooltip,
-    CardDropdownComponent,
-    CardComponent,
-    KeyValuePipe,
-    TranslatePipe,
-    GetValuePipe
-]
+        MatProgressBar,
+        MatButton,
+        MatIcon,
+        MatTooltip,
+        CardDropdownComponent,
+        CardComponent,
+        KeyValuePipe,
+        TranslatePipe,
+        GetValuePipe
+    ]
 })
 export class DynamicHubComponent implements OnInit {
 
     @ViewChildren('checkBox') public checkBox: QueryList<any>;
 
-    public isLoading = false;
+    public isLoading = signal(false);
     public cards: Map<string, Card[]>;
     public cardsFiltered: Map<string, Card[]>;
     public searchIndex: string[] = []; // indexId: ;research:;
@@ -96,8 +96,7 @@ export class DynamicHubComponent implements OnInit {
         const isIam = this.isAuthentActivated && authSettings.auth_mode === 'iam';
         if (isOpenID) {
             this.authentMode = 'openid';
-        }
-        if (isIam) {
+        } else if (isIam) {
             this.authentMode = 'iam';
         }
     }
@@ -138,14 +137,14 @@ export class DynamicHubComponent implements OnInit {
     public initSearch() {
         this.dashboardSearch.valueChanged$
             .pipe(
-                tap(() => this.isLoading = true),
+                tap(() => this.isLoading.set(true)),
                 debounceTime(500),
                 map((v) => {
                     this.filterDashboard(v, true);
-                    this.isLoading = false;
+                    this.isLoading.set(false);
                 })
             )
-            .subscribe({ error: () => this.isLoading = false });
+            .subscribe({ error: () => this.isLoading.set(false) });
     }
 
     public add(org?: string) {
@@ -276,7 +275,7 @@ export class DynamicHubComponent implements OnInit {
                         i++;
                         this.initFilter();
                         if (i === this.orgs.length) {
-                            this.isLoading = false;
+                            this.isLoading.set(false);
                         }
                     }
                 });
@@ -293,7 +292,7 @@ export class DynamicHubComponent implements OnInit {
             .subscribe({
                 next: (cards) => {
                     this.groupCardsPerOrganisation(cards);
-                    this.isLoading = false;
+                    this.isLoading.set(false);
                     this.initFilter();
                 }
             });
@@ -374,7 +373,7 @@ export class DynamicHubComponent implements OnInit {
     }
 
     public fetchCards() {
-        this.isLoading = true;
+        this.isLoading.set(true);
         this.cards = new Map<string, Card[]>();
         this.cardsRef = new Map<string, Card[]>();
         if (this.authentMode === 'iam' && this.connected) {

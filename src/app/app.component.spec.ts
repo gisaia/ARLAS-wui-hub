@@ -5,7 +5,6 @@ import { ArlasSettingsService } from 'arlas-wui-toolkit';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AppComponent } from './app.component';
 import { LoadService } from './services/load.service';
-import { SidenavService } from './services/sidenav.service';
 import { mockArlasSettingsService } from './test/mock';
 
 describe('AppComponent', () => {
@@ -18,7 +17,6 @@ describe('AppComponent', () => {
             ],
             providers: [
                 LoadService,
-                SidenavService,
                 {
                     provide: ArlasSettingsService,
                     useValue: mockArlasSettingsService

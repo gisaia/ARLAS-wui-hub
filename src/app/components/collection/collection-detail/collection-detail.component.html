@@ -1,4 +1,4 @@
-@if (isLoading) {
+@if (isLoading()) {
 <div class="collection--loading">
     <mat-spinner></mat-spinner>
 </div>
@@ -18,7 +18,7 @@
                     <button mat-stroked-button (click)="cancel()" type="button">
                         {{'Cancel' | translate}}</button>
 
-                    <button [class.spinner]="isLoading" type="submit"
+                    <button [class.spinner]="isLoading()" type="submit"
                         [disabled]="isLoading || (!collectionForm.dirty && !collectionForm.touched)"
                         mat-flat-button color="primary" (click)="update()">{{'Save' | translate}}</button>
                     }
@@ -187,7 +187,7 @@
 
                         <tr class="mat-row" *matNoDataRow>
                             <td class="mat-cell" colspan="5">
-                                @if (!isLoading) {
+                                @if (!isLoading()) {
                                 <div class="no-data">{{'No fields matching the filter' | translate}}</div>
                                 }
                             </td>

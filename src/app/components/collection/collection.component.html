@@ -1,5 +1,5 @@
 <div class="collection">
-    @if (isLoading) {
+    @if (isLoading()) {
     <div class="collection--loading">
         <mat-spinner></mat-spinner>
     </div>
@@ -15,7 +15,7 @@
                 <mat-slide-toggle (change)="filterCollections()" [(ngModel)]="isPublic">{{'Is Public' |
                     translate}}</mat-slide-toggle>
             </div>
-            @if(organisations().length > 0){
+            @if (organisations().length > 0) {
             <div class="collection__header__filter--org">
                 <mat-select [multiple]="true" [placeholder]="'Organisations' | translate"
                     (selectionChange)="filterCollections()" [(value)]="organisationsNames">
@@ -78,7 +78,7 @@
 
             <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="5">
-                    @if (!isLoading) {
+                    @if (!isLoading()) {
                     <div class="no-data">{{'No collection matching the filter' | translate}}</div>
                     }
                 </td>
