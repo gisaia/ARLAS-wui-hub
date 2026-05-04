@@ -11,15 +11,15 @@
                     « {{'Collections' | translate}}</button>
                 @if(canEdit){
                 <div class="collection__top__content__actions">
-                    @if(!editMode){
-                    <button mat-stroked-button (click)="toggleMode()">
+                    @if (!editMode()) {
+                    <button mat-stroked-button (click)="toggleMode()" type="button">
                         {{'Edit' | translate}}</button>
                     } @else {
                     <button mat-stroked-button (click)="cancel()" type="button">
                         {{'Cancel' | translate}}</button>
 
                     <button [class.spinner]="isLoading()" type="submit"
-                        [disabled]="isLoading || (!collectionForm.dirty && !collectionForm.touched)"
+                        [disabled]="isLoading() || (!collectionForm.dirty && !collectionForm.touched)"
                         mat-flat-button color="primary" (click)="update()">{{'Save' | translate}}</button>
                     }
                 </div>
@@ -29,7 +29,7 @@
         <div class="collection_title">
             <div class="collection__title__content">
                 <span class="collection__title__content__display-name">
-                    @if(editMode){
+                    @if (editMode()){
                     <mat-form-field class="compact with-label title" [floatLabel]="'auto'" [subscriptSizing]="'dynamic'">
                         <mat-label>{{'Name' | translate}}</mat-label>
                         <input matInput class="input-display-name" formControlName="collection_display_name">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="collection__info">
-            @if(isAuthentActivated && authentMode === 'iam'){
+            @if (isAuthentActivated && authentMode === 'iam') {
             <div class="collection__info__visibility">
                 <div class="collection__info__visibility__title">
                     {{'Visibility' | translate}}
@@ -53,11 +53,11 @@
                         <span class="prop">{{'Owner' | translate}}</span>
                         <span class="value">{{collection?.params?.organisations.owner}}</span>
                     </div>
-                    @if(organisations().length > 1){
+                    @if (organisations().length > 1) {
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Shared with' | translate}}</span>
                         <div class="value shared_orgs">
-                            @if(editMode){
+                            @if (editMode()) {
                             <mat-form-field class="compact" [subscriptSizing]="'dynamic'">
                                 <mat-select formControlName="shared_orgs" multiple
                                     [placeholder]="'Select organisations' | translate">
@@ -140,7 +140,7 @@
                         <ng-container matColumnDef="display_name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'Name' | translate}} </th>
                             <td mat-cell *matCellDef="let row">
-                                @if(editMode){
+                                @if (editMode()) {
                                 <mat-form-field class="compact field" [floatLabel]="'auto'" [subscriptSizing]="'dynamic'">
                                     <input matInput class="input-display-name" placeholder="..."
                                         [formControl]="row.control">

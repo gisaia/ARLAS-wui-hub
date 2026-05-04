@@ -77,7 +77,7 @@ export class CollectionDetailComponent implements OnInit {
     public canEdit = false;
     private connected = false;
 
-    public editMode = false;
+    public editMode = signal(false);
     public formInitialValues;
 
     public constructor(
@@ -232,7 +232,7 @@ export class CollectionDetailComponent implements OnInit {
             mergeMap(() => this.collabSearchService.describe(this.collection.collection_name, false, 0)
                 .pipe(finalize(() => {
                     this.isLoading.set(false);
-                    this.editMode = false;
+                    this.editMode.set(false);
                 }))
             )
         ).subscribe({
@@ -264,7 +264,7 @@ export class CollectionDetailComponent implements OnInit {
     }
 
     public toggleMode() {
-        this.editMode = !this.editMode;
+        this.editMode.set(!this.editMode());
     }
 
     public cancel() {
