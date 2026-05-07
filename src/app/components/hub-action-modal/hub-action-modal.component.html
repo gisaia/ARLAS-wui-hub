@@ -6,7 +6,7 @@
         <mat-label>{{'Name' | translate}}</mat-label>
         <input matInput type="text" [(ngModel)]="value" (focus)="errorMessage=''">
         @if (value) {
-          <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
             <mat-icon>close</mat-icon>
           </button>
         }
@@ -26,10 +26,10 @@
       <span class="error">{{errorMessage | translate}}</span>
     </div>
     <div mat-dialog-actions>
-      <button mat-raised-button class="modal_button" [disabled]="!currentOrga" color="primary"
-        (click)="create(value, currentOrga)">{{ 'Create' | translate }}</button>
-      <button mat-raised-button class="modal_button" [mat-dialog-close]="false">
+      <button matButton="outlined" class="modal_button" [mat-dialog-close]="false">
         {{ 'Cancel' | translate }}</button>
+      <button matButton="filled" color="primary" class="modal_button" [disabled]="!currentOrga"
+        (click)="create(value, currentOrga)">{{ 'Create' | translate }}</button>
     </div>
   </div>
 } @else if (action.type === HubAction.IMPORT) {
@@ -52,8 +52,8 @@
       <span class="error">{{errorMessage | translate}}</span>
     </div>
     <div mat-dialog-actions>
-      <button mat-raised-button class="modal_button" [disabled]="!currentOrga" color="primary" (click)="import()">{{ 'Select' | translate }}</button>
-      <button mat-raised-button class="modal_button" [mat-dialog-close]="false">{{ 'Cancel' | translate }}</button>
+      <button matButton="outlined" class="modal_button" [mat-dialog-close]="false">{{ 'Cancel' | translate }}</button>
+      <button matButton="filled" color="primary" class="modal_button" [disabled]="!currentOrga" (click)="import()">{{ 'Select' | translate }}</button>
     </div>
   </div>
 }
