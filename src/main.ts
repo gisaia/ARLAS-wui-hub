@@ -17,7 +17,7 @@
  * under the License.
  */
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { forwardRef, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
+import { forwardRef, importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -80,7 +80,8 @@ bootstrapApplication(AppComponent, {
         provideAnimations(),
         forwardRef(() => LoadService),
         forwardRef(() => ArlasStartupService),
-        provideRouter(routes)
+        provideRouter(routes),
+        provideZoneChangeDetection()
     ]
 })
     .catch(err => console.log(err));

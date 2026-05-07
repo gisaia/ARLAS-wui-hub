@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { SidenavService } from '../../services/sidenav.service';
 import { LeftMenuComponent } from './left-menu.component';
 
 describe('LeftMenuComponent', () => {
@@ -16,7 +15,6 @@ describe('LeftMenuComponent', () => {
                 LeftMenuComponent,
                 RouterModule.forRoot([])
             ],
-            providers: [SidenavService],
             teardown: { destroyAfterEach: false }
         })
             .compileComponents();

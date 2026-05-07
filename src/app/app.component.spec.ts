@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
+import { TranslateLoader, TranslateModule, TranslateNoOpLoader } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { ArlasSettingsService } from 'arlas-wui-toolkit';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -13,7 +14,10 @@ describe('AppComponent', () => {
             imports: [
                 AppComponent,
                 OAuthModule.forRoot(),
-                RouterModule.forRoot([])
+                RouterModule.forRoot([]),
+                TranslateModule.forRoot({
+                    loader: { provide: TranslateLoader, useClass: TranslateNoOpLoader }
+                }),
             ],
             providers: [
                 LoadService,
