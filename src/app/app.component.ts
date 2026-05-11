@@ -30,7 +30,6 @@ import { filter, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
 import { DashboardSearchComponent } from './components/dashboard-search/dashboard-search.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
-import { SidenavService } from './services/sidenav.service';
 
 @Component({
     selector: 'arlas-root',
@@ -62,15 +61,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly _onDestroy$ = new Subject<boolean>();
 
     public constructor(
-        private readonly sidenavService: SidenavService,
         private readonly titleService: Title,
         private readonly arlasSettingsService: ArlasSettingsService,
         private readonly router: Router
-    ) {
-        this.sidenavService.sideNavState?.subscribe(res => {
-            this.onSideNavChange = res;
-        });
-    }
+    ) {}
+
     public ngOnInit(): void {
         this.title = this.arlasSettingsService.settings['tab_name'] ?? 'ARLAS-wui-hub';
         this.titleService.setTitle(this.title);

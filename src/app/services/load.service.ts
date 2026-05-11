@@ -19,7 +19,9 @@
 import { Injectable } from '@angular/core';
 import { ArlasConfigService, ArlasSettings, ArlasStartupService } from 'arlas-wui-toolkit';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class LoadService {
 
     public constructor(

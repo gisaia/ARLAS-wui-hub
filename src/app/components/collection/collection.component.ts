@@ -62,7 +62,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     public authentMode: 'openid' | 'iam';
 
     public displayedColumns = ['collection_name', 'display_name'];
-    public isLoading = false;
+    public isLoading = signal(false);
 
     // Filters
     public isPublic = true;
@@ -144,7 +144,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     }
 
     public getCollectionsByOrg() {
-        this.isLoading = true;
+        this.isLoading.set(true);
         this.collections.set([]);
         const iamHeader = {
             Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
@@ -152,7 +152,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         const fetchOptions = { headers: iamHeader };
         this.collabSearchService.setFetchOptions(fetchOptions);
         this.collectionService.getCollectionsReferenceDescription()
-            .pipe(finalize(() => this.isLoading = false))
+            .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe({
                 next: (crds) => {
                     const collectionsList: CollectionInfos[] = [];
@@ -176,10 +176,10 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     }
 
     public getCollections() {
-        this.isLoading = true;
+        this.isLoading.set(true);
         this.collections.set([]);
         this.collectionService.getCollectionsReferenceDescription()
-            .pipe(finalize(() => this.isLoading = false))
+            .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe({
                 next: (collections) => {
                     this.collections.set(collections);

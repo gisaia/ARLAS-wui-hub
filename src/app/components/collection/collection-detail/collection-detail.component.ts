@@ -67,7 +67,7 @@ export class CollectionDetailComponent implements OnInit {
     public collectionForm: FormGroup;
 
     public displayedColumns = ['name', 'display_name', 'type', 'indexed', 'taggable'];
-    public isLoading = false;
+    public isLoading = signal(false);
     public filterValue = '';
 
     public isAuthentActivated: boolean;
@@ -77,7 +77,7 @@ export class CollectionDetailComponent implements OnInit {
     public canEdit = false;
     private connected = false;
 
-    public editMode = false;
+    public editMode = signal(false);
     public formInitialValues;
 
     public constructor(
@@ -107,7 +107,7 @@ export class CollectionDetailComponent implements OnInit {
         if (isIam) {
             this.authentMode = 'iam';
         }
-        this.iconRegistry.addSvgIcon('keyword', this.sanitizer.bypassSecurityTrustResourceUrl(location.origin + '/assets/keyword.svg'));
+        this.iconRegistry.addSvgIcon('keyword', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/keyword.svg'));
     }
 
     public ngOnInit(): void {
@@ -159,9 +159,9 @@ export class CollectionDetailComponent implements OnInit {
                     mergeMap((params) => {
                         this.collectionName = params.get('name');
                         if (this.collectionName) {
-                            this.isLoading = true;
+                            this.isLoading.set(true);
                             return this.collabSearchService.describe(this.collectionName, false, 0).pipe(
-                                finalize(() => this.isLoading = false)
+                                finalize(() => this.isLoading.set(false))
                             );
                         }
                     })
@@ -192,7 +192,7 @@ export class CollectionDetailComponent implements OnInit {
     }
 
     public update() {
-        this.isLoading = true;
+        this.isLoading.set(true);
         const collectionControl = this.collectionForm.get('collection_display_name');
         const fieldsControl = this.collectionForm.get('display_names');
         const sharedOrgsControl = this.collectionForm.get('shared_orgs');
@@ -231,8 +231,8 @@ export class CollectionDetailComponent implements OnInit {
             ),
             mergeMap(() => this.collabSearchService.describe(this.collection.collection_name, false, 0)
                 .pipe(finalize(() => {
-                    this.isLoading = false;
-                    this.editMode = false;
+                    this.isLoading.set(false);
+                    this.editMode.set(false);
                 }))
             )
         ).subscribe({
@@ -264,7 +264,7 @@ export class CollectionDetailComponent implements OnInit {
     }
 
     public toggleMode() {
-        this.editMode = !this.editMode;
+        this.editMode.set(!this.editMode());
     }
 
     public cancel() {
@@ -372,9 +372,9 @@ export class CollectionDetailComponent implements OnInit {
     }
 
     private updateFailed() {
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.snackbar.open(
-            this.translate.instant('Update failed'), 'Ok',
+            this.translate.instant('Update failed'), this.translate.instant('Ok'),
             {
                 duration: 3000, panelClass: 'collection-snack--failed',
                 horizontalPosition: 'center', verticalPosition: 'top'
