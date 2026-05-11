@@ -3,6 +3,6 @@
     {{ data.message | translate:{ param: data.param } }}
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="false">{{ 'No' | translate }}</button>
-    <button mat-button [mat-dialog-close]="true">{{ 'Yes' | translate }}</button>
+    <button matButton="outlined" [mat-dialog-close]="false">{{ 'No' | translate }}</button>
+    <button matButton="filled" color="primary" [mat-dialog-close]="true">{{ 'Yes' | translate }}</button>
 </mat-dialog-actions>

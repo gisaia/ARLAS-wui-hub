@@ -7,20 +7,20 @@
     <div class="collection">
         <div class="collection__top">
             <div class="collection__top__content">
-                <button class="collection__top__content__btn" mat-stroked-button (click)="back()" type="button">
+                <button class="collection__top__content__btn" matButton="outlined" (click)="back()" type="button">
                     « {{'Collections' | translate}}</button>
                 @if(canEdit){
                 <div class="collection__top__content__actions">
                     @if (!editMode()) {
-                    <button mat-stroked-button (click)="toggleMode()" type="button">
+                    <button matButton="filled" color="primary" (click)="toggleMode()" type="button">
                         {{'Edit' | translate}}</button>
                     } @else {
-                    <button mat-stroked-button (click)="cancel()" type="button">
+                    <button matButton="outlined" (click)="cancel()" type="button">
                         {{'Cancel' | translate}}</button>
 
                     <button [class.spinner]="isLoading()" type="submit"
                         [disabled]="isLoading() || (!collectionForm.dirty && !collectionForm.touched)"
-                        mat-flat-button color="primary" (click)="update()">{{'Save' | translate}}</button>
+                        matButton="filled" color="primary" (click)="update()">{{'Save' | translate}}</button>
                     }
                 </div>
                 }
@@ -158,7 +158,7 @@
                                     @if(row.type === 'KEYWORD'){
                                     <mat-icon svgIcon="keyword"></mat-icon>
                                     } @else {
-                                    <mat-icon fontSet="material-icons-outlined">
+                                    <mat-icon>
                                         {{ row.type | field_type_to_icon}}
                                     </mat-icon>
                                     }
@@ -201,7 +201,7 @@
         <div class="collection__advanced">
             <h3>{{'Danger zone' | translate}}</h3>
             <div>{{'Once you delete a collection, there is no going back. Please be certain.' | translate}}</div>
-            <button color="warn" class="delete" type="button" mat-stroked-button (click)="openDelete(collection?.collection_name)">
+            <button matButton="filled" color="warn" class="delete" type="button" (click)="openDelete(collection?.collection_name)">
                 {{'Delete collection' | translate}}
             </button>
         </div>

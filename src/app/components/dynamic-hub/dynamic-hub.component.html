@@ -7,11 +7,11 @@
 
   @if (canCreateDashboard) {
     <div class="dynamic-hub__header">
-      <button class="add-button" mat-stroked-button (click)="add()">
+      <button class="add-button" matButton="outlined" color="accent" (click)="add()">
         <mat-icon>add</mat-icon>
         {{'Create a new Exploration Dashboard' | translate}}
       </button>
-      <button class="add-button" mat-stroked-button (click)="import()">
+      <button class="add-button" matButton="outlined" color="accent" (click)="import()">
         <mat-icon>file_upload</mat-icon>
         {{'Import an Exploration Dashboard' | translate}}
       </button>
@@ -30,11 +30,11 @@
                 {{'Dashboards org' | translate:{dashboard: data.key | translate} }}
               }
               @if (data.key | getValue:cardService.canCreateDashboardByOrg) {
-                <button class="add-button" mat-stroked-button (click)="add(data.key)"
+                <button class="add-button" matButton="outlined" color="accent" (click)="add(data.key)"
                     [matTooltip]="'Create a new Exploration Dashboard' | translate">
                   <mat-icon class="add-button--icon">add</mat-icon>
                 </button>
-                <button class="add-button" mat-stroked-button (click)="import(data.key)"
+                <button class="add-button" matButton="outlined" color="accent" (click)="import(data.key)"
                     [matTooltip]="'Import an Exploration Dashboard' | translate">
                   <mat-icon class="add-button--icon">file_upload</mat-icon>
                 </button>
