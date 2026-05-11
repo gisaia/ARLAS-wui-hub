@@ -33,7 +33,8 @@
             ],
             "styles": [
               "src/styles/theme.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/arlas-web-components/assets/styles.css"
             ],
             "scripts": [],
             "browser": "src/main.ts"
