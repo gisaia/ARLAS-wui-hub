@@ -1,5 +1,16 @@
 # Change Log
 
+## [v28.0.0-rc.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0-rc.4) (2026-05-11)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.3...v28.0.0-rc.4)
+
+**Fixed bugs:**
+
+- Edit collection in hub does not work [\#308](https://github.com/gisaia/ARLAS-wui-hub/issues/308)
+- arlas hub collection view loading [\#307](https://github.com/gisaia/ARLAS-wui-hub/issues/307)
+- arlas hub version not displayed [\#306](https://github.com/gisaia/ARLAS-wui-hub/issues/306)
+- ARLAS not loading [\#304](https://github.com/gisaia/ARLAS-wui-hub/issues/304)
+
 ## [v28.0.0-rc.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0-rc.3) (2026-04-29)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.2...v28.0.0-rc.3)
