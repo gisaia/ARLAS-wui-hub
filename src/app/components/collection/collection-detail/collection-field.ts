@@ -54,7 +54,7 @@ export class CollectionField {
     public type: string;
     public display_name: string;
 
-    public static asFormGroup(field: CollectionField): FormGroup {
+    public static asFormGroup(field: CollectionField) {
         const fg = new FormGroup({
             name: new FormControl(field.name),
             type: new FormControl(field.type),

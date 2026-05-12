@@ -53,7 +53,6 @@
                         <span class="prop">{{'Owner' | translate}}</span>
                         <span class="value">{{collection?.params?.organisations.owner}}</span>
                     </div>
-                    @if (organisations().length > 1) {
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Shared with' | translate}}</span>
                         <div class="value shared_orgs">
@@ -68,14 +67,18 @@
                             </mat-form-field>
                             } @else {
                             {{ collectionForm.controls['shared_orgs'].value?.length > 0 ?
-                            collectionForm.controls['shared_orgs'].value : '--' }}
+                                collectionForm.controls['shared_orgs'].value : '--' }}
                             }
                         </div>
                     </div>
-                    }
                     <div class="collection__info__visibility__items__item">
                         <span class="prop">{{'Visibility' | translate}}</span>
-                        <span class="value">
+                        <span class="value shared_orgs">
+                            @if (editMode()) {
+                            <mat-slide-toggle formControlName="visibility" labelPosition="before">
+                                {{ 'Make collection public' | translate }}
+                            </mat-slide-toggle>
+                            } @else {
                             <mat-chip-set>
                                 @if ($any(collection?.params?.organisations).public) {
                                 <mat-chip class="visibility-chip">{{'Public' | translate}}</mat-chip>
@@ -83,6 +86,7 @@
                                 <mat-chip class="visibility-chip">{{'Private' | translate}}</mat-chip>
                                 }
                             </mat-chip-set>
+                            }
                         </span>
                     </div>
                 </div>
