@@ -131,11 +131,11 @@
             border: 1px solid rgba(0, 0, 0, 0.12);
             border-bottom: unset;
             display: flex;
-            justify-content: space-between;
             align-items: baseline;
             position: sticky;
             top: 52px;
             z-index: 1;
+            gap: 0 25px;
 
             mat-form-field {
                 font-weight: 500;
