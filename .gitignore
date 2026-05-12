@@ -43,3 +43,6 @@ dist.zip
 # System Files
 .DS_Store
 Thumbs.db
+
+# Angular cache
+.angular/

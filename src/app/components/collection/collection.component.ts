@@ -163,7 +163,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                     collectionsList
                         .forEach(c => c.display_shared_orgs = c.params?.organisations?.shared?.filter(o => o !== c.params?.organisations?.owner));
                     this.collections.set(collectionsList);
-                    this.organisations.set(Array.from(new Set(collectionsList.map(c => c.params.organisations.owner))));
+                    this.organisations.set(Array.from(new Set(collectionsList
+                        .map(c => c.params.organisations.owner || this.translate.instant('No owner')))));
                     this.organisationsNames.set(this.organisations());
                     this.collectionDataSource.data = this.collections();
                 },
