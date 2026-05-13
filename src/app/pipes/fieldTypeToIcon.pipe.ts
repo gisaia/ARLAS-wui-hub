@@ -28,6 +28,7 @@ export class FieldTypeToIconPipe implements PipeTransform {
         switch (input) {
             case 'LONG':
             case 'DOUBLE':
+            case 'FLOAT':
                 icon = 'numbers';
                 break;
             case 'OBJECT':
