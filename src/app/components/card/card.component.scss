@@ -18,7 +18,7 @@
  */
 
 
- @import "variables.scss";
+@use "variables.scss" as var;
 
 :host {
     flex: 1 1 auto;
@@ -67,9 +67,9 @@
     --mdc-chip-with-avatar-avatar-size: 18px;
 
     .mat-icon {
-        height: $group-icon-size;
-        width: $group-icon-size;
-        font-size: $group-icon-size;
+        height: var.$group-icon-size;
+        width: var.$group-icon-size;
+        font-size: var.$group-icon-size;
         flex: 1 0 auto;
     }
 
@@ -108,8 +108,8 @@
     &_info {
         display: flex;
         position: absolute;
-        top: $sm-margin;
-        left: $sm-margin;
+        top: var.$sm-margin;
+        left: var.$sm-margin;
         height: 20px;
         gap: 6px;
         z-index: 1;

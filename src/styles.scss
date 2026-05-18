@@ -17,8 +17,8 @@
  * under the License.
  */
 /* You can add global styles to this file, and also import other style files */
-@import "styles/material-override.scss";
-@import "variables.scss";
+@use "styles/material-override.scss" as *;
+@use "variables.scss" as var;
 
 @font-face {
   font-family: 'Material Symbols Outlined';
@@ -102,8 +102,8 @@ body {
 }
 
 .no-data {
-    color: rgba($accentColor, 0.7);
+    color: rgba(var.$accentColor, 0.7);
     padding: 10px;
     margin: 10px 0;
-    background-color: rgba($accentColor, 0.1);
+    background-color: rgba(var.$accentColor, 0.1);
 }
