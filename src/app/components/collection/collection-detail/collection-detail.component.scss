@@ -17,7 +17,7 @@
  * under the License.
  */
 
-@import "variables.scss";
+@use "../../../../variables.scss" as var;
 
 :host {
     position: relative;
@@ -50,7 +50,7 @@
                 display: flex;
                 gap: 0 5px;
                 .delete {
-                    border-color: $warnColor;
+                    border-color: var.$warnColor;
                 }
             }
         }

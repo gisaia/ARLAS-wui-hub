@@ -17,7 +17,7 @@
  * under the License.
  */
 
-@import '../variables.scss';
+@use "../variables.scss" as var;
 
 .sidenav {
     &.hide {
@@ -32,12 +32,12 @@
     }
 
     .main_content {
-        height: calc(100vh - $top-menu-height);
+        height: calc(100vh - var.$top-menu-height);
     }
 }
 
 .search {
-    margin-left: $search-input-spacing;
+    margin-left: var.$search-input-spacing;
 }
 
 .wrapper {
@@ -48,12 +48,12 @@
 .top-left-menu {
     display: flex;
     align-items: center;
-    height: $top-menu-height;
+    height: var.$top-menu-height;
 
     .logo {
         text-align: center;
-        width: min($left-menu-width, $top-menu-height);
-        margin: 0 calc(($left-menu-width - min($left-menu-width, $top-menu-height)) / 2);
+        width: min(var.$left-menu-width, var.$top-menu-height);
+        margin: 0 calc((var.$left-menu-width - min(var.$left-menu-width, var.$top-menu-height)) / 2);
         display: flex;
 
         a {
@@ -61,14 +61,14 @@
         }
 
         img {
-            height: calc(min($left-menu-width, $top-menu-height) - 5px);
-            width: calc(min($left-menu-width, $top-menu-height) - 5px);
+            height: calc(min(var.$left-menu-width, var.$top-menu-height) - 5px);
+            width: calc(min(var.$left-menu-width, var.$top-menu-height) - 5px);
         }
     }
 }
 
 ::ng-deep .top-menu {
-    border-bottom: $menu-border;
+    border-bottom: var.$menu-border;
 }
 
 ::ng-deep.mat-mdc-tooltip {
