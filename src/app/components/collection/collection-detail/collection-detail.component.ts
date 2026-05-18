@@ -27,6 +27,7 @@ import { MatIcon, MatIconRegistry } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatOption, MatSelect } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -53,9 +54,11 @@ import { CollectionField, extractProp } from './collection-field';
     templateUrl: './collection-detail.component.html',
     styleUrl: './collection-detail.component.scss',
     imports: [
-        MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
-        MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
-        MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe]
+    MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
+    MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
+    MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe,
+    MatSlideToggleModule
+]
 })
 export class CollectionDetailComponent implements OnInit {
     @ViewChild('fieldTableSort', { static: true }) public sort: MatSort;
@@ -64,7 +67,12 @@ export class CollectionDetailComponent implements OnInit {
     public collectionName: string;
     public fields: CollectionField[];
 
-    public collectionForm: FormGroup;
+    public collectionForm = this.formBuilder.group({
+        collection_display_name: new FormControl(''),
+        display_names: this.formBuilder.array<FormGroup>([]),
+        shared_orgs: new FormControl(),
+        visibility: new FormControl()
+    });
 
     public displayedColumns = ['name', 'display_name', 'type', 'indexed', 'taggable'];
     public isLoading = signal(false);
@@ -148,11 +156,6 @@ export class CollectionDetailComponent implements OnInit {
                 this.organisations.set([]);
                 this.collectionService.setOptions({});
             }
-            this.collectionForm = this.formBuilder.group({
-                collection_display_name: new FormControl(''),
-                display_names: this.formBuilder.array([]),
-                shared_orgs: new FormControl()
-            });
             this.route.paramMap
                 .pipe(
                     takeUntilDestroyed(this.destroyRef),
@@ -183,19 +186,16 @@ export class CollectionDetailComponent implements OnInit {
         }
     }
 
-    public get displayNames(): FormArray {
-        return this.collectionForm.get('display_names') as FormArray;
-    }
-
     public back() {
         this.router.navigate(['collection']);
     }
 
     public update() {
         this.isLoading.set(true);
-        const collectionControl = this.collectionForm.get('collection_display_name');
-        const fieldsControl = this.collectionForm.get('display_names');
-        const sharedOrgsControl = this.collectionForm.get('shared_orgs');
+        const collectionControl = this.collectionForm.controls.collection_display_name;
+        const fieldsControl = this.collectionForm.controls.display_names;
+        const sharedOrgsControl = this.collectionForm.controls.shared_orgs;
+        const visibilityControl = this.collectionForm.controls.visibility;
 
         let collectionObs = of({});
         if (collectionControl.dirty) {
@@ -207,19 +207,20 @@ export class CollectionDetailComponent implements OnInit {
         let updateFields = false;
         if (fieldsControl.dirty) {
             updateFields = true;
-            const fields: CollectionField[] = fieldsControl.value;
+            const fields = fieldsControl.value as CollectionField[];
             fields.forEach(f => fieldsBody[f.name] = f.display_name);
         }
 
         const sharedOrgsBody: CollectionReferenceUpdateOrg = {};
         let updateSharedOrgs = false;
-        if (sharedOrgsControl.dirty) {
+        if (sharedOrgsControl.dirty || visibilityControl.dirty) {
             updateSharedOrgs = true;
-            (sharedOrgsBody as any).public = (this.collection.params.organisations as any).public;
+            (sharedOrgsBody as any).public = visibilityControl.value;
             sharedOrgsBody.shared = sharedOrgsControl.value;
             // always add the owner org in the shared orgs
             sharedOrgsBody.shared.push(this.collection.params.organisations.owner);
         }
+
         // SwitchMap needed to wait the previous observable
         // The same document is updated
         collectionObs.pipe(
@@ -343,6 +344,7 @@ export class CollectionDetailComponent implements OnInit {
             this.collection.params?.organisations?.shared?.filter(o => o !== c.params?.organisations?.owner)
         );
         this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
+        this.collectionForm.setControl('visibility', new FormControl((this.collection.params.organisations as any).public));
         this.formInitialValues = this.collectionForm.value;
         this.dataSourceFields = new MatTableDataSource(
             (this.collectionForm.get('display_names') as FormArray).controls.map(c => ({
