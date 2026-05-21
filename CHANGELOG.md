@@ -1,23 +1,17 @@
 # Change Log
 
-## [v28.0.0-rc.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0-rc.5) (2026-05-18)
+## [v28.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0) (2026-05-21)
 
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.4...v28.0.0-rc.5)
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.5...v28.0.0)
 
 **New stuff:**
 
 - ARLAS Hub/Collection: Wrong "?" icon for float type in collection view [\#316](https://github.com/gisaia/ARLAS-wui-hub/issues/316)
+- Display collection visibility \(public/shared\) [\#278](https://github.com/gisaia/ARLAS-wui-hub/issues/278)
 
 **Fixed bugs:**
 
 - ARLAS Hub/Collections with IAM: invalid list of organisations [\#314](https://github.com/gisaia/ARLAS-wui-hub/issues/314)
-
-## [v28.0.0-rc.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0-rc.4) (2026-05-11)
-
-[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.3...v28.0.0-rc.4)
-
-**Fixed bugs:**
-
 - Edit collection in hub does not work [\#308](https://github.com/gisaia/ARLAS-wui-hub/issues/308)
 - arlas hub collection view loading [\#307](https://github.com/gisaia/ARLAS-wui-hub/issues/307)
 - arlas hub version not displayed [\#306](https://github.com/gisaia/ARLAS-wui-hub/issues/306)
@@ -26,6 +20,14 @@
 **Miscellaneous:**
 
 - Uniformize buttons [\#310](https://github.com/gisaia/ARLAS-wui-hub/issues/310)
+
+## [v28.0.0-rc.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0-rc.5) (2026-05-18)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.4...v28.0.0-rc.5)
+
+## [v28.0.0-rc.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0-rc.4) (2026-05-11)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.3...v28.0.0-rc.4)
 
 ## [v28.0.0-rc.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0-rc.3) (2026-04-29)
 
