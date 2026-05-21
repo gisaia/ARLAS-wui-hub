@@ -29,6 +29,7 @@ export class FieldTypeToIconPipe implements PipeTransform {
             case 'LONG':
             case 'DOUBLE':
             case 'FLOAT':
+            case 'INTEGER':
                 icon = 'numbers';
                 break;
             case 'OBJECT':
