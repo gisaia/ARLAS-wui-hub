@@ -115,7 +115,8 @@ export class CollectionDetailComponent implements OnInit {
         if (isIam) {
             this.authentMode = 'iam';
         }
-        this.iconRegistry.addSvgIcon('keyword', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/keyword.svg'));
+        this.iconRegistry.addSvgIcon('keyword',
+            this.sanitizer.bypassSecurityTrustResourceUrl(location.href.split('/collection')[0] + '/assets/keyword.svg'));
     }
 
     public ngOnInit(): void {
