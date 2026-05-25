@@ -25,34 +25,25 @@
         justify-content: space-between;
         align-items: baseline;
         background-color: white;
-        padding: 5px 5px 5px 10px;
+        padding: 10px;
 
         border: 1px solid rgba(0, 0, 0, 0.12);
         border-bottom: unset;
+
         &__title {
             font-size: 18px;
             font-weight: 500;
         }
+
         &__filter {
             display: flex;
             gap: 0 10px;
-            align-items: baseline;
+            align-items: center;
             font-size: 14px;
-            &--org {
-                .mat-mdc-select {
-                    background-color: white;
-                    padding: 5px;
-                    font-size: 14px;
-                    border: 1px solid rgba(0, 0, 0, 0.12);
-                    width: 150px;
-                }
-            }
-            &--search {
-                .mat-mdc-input-element {
-                    border: 1px solid rgba(0, 0, 0, 0.12);
-                    padding: 9px 5px;
-                    width: 250px;
-                }
+
+            &__divider {
+                border: 1px solid rgba(0, 0, 0, 0.12);
+                height: 40px;
             }
         }
     }

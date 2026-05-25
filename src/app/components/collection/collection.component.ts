@@ -18,6 +18,7 @@
  */
 import { AfterViewInit, Component, model, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -44,8 +45,19 @@ export interface CollectionInfos extends CollectionReferenceDescription {
     templateUrl: './collection.component.html',
     styleUrl: './collection.component.scss',
     imports: [
-        MatTableModule, MatProgressSpinner, MatSlideToggle, FormsModule, MatSelect, MatOption,
-        MatInput, MatSort, MatSortHeader, RouterLinkActive, RouterLink, MatPaginator, TranslatePipe]
+    MatTableModule, MatProgressSpinner, MatSlideToggle, FormsModule, MatSelect, MatOption,
+    MatInput, MatSort, MatSortHeader, RouterLinkActive, RouterLink, MatPaginator, TranslatePipe,
+    MatFormFieldModule
+],
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'outline',
+                subscriptSizing: 'dynamic'
+            }
+        }
+    ]
 })
 export class CollectionComponent implements OnInit, AfterViewInit {
 
@@ -65,6 +77,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     public isLoading = signal(false);
 
     // Filters
+    /** Whether to display public collections */
     public isPublic = true;
     public searchValue = '';
 
@@ -196,29 +209,27 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         this.filterCollections();
     }
 
-    public applyFilters(c: CollectionReferenceDescription) {
+    private applyFilters(c: CollectionReferenceDescription) {
         let keepIt = true;
 
         if (this.authentMode === 'iam') {
             const orgsParam = c.params.organisations;
-            // keep collection if it's public
-            // By default keepIt is true
 
-            // if logged : keep it if collection is shared with at least one of my orgs
-            // OR I'm the owner
-            // AND the collection is not public
-            if (this.connected() && !(orgsParam as any).public) {
-
+            if (this.connected()) {
+                // If connected, display the collection if its organisations include the ones selected
                 keepIt = this.organisationsNames().includes(orgsParam.owner)
                     || orgsParam.shared.some(so => this.organisationsNames().includes(so));
 
-            }
 
-            // filter public collections with toggle state
-            if (keepIt && !this.isPublic) {
+                // If not display public collections, then the collection must also be private
+                if (!this.isPublic) {
+                    keepIt = keepIt && !(orgsParam as any).public;
+                }
+            } else if (!this.isPublic) {
                 keepIt = !(orgsParam as any).public;
             }
         }
+
         // filter collections with text
         if (keepIt && this.searchValue !== '') {
             keepIt = c.collection_name.includes(this.searchValue) || c.params.display_names?.collection.includes(this.searchValue);
