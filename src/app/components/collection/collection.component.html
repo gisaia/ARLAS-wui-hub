@@ -11,26 +11,28 @@
         </div>
         <div class="collection__header__filter">
             @if (isAuthentActivated && authentMode === 'iam') {
-            <div class="collection__header__filter--public">
-                <mat-slide-toggle (change)="filterCollections()" [(ngModel)]="isPublic">{{'Is Public' |
-                    translate}}</mat-slide-toggle>
-            </div>
-            @if (organisations().length > 0) {
-            <div class="collection__header__filter--org">
-                <mat-select [multiple]="true" [placeholder]="'Organisations' | translate"
-                    (selectionChange)="filterCollections()" [(value)]="organisationsNames">
-                    @for (org of organisations(); track $index) {
-                    <mat-option [value]="org">{{org}}</mat-option>
-                    }
-                </mat-select>
-            </div>
+                <div class="collection__header__filter--public">
+                    <mat-slide-toggle labelPosition="before" (change)="filterCollections()" [(ngModel)]="isPublic">
+                        {{'Is Public' | translate}}</mat-slide-toggle>
+                </div>
+                <div class="collection__header__filter__divider"></div>
+                @if (organisations().length > 0) {
+                    <mat-form-field class="collection__header__filter--org">
+                        <mat-label>{{ 'Owned by or shared with' | translate }}</mat-label>
+                        <mat-select [multiple]="true" (selectionChange)="filterCollections()" [(value)]="organisationsNames">
+                            @for (org of organisations(); track $index) {
+                            <mat-option [value]="org">{{org}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="collection__header__filter__divider"></div>
+                }
             }
 
-            }
-            <div class="collection__header__filter--search">
-                <input matInput [(ngModel)]="searchValue" (ngModelChange)="search()"
-                    [placeholder]="'Filter on collection name' | translate" />
-            </div>
+            <mat-form-field class="collection__header__filter--search">
+                <mat-label>{{ 'Filter on collection name' | translate }}</mat-label>
+                <input matInput [(ngModel)]="searchValue" (ngModelChange)="search()"/>
+            </mat-form-field>
         </div>
     </div>
     <div class="collection__content">

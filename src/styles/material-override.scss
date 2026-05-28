@@ -19,8 +19,9 @@
 
 // Tighten the display of inputs
 .mat-mdc-form-field-infix {
-    min-height: 48px !important;
-    padding: 8px 0;
+    padding: 8px;
+    display: flex;
+    width: 200px !important;
 }
 
 // Avoid whitesmoke background of input

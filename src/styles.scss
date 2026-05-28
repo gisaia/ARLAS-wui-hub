@@ -33,6 +33,9 @@ body {
     padding: 0%;
     font-family: Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
     background-color: whitesmoke;
+
+    --mat-form-field-container-height: 40px;
+    --mat-form-field-container-vertical-padding: 8px;
 }
 
 .material-icons {

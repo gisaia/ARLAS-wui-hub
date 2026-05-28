@@ -33,6 +33,7 @@ export class FieldTypeToIconPipe implements PipeTransform {
                 icon = 'numbers';
                 break;
             case 'OBJECT':
+            case 'NESTED':
                 icon = 'data_object';
                 break;
             case 'DATE':
