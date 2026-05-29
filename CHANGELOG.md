@@ -1,5 +1,14 @@
 # Change Log
 
+## [v28.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.1) (2026-05-28)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0...v28.0.1)
+
+**Fixed bugs:**
+
+- Collection list - Filter on organisation owner has a strange behaviour [\#320](https://github.com/gisaia/ARLAS-wui-hub/issues/320)
+- ARLAS Hub/collection [\#321](https://github.com/gisaia/ARLAS-wui-hub/issues/321)
+
 ## [v28.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.0) (2026-05-21)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0-rc.5...v28.0.0)
