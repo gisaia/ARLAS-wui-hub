@@ -218,7 +218,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
             if (this.connected()) {
                 // If connected, display the collection if its organisations include the ones selected
                 keepIt = this.organisationsNames().includes(orgsParam.owner)
-                    || orgsParam.shared.some(so => this.organisationsNames().includes(so));
+                    || orgsParam.shared?.some(so => this.organisationsNames().includes(so));
 
 
                 // If not display public collections, then the collection must also be private
