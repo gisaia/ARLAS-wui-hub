@@ -1,6 +1,14 @@
 # Change Log
 
-## [v28.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.1) (2026-05-28)
+## [v28.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.2) (2026-06-05)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.1...v28.0.2)
+
+**Fixed bugs:**
+
+- Filter on org crash in collection view [\#325](https://github.com/gisaia/ARLAS-wui-hub/issues/325)
+
+## [v28.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.1) (2026-05-29)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.0...v28.0.1)
 
