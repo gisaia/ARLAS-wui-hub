@@ -37,6 +37,7 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'arlas-api';
 import { RoleData, UserOrgData } from 'arlas-iam-api';
+import { FetchOptions } from 'arlas-web-core';
 import {
     ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService, AuthentificationService
 } from 'arlas-wui-toolkit';
@@ -128,10 +129,11 @@ export class CollectionDetailComponent implements OnInit {
                 if (this.arlasIamService.user) {
                     this.connected = true;
                     this.organisations.set(this.arlasIamService.user.organisations);
-                    const headers = {
+                    const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
-                        }
+                        },
+                        credentials: 'include'
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
@@ -143,10 +145,11 @@ export class CollectionDetailComponent implements OnInit {
             } else if (this.authentMode === 'openid') {
                 if (this.authenticationService.hasValidAccessToken()) {
                     this.connected = true;
-                    const headers = {
+                    const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.authenticationService.accessToken
-                        }
+                        },
+                        credentials: 'include'
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);

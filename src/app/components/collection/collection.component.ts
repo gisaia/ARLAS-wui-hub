@@ -30,6 +30,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CollectionReferenceDescription } from 'arlas-api';
+import { FetchOptions } from 'arlas-web-core';
 import {
     ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService, AuthentificationService
 } from 'arlas-wui-toolkit';
@@ -162,7 +163,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         const iamHeader = {
             Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
         };
-        const fetchOptions = { headers: iamHeader };
+        const fetchOptions: FetchOptions = { headers: iamHeader, credentials: 'include' };
         this.collabSearchService.setFetchOptions(fetchOptions);
         this.collectionService.getCollectionsReferenceDescription()
             .pipe(finalize(() => this.isLoading.set(false)))
