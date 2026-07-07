@@ -62,17 +62,17 @@ export interface CollectionInfos extends CollectionReferenceDescription {
 })
 export class CollectionComponent implements OnInit, AfterViewInit {
 
-    @ViewChild('paginator') public paginator: MatPaginator;
+    @ViewChild('paginator') public paginator?: MatPaginator;
 
-    public connected: WritableSignal<boolean> = signal(false);
-    public organisations: WritableSignal<string[]> = signal([]);
-    public organisationsNames = model([]);
+    public connected = signal(false);
+    public organisations = signal<string[]>([]);
+    public organisationsNames = model<string[]>([]);
 
     public collections: WritableSignal<CollectionReferenceDescription[]> = signal([]);
-    public collectionDataSource: MatTableDataSource<CollectionReferenceDescription> = new MatTableDataSource([]);
+    public collectionDataSource = new MatTableDataSource<CollectionReferenceDescription>([]);
 
     public isAuthentActivated: boolean;
-    public authentMode: 'openid' | 'iam';
+    public authentMode?: 'openid' | 'iam';
 
     public displayedColumns = ['collection_name', 'display_name'];
     public isLoading = signal(false);
@@ -103,10 +103,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         if (isIam) {
             this.authentMode = 'iam';
         }
-    }
-
-    public compareFn(o1, o2): boolean {
-        return o1 && o2 ? o1.name === o2.name : o1 === o2;
     }
 
     public ngOnInit(): void {
@@ -178,7 +174,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                         .forEach(c => c.display_shared_orgs = c.params?.organisations?.shared?.filter(o => o !== c.params?.organisations?.owner));
                     this.collections.set(collectionsList);
                     this.organisations.set(Array.from(new Set(collectionsList
-                        .map(c => c.params.organisations.owner || this.translate.instant('No owner')))));
+                        .map(c => c.params.organisations?.owner || this.translate.instant('No owner')))));
                     this.organisationsNames.set(this.organisations());
                     this.collectionDataSource.data = this.collections();
                 },
@@ -218,8 +214,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
 
             if (this.connected()) {
                 // If connected, display the collection if its organisations include the ones selected
-                keepIt = this.organisationsNames().includes(orgsParam.owner)
-                    || orgsParam.shared?.some(so => this.organisationsNames().includes(so));
+                keepIt = !orgsParam?.owner || this.organisationsNames().includes(orgsParam.owner)
+                    || !!orgsParam?.shared?.some(so => this.organisationsNames().includes(so));
 
 
                 // If not display public collections, then the collection must also be private
@@ -233,7 +229,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
 
         // filter collections with text
         if (keepIt && this.searchValue !== '') {
-            keepIt = c.collection_name.includes(this.searchValue) || c.params.display_names?.collection.includes(this.searchValue);
+            keepIt = c.collection_name.includes(this.searchValue) || !!c.params.display_names?.collection?.includes(this.searchValue);
         }
         return keepIt;
     }
@@ -260,13 +256,15 @@ export class CollectionComponent implements OnInit, AfterViewInit {
                             case 'collection_name':
                                 return this.compareString(a.collection_name, b.collection_name, isAsc);
                             case 'display_name':
-                                return this.compareString(a.params.display_names?.collection, b.params.display_names?.collection, isAsc);
+                                return this.compareString(a.params.display_names?.collection as string,
+                                    b.params.display_names?.collection as string, isAsc);
                             case 'owner':
-                                return this.compareString(a.params.organisations.owner, b.params.organisations.owner, isAsc);
+                                return this.compareString(a.params.organisations?.owner as string,
+                                    b.params.organisations?.owner as string, isAsc);
                             case 'shared_with':
                                 return this.compareString(
-                                    a.params.organisations.shared.toString(),
-                                    b.params.organisations.shared.toString(),
+                                    a.params.organisations?.shared?.toString() as string,
+                                    b.params.organisations?.shared?.toString() as string,
                                     isAsc
                                 );
                             case 'is_public':

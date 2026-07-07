@@ -19,9 +19,9 @@
 import { Injectable } from '@angular/core';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { ArlasColorService } from 'arlas-web-components';
+import { FetchOptions } from 'arlas-web-core';
 import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
-import { Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, Observable, of } from 'rxjs';
 
 export interface Group {
     fullname: string;
@@ -64,20 +64,14 @@ export class CardService {
             .pipe(mergeMap((one) => {
                 if (one.data !== undefined) {
                     // Second call to list to retrieve all the  dashboards
-                    return this.getList$(one.total, options);
+                    return this.getList$(one.total ?? 0, options);
                 } else {
                     return of({});
                 }
-            }), map(data => {
-                if ((data as any).data !== undefined) {
-                    return (data as DataResource).data.map(d => this.dataWithlinksToCard(d));
-                } else {
-                    return [];
-                }
-            }));
+            }), map((data: DataResource) => (data.data ?? []).map(d => this.dataWithlinksToCard(d))));
     }
 
-    private getList$(size, options?): Observable<DataResource> {
+    private getList$(size: number, options?: FetchOptions): Observable<DataResource> {
         return this.persistenceService.list('config.json', size, 1, 'desc', undefined, options);
     }
 
@@ -88,8 +82,8 @@ export class CardService {
             id: data.id,
             name: data.doc_key,
             value: data.doc_value,
-            readers: data.doc_readers,
-            writers: data.doc_writers,
+            readers: data.doc_readers ?? [],
+            writers: data.doc_writers ?? [],
             lastUpdate: +data.last_update_date,
             zone: data.doc_zone,
             org: organisation,
@@ -155,7 +149,7 @@ export class CardService {
             title: data.doc_key,
             readers,
             writers,
-            updatable: data.updatable,
+            updatable: !!data.updatable,
             last_update_date: data.last_update_date,
             tabs: this.getTabs(data.doc_value),
             previewId: this.getPreviewId(data.doc_value),
@@ -175,14 +169,14 @@ export class CardService {
             config.arlas.web !== undefined &&
             config.arlas.web.analytics !== undefined) {
             const tabs: Set<string> = new Set(config.arlas.web.analytics
-                .filter(a => a.tab !== undefined).map(a => a.tab));
+                .filter((a: any) => a.tab !== undefined).map((a: any) => a.tab));
             return Array.from(tabs);
         } else {
             return [];
         }
     }
 
-    private getPreviewId(value: string): string {
+    private getPreviewId(value: string): string | undefined {
         const config: any = JSON.parse(value);
         if (config.resources !== undefined &&
             config.resources.previewId !== undefined) {

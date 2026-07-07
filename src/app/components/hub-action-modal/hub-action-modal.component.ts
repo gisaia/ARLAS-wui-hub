@@ -69,7 +69,7 @@ export interface HubAction {
 export class HubActionModalComponent {
 
     public action: HubAction;
-    public value: string;
+    public value = '';
     public HubAction = HubActionEnum;
     public currentOrga: any;
     public errorMessage = '';
@@ -108,7 +108,7 @@ export class HubActionModalComponent {
                 this.errorMessage = marker('Missing permissions to create a dashboard');
                 break;
             case 500:
-                err.json().then(e => {
+                err.json().then((e: any) => {
                     if ((e.message as string).indexOf('already exists') > 0) {
                         this.errorMessage = marker('A configuration with this name exists already, please choose another name');
                     } else {

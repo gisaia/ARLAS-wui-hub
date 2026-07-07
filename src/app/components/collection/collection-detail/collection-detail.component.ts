@@ -18,7 +18,7 @@
  */
 import { Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatChip, MatChipSet } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -49,30 +49,40 @@ import { FieldTypeToTextPipe } from '../../../pipes/fieldTypeToText.pipe';
 import { CollectionService } from '../../../services/collection.service';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
 import { SampleComponent } from '../../sample/sample.component';
-import { CollectionField, extractProp } from './collection-field';
+import { CollectionField, CollectionFieldFormGroup, extractProp } from './collection-field';
+
+export interface InitialCollectionDetail {
+    name: string;
+    type: string;
+    taggable: boolean;
+    indexed: boolean;
+}
+
+export interface CollectionDetailRow extends InitialCollectionDetail {
+    control: FormControl<string | null>;
+}
 
 @Component({
     selector: 'arlas-collection-detail',
     templateUrl: './collection-detail.component.html',
     styleUrl: './collection-detail.component.scss',
     imports: [
-    MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
-    MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
-    MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe,
-    MatSlideToggleModule,
-    SampleComponent
-]
+        MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
+        MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
+        MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe,
+        MatSlideToggleModule, SampleComponent
+    ]
 })
 export class CollectionDetailComponent implements OnInit {
-    @ViewChild('fieldTableSort', { static: true }) public sort: MatSort;
+    @ViewChild('fieldTableSort', { static: true }) public sort?: MatSort;
 
-    public collection: CollectionReferenceDescription;
-    public collectionName: string;
-    public fields: CollectionField[];
+    public collection!: CollectionReferenceDescription;
+    public collectionName?: string;
+    public fields: CollectionField[] = [];
 
     public collectionForm = this.formBuilder.group({
         collection_display_name: new FormControl(''),
-        display_names: this.formBuilder.array<FormGroup>([]),
+        display_names: this.formBuilder.array<CollectionFieldFormGroup>([]),
         shared_orgs: new FormControl(),
         visibility: new FormControl()
     });
@@ -82,15 +92,15 @@ export class CollectionDetailComponent implements OnInit {
     public filterValue = '';
 
     public isAuthentActivated: boolean;
-    public authentMode: 'openid' | 'iam';
+    public authentMode?: 'openid' | 'iam';
     public organisations: WritableSignal<UserOrgData[]> = signal([]);
-    public dataSourceFields: MatTableDataSource<any> = new MatTableDataSource([]);
+    public dataSourceFields = new MatTableDataSource<CollectionDetailRow>([]);
     public canEdit = false;
     private connected = false;
 
     public editMode = signal(false);
     public showSample = signal(false);
-    public formInitialValues;
+    public formInitialValues: Record<string, any> = {};
 
     public constructor(
         private readonly destroyRef: DestroyRef,
@@ -128,12 +138,11 @@ export class CollectionDetailComponent implements OnInit {
             if (this.authentMode === 'iam') {
                 if (this.arlasIamService.user) {
                     this.connected = true;
-                    this.organisations.set(this.arlasIamService.user.organisations);
+                    this.organisations.set(this.arlasIamService.user.organisations ?? []);
                     const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
-                        },
-                        credentials: 'include'
+                        }
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
@@ -145,11 +154,10 @@ export class CollectionDetailComponent implements OnInit {
             } else if (this.authentMode === 'openid') {
                 if (this.authenticationService.hasValidAccessToken()) {
                     this.connected = true;
-                    const headers: FetchOptions = {
+                    const headers = {
                         headers: {
                             Authorization: 'bearer ' + this.authenticationService.accessToken
-                        },
-                        credentials: 'include'
+                        }
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
@@ -167,13 +175,14 @@ export class CollectionDetailComponent implements OnInit {
                 .pipe(
                     takeUntilDestroyed(this.destroyRef),
                     mergeMap((params) => {
-                        this.collectionName = params.get('name');
+                        this.collectionName = params.get('name') ?? undefined;
                         if (this.collectionName) {
                             this.isLoading.set(true);
                             return this.collabSearchService.describe(this.collectionName, false, 0).pipe(
                                 finalize(() => this.isLoading.set(false))
                             );
                         }
+                        return of();
                     })
                 )
                 .subscribe({
@@ -205,12 +214,11 @@ export class CollectionDetailComponent implements OnInit {
         const visibilityControl = this.collectionForm.controls.visibility;
 
         let collectionObs = of({});
-        if (collectionControl.dirty) {
-            const collectionDisplayName = collectionControl.value;
-            collectionObs = this.collectionService.updateCollectionDisplayName(collectionDisplayName, this.collection.collection_name);
+        if (collectionControl.dirty && collectionControl.value) {
+            collectionObs = this.collectionService.updateCollectionDisplayName(collectionControl.value, this.collection.collection_name);
         }
 
-        const fieldsBody = {};
+        const fieldsBody: Record<string, string> = {};
         let updateFields = false;
         if (fieldsControl.dirty) {
             updateFields = true;
@@ -224,8 +232,9 @@ export class CollectionDetailComponent implements OnInit {
             updateSharedOrgs = true;
             (sharedOrgsBody as any).public = visibilityControl.value;
             sharedOrgsBody.shared = sharedOrgsControl.value;
+            sharedOrgsBody.shared ??= [];
             // always add the owner org in the shared orgs
-            sharedOrgsBody.shared.push(this.collection.params.organisations.owner);
+            sharedOrgsBody.shared.push(this.collection.params.organisations?.owner as string);
         }
 
         // SwitchMap needed to wait the previous observable
@@ -342,28 +351,28 @@ export class CollectionDetailComponent implements OnInit {
         this.collection = c;
         if (this.connected) {
             if (this.authentMode === 'iam') {
-                this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user.roles, c.params.organisations.owner);
+                this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user.roles ?? [], c.params.organisations?.owner);
             } else if (this.authentMode === 'openid') {
                 this.canEdit = this.roles.includes('role/arlas/datasets');
             }
         }
 
-        this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations.owner));
+        this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations?.owner));
         this.fields = extractProp(c);
-        this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names?.collection);
-        this.collectionForm.get('shared_orgs').setValue(
+        this.collectionForm.controls.collection_display_name.setValue(this.collection.params.display_names?.collection as string);
+        this.collectionForm.controls.shared_orgs.setValue(
             this.collection.params?.organisations?.shared?.filter(o => o !== c.params?.organisations?.owner)
         );
         this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
         this.collectionForm.setControl('visibility', new FormControl((this.collection.params.organisations as any).public));
         this.formInitialValues = this.collectionForm.value;
         this.dataSourceFields = new MatTableDataSource(
-            (this.collectionForm.get('display_names') as FormArray).controls.map(c => ({
-                name: c.get('name').value,
-                type: c.get('type').value,
-                taggable: c.get('taggable').value,
-                indexed: c.get('indexed').value,
-                control: c.get('display_name')
+            this.collectionForm.controls.display_names.controls.map(c => ({
+                name: c.value.name as string,
+                type: c.value.type as string,
+                taggable: !!c.value.taggable,
+                indexed: !!c.value.indexed,
+                control: c.controls.display_name
             }))
         );
         this.dataSourceFields.sort = this.sort;
@@ -378,7 +387,7 @@ export class CollectionDetailComponent implements OnInit {
         };
         this.dataSourceFields.filterPredicate = (data, filter: string): boolean =>
             data.name.toLowerCase().includes(filter) || data.type.toLowerCase().includes(filter)
-            || data.control.value.toLowerCase().includes(filter);
+            || !!data.control.value?.toLowerCase().includes(filter);
         if (this.filterValue !== '') {
             this.dataSourceFields.filter = this.filterValue.trim().toLowerCase();
         }
@@ -395,7 +404,7 @@ export class CollectionDetailComponent implements OnInit {
         );
     }
 
-    private checkIfuserCanEdit(roles: RoleData[], orgOnwer: string): boolean {
+    private checkIfuserCanEdit(roles: RoleData[], orgOnwer: string | undefined): boolean {
         return roles.filter(r => !!r.organisation && r.organisation.name === orgOnwer).map(ro => ro.name).includes('role/arlas/datasets');
     }
 

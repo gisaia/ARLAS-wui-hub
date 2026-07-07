@@ -18,7 +18,7 @@
  */
 
 import { FormControl, FormGroup } from '@angular/forms';
-import { CollectionReferenceDescription } from 'arlas-api';
+import { CollectionReferenceDescription, CollectionReferenceDescriptionProperty } from 'arlas-api';
 
 /**
  * Recursively extracts properties for a CollectionReferenceDescription and flatten them with specific separator
@@ -27,25 +27,43 @@ import { CollectionReferenceDescription } from 'arlas-api';
  * @returns array of CollectionField
  */
 export function extractProp(collection: CollectionReferenceDescription, separator = '.'): CollectionField[] {
-    const out = [];
-    function flatten(x, parent = '') {
+    const out = new Array<CollectionField>();
+    function flatten(x: Record<string, CollectionReferenceDescriptionProperty> | undefined, parent = '') {
+        if (!x) {
+            return;
+        }
+
         Object.keys(x).forEach(key => {
             const obj = x[key];
             const objName = (parent !== '' ? parent + separator : '') + key;
-            if (obj.type === 'OBJECT' && obj.hasOwnProperty('properties')) {
+            if (obj.type === CollectionReferenceDescriptionProperty.TypeEnum.OBJECT && obj.hasOwnProperty('properties')) {
                 flatten(obj.properties, objName);
             } else {
                 let displayName = '';
                 if (collection.params.display_names?.fields?.hasOwnProperty(objName)) {
                     displayName = collection.params.display_names.fields[objName];
                 }
-                out.push({ name: objName, taggable: obj.taggable, indexed: obj.indexed, type: obj.type, display_name: displayName });
+                out.push({
+                    name: objName,
+                    taggable: !!obj.taggable,
+                    indexed: !!obj.indexed,
+                    type: obj.type?.toString() as string,
+                    display_name: displayName
+                });
             }
         });
     }
     flatten(collection.properties);
     return out;
 }
+
+export type CollectionFieldFormGroup = FormGroup<{
+    name: FormControl<string | null>;
+    type: FormControl<string | null>;
+    display_name: FormControl<string | null>;
+    taggable: FormControl<boolean | null>;
+    indexed: FormControl<boolean | null>;
+}>;
 
 export class CollectionField {
     public name: string;
@@ -54,7 +72,15 @@ export class CollectionField {
     public type: string;
     public display_name: string;
 
-    public static asFormGroup(field: CollectionField) {
+    public constructor(name: string, taggable: boolean, indexed: boolean, type: string, display_name: string) {
+        this.name = name;
+        this.taggable = taggable;
+        this.indexed = indexed;
+        this.type = type;
+        this.display_name = display_name;
+    }
+
+    public static asFormGroup(field: CollectionField): CollectionFieldFormGroup {
         const fg = new FormGroup({
             name: new FormControl(field.name),
             type: new FormControl(field.type),

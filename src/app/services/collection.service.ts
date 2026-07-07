@@ -30,7 +30,7 @@ export class CollectionService {
 
     private readonly arlasCollectionsApi: CollectionsApi;
     private readonly arlasExploreApi: ExploreApi;
-    public options;
+    public options: { headers?: Record<string, string>; } = {};
 
     public constructor(
         private readonly collabSearchService: ArlasCollaborativesearchService,
@@ -51,7 +51,7 @@ export class CollectionService {
         return this.options;
     }
 
-    public setOptions(options): void {
+    public setOptions(options: { headers?: Record<string, string>; }): void {
         this.options = options;
     }
 

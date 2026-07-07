@@ -1,5 +1,5 @@
 <mat-card  class="card mat-elevation-z1">
-  <div (click)="open()" class="card_preview" [class.no-preview]="card?.preview === NO_PREVIEW_ASSET" [matTooltip]="'View_with_params' | translate:{dashboard: (card?.title| translate)}">
+  <div (click)="open()" class="card_preview" [class.no-preview]="card().preview === NO_PREVIEW_ASSET" [matTooltip]="'View_with_params' | translate:{dashboard: (card().title| translate)}">
     <div class="preview_info">
       <div class="info_item">
         @if (status === 'private') {
@@ -10,17 +10,18 @@
           <mat-icon [matTooltip]="'Shared' | translate">share</mat-icon>
         }
       </div>
-      @if (card?.organisation && card.organisation !== NO_ORGANISATION && publicOrg) {
-        <div [matTooltip]="card?.organisation" [matTooltipPosition]="'below'" class="info_item organisation">
+      @if (card().organisation && card().organisation !== NO_ORGANISATION && publicOrg) {
+        <div [matTooltip]="card().organisation" [matTooltipPosition]="'below'" class="info_item organisation">
           <mat-icon>groups</mat-icon>
           <div class="text-ellipsis">
-            {{card?.organisation}}
+            {{card().organisation}}
           </div>
         </div>
       }
     </div>
     <div class="preview_holder"></div>
-    @if (card?.preview$ | async | json_to_preview; as preview) {
+    @let preview$ = card().preview$ | async;
+    @if (preview$ !== null && (preview$ | json_to_preview); as preview) {
       <img src="{{preview}}" class="preview_image" />
     } @else {
       <img [src]="NO_PREVIEW_ASSET" class="preview_image" />
@@ -28,11 +29,11 @@
   </div>
   <mat-card-content class="card_meta">
     <div class="meta_title-container">
-      <div class="meta_title text-ellipsis"> {{card?.title | translate}}</div>
+      <div class="meta_title text-ellipsis"> {{card().title | translate}}</div>
       <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
-        [actions]="card?.actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
+        [actions]="card().actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
     </div>
-    <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {date: card?.last_update_date | date} }}</mat-card-subtitle>
+    <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {date: card().last_update_date | date} }}</mat-card-subtitle>
 
     <mat-chip-listbox class="card_right" [selectable]="false">
       @if (rights.length === 0) {
