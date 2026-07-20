@@ -24,10 +24,11 @@
 }
 
 .collection {
-    padding: 5px 10px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5px 0;
+    gap: 10px 0;
+
     &__top {
         position: sticky;
         top: 0px;
@@ -57,15 +58,20 @@
     }
 
     &__title {
+        width: 642px;
+        height: 24px;
+        background-color: white;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         &__content {
-            width: 642px;
-            height: 24px;
-            background-color: white;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            padding: 15px;
             display: flex;
             align-items: center;
             gap: 0 10px;
+
             .input-display-name {
                 height: 24px !important;
             }
@@ -136,6 +142,7 @@
             top: 52px;
             z-index: 1;
             gap: 0 25px;
+            width: calc(100% - /** padding left/right */ 30px);
 
             mat-form-field {
                 font-weight: 500;
@@ -145,14 +152,25 @@
         &__table {
             border: 1px solid rgba(0, 0, 0, 0.12);
             border-top: unset;
+            width: 100%;
+            height: calc(100vh - var.$top-menu-height
+                - /** header */ 53px
+                - /** collection title */ 56px
+                - /** collection info */ 183px
+                - /** collection field title */ 61px
+                - /** gap between form elements */ 3 * 5px
+                - var(--arlas-hub-collection-delete-height, 0px)
+                - /** spacing (padding around .collection + gap before form) */ 30px);
+            overflow: auto;
+
+            &--with-delete {
+                --arlas-hub-collection-delete-height: 170px;
+            }
+
             .input-display-name {
                 height: 24px !important;
             }
-            ::ng-deep .mat-mdc-table thead {
-                position: sticky;
-                top: 110px;
-                z-index: 1;
-            }
+
             .striped-row {
                 background-color: rgba(0, 0, 0, 0.03);
             }
@@ -195,11 +213,32 @@
     }
     &__advanced {
         border-top: 1px solid #444c56b3;
-        margin-top: 50px;
+        margin-top: 25px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 15px 0;
+    }
+
+    &__data {
+        display: flex;
+        $collection-gap: 40px;
+        gap: $collection-gap;
+
+        &__form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px 0;
+
+            &--small {
+                width: calc(50% - $collection-gap / 2);
+            }
+        }
+
+        &__sample {
+            width: calc(50% - $collection-gap / 2);
+        }
     }
 }
 

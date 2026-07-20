@@ -1,0 +1,12 @@
+@if (isLoading()) {
+<div class="spinner">
+    <mat-spinner></mat-spinner>
+</div>
+}
+
+<json-editor [options]="editorOptions" #editor></json-editor>
+
+<div class="actions">
+    <button matButton="outlined" (click)="getSample(true)" [disabled]="isLoading()">« {{ 'Previous' | translate }}</button>
+    <button matButton="outlined" (click)="getSample()" [disabled]="isLoading()">{{ 'Next' | translate }} »</button>
+</div>
