@@ -78,12 +78,12 @@ export class SampleComponent implements OnInit {
     const sort = (descending ? '-' : '') + this.collectionIdPath();
     this.collaborativeSearchService.getExploreApi().search(this.collection().collection_name, undefined, undefined, undefined, undefined,
         undefined, undefined, undefined, undefined, undefined, /** size */ 1, undefined, sort, this.searchAfter)
-      .catch(e => console.log(e))
+      .catch(e => console.error(e))
       .then(hits => {
         this.isLoading.set(false);
         if (!hits || !hits.hits || hits.hits.length === 0) {
           this.snackbar.open(
-            this.translate.instant(descending ? 'No item found before this one' : 'No item found after this one'), 'Ok',
+            this.translate.instant(descending ? 'No item found before this item' : 'No item found after this item'), 'Ok',
             {
               duration: 3000, panelClass: 'collection-snack--error',
               horizontalPosition: 'center', verticalPosition: 'bottom'
@@ -96,7 +96,6 @@ export class SampleComponent implements OnInit {
         this.editor?.set(this.data as any);
 
         this.searchAfter = this.data[this.collectionIdPath()];
-        console.log(hits);
       });
   }
 }
