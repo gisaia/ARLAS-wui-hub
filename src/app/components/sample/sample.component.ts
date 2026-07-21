@@ -57,10 +57,9 @@ export class SampleComponent implements OnInit {
   public constructor() {
     this.editorOptions.modes = ['view'];
     this.editorOptions.mode = 'view';
-    this.editorOptions.enableSort = true;
     this.editorOptions.enableTransform = false;
-    this.editorOptions.expandAll = false;
     this.editorOptions.search = true;
+    this.editorOptions.sortObjectKeys = true;
 
     if (this.translate.getCurrentLang() === 'fr') {
       this.editorOptions.language = 'fr-FR';
@@ -94,9 +93,9 @@ export class SampleComponent implements OnInit {
         }
 
         this.data = hits.hits[0].data;
-        this.editor?.set(this.data as any);
+        this.editor?.set(this.data as JSON);
 
-        this.searchAfter = this.data[this.collectionIdPath()];
+        this.searchAfter = hits.hits[0].md?.id;
       });
   }
 }
