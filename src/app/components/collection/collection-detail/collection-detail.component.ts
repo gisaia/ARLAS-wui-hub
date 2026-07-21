@@ -35,7 +35,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CollectionService } from 'app/services/collection.service';
 import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'arlas-api';
 import { RoleData, UserOrgData } from 'arlas-iam-api';
 import {
@@ -46,7 +45,9 @@ import { filter, finalize, mergeMap, of, switchMap } from 'rxjs';
 import { BooleanToTextPipe } from '../../../pipes/booleanToText.pipe';
 import { FieldTypeToIconPipe } from '../../../pipes/fieldTypeToIcon.pipe';
 import { FieldTypeToTextPipe } from '../../../pipes/fieldTypeToText.pipe';
+import { CollectionService } from '../../../services/collection.service';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
+import { SampleComponent } from '../../sample/sample.component';
 import { CollectionField, extractProp } from './collection-field';
 
 @Component({
@@ -57,7 +58,8 @@ import { CollectionField, extractProp } from './collection-field';
     MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
     MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
     MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    SampleComponent
 ]
 })
 export class CollectionDetailComponent implements OnInit {
@@ -86,6 +88,7 @@ export class CollectionDetailComponent implements OnInit {
     private connected = false;
 
     public editMode = signal(false);
+    public showSample = signal(false);
     public formInitialValues;
 
     public constructor(
@@ -326,6 +329,10 @@ export class CollectionDetailComponent implements OnInit {
                 });
             });
 
+    }
+
+    public toggleSample() {
+        this.showSample.set(!this.showSample());
     }
 
     private fillForm(c: CollectionReferenceDescription) {
