@@ -77,7 +77,8 @@ export class SampleComponent implements OnInit {
     this.isLoading.set(true);
     const sort = (descending ? '-' : '') + this.collectionIdPath();
     this.collaborativeSearchService.getExploreApi().search(this.collection().collection_name, undefined, undefined, undefined, undefined,
-        undefined, undefined, undefined, undefined, undefined, /** size */ 1, undefined, sort, this.searchAfter)
+        undefined, undefined, undefined, undefined, undefined, /** size */ 1, undefined, sort, this.searchAfter,
+        undefined, undefined, this.collaborativeSearchService.getFetchOptions())
       .catch(e => console.error(e))
       .then(hits => {
         this.isLoading.set(false);
