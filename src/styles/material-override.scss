@@ -17,13 +17,6 @@
  * under the License.
  */
 
-// Tighten the display of inputs
-.mat-mdc-form-field-infix {
-    padding: 8px;
-    display: flex;
-    width: 200px !important;
-}
-
 // Avoid whitesmoke background of input
 .mat-mdc-text-field-wrapper {
     background-color: white !important;

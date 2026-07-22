@@ -29,12 +29,14 @@ authentication:
 
 server:
   url: https://localhost/arlas
+  # url: https://cloud.arlas.io/arlas/server
 
 ########################################################
 ############   Persistence SETTINGS   ##################
 ########################################################
 persistence:
   url: https://localhost/persist
+  # url: https://cloud.arlas.io/arlas/persistence/persist
 ########################################################
 ############   Permissions SETTINGS   ##################
 ########################################################
