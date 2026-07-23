@@ -21,6 +21,8 @@
     .collection {
         ::ng-deep .mat-mdc-form-field-infix {
             width: 200px !important;
+            padding: 8px;
+            display: flex;
         }
     }
 }
