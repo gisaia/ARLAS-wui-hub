@@ -16,6 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+:host {
+    .collection {
+        ::ng-deep .mat-mdc-form-field-infix {
+            width: 200px !important;
+        }
+    }
+}
+
 .collection {
     display: flex;
     flex-direction: column;
@@ -23,10 +32,6 @@
 
     --mat-form-field-container-height: 40px;
     --mat-form-field-container-vertical-padding: 8px;
-
-    ::ng-deep .mat-mdc-form-field-infix {
-        width: 200px !important;
-    }
 
     &__header {
         display: flex;
