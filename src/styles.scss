@@ -35,6 +35,14 @@ body {
     background-color: whitesmoke;
 }
 
+
+.dark-theme{
+    .no-data {
+        color: rgba(var.$accentColorLighter, 0.7);
+        background-color: rgba(var.$accentColorLighter, 0.1);
+    }
+}
+
 .material-icons {
   font-family: 'Material Symbols Outlined', "Roboto", "Helvetica Neue", sans-serif;
     font-weight: normal;

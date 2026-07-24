@@ -27,6 +27,7 @@
 
 .sidenav-content {
     background-color: whitesmoke;
+    background: var(--arlas-sidnav-content-bg, var(--mat-sys-background));
     &.full {
         margin-left: unset !important;
     }

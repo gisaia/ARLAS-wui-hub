@@ -17,9 +17,15 @@
  * under the License.
  */
 
+
+.change-dialog .mat-mdc-dialog-surface{
+    background-color: var(--mat-sys-surface-variant);
+}
+
+
 // Avoid whitesmoke background of input
 .mat-mdc-text-field-wrapper {
-    background-color: white !important;
+    background-color: var(--mat-sys-surface-variant) !important;
     padding: 0 !important;
 }
 .mat-mdc-form-field-focus-overlay {
