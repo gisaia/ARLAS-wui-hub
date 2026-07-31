@@ -27,6 +27,14 @@
     --arlas-dynamic-hub-bg: var(--mat-sys-surface);
 }
 
+.dark-theme {
+    :host {
+        .add-button {
+            background-color:rgb(255 64 129 / 9%) !important;
+        }
+    }
+}
+
 h2 {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-weight: 400;

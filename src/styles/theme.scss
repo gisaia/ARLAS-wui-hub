@@ -19,6 +19,7 @@
 
 @use '@angular/material' as mat;
 @use "./ngx-markdown-provider" as ngxMarkDown;
+@use "./dark-theme" as darktheme;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -50,13 +51,12 @@ $app-theme: mat.m2-define-light-theme((
 // TODO: refine to avoid useless imports ?
 @include mat.all-component-themes($app-theme);
 
-$mat-dark-theme-background: (background: #303030);
-$dark-primary: mat.m2-define-palette(mat.$m2-blue-grey-palette);
+$dark-primary: darktheme.$tech-blue-palette;
+
 $dark-theme: mat.m2-define-dark-theme((
     color: (
         primary: $dark-primary,
         accent: $app-accent,
-        background: $mat-dark-theme-background
     )
 ));
 

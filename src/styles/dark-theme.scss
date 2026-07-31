@@ -1,0 +1,65 @@
+// tech-theme-m2.scss
+// Thème Angular Material M2 (legacy) - palette "tech"
+
+@use '@angular/material' as mat;
+@use 'sass:color';
+
+// ---------------------------------------------------------------------------
+// 1) Palette primaire (tech.blue #2F6BFF)
+// ---------------------------------------------------------------------------
+$tech-blue-palette: (
+    50:  #E8EFFF,
+    100: #C5D6FF,
+    200: #9FBBFF,
+    300: #789FFF,
+    400: #5A8AFF,
+    500: #2F6BFF, // <- couleur de base
+    600: #2A61E8,
+    700: #2354CC,
+    800: #1D47B0,
+    900: #123085,
+    A100: #C5D6FF,
+    A200: #9FBBFF,
+    A400: #5A8AFF,
+    A700: #2354CC,
+    contrast: (
+        50: rgba(black, 0.87), 100: rgba(black, 0.87), 200: rgba(black, 0.87),
+        300: rgba(black, 0.87), 400: white, 500: white, 600: white,
+        700: white, 800: white, 900: white,
+        A100: rgba(black, 0.87), A200: rgba(black, 0.87), A400: white, A700: white,
+    )
+);
+
+.dark-theme {
+    arlas-tool-change-password {
+        --arlas-change-password-title-bg: none;
+    }
+
+    div.jsoneditor-tree {
+        background: var(--mat-sys-surface);
+    }
+
+    .jsoneditor-popover, .jsoneditor-schema-error,
+    div.jsoneditor td, div.jsoneditor textarea,
+    div.jsoneditor th, div.jsoneditor-field,
+    div.jsoneditor-value, pre.jsoneditor-preview, div.jsoneditor-readonly {
+        color: var(--mat-sys-on-surface);
+    }
+
+    div.jsoneditor-value.jsoneditor-string{
+        color: #00ba00;
+    }
+
+    .jsoneditor{
+        border: thin solid var(--mat-sys-surface)
+    }
+
+    div.jsoneditor-tree button.jsoneditor-button {
+        background-image: url('/assets/jsoneditor-icons-STGDAB4I.svg');
+    }
+
+    div.jsoneditor-tree button.jsoneditor-button:focus {
+        background: #8e878761;
+        background-image: url("/assets/jsoneditor-icons-STGDAB4I.svg");
+    }
+}
