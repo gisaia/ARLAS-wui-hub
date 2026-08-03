@@ -71,11 +71,15 @@ $tech-blue-palette: (
     }
 
     div.jsoneditor-tree button.jsoneditor-button {
-        background-image: url('/assets/jsoneditor-icons-STGDAB4I.svg');
+        filter: brightness(0) invert(1);
+    }
+
+    div.jsoneditor-tree button.jsoneditor-button:hover,
+    div.jsoneditor-tree button.jsoneditor-button:focus {
+        filter: brightness(0) invert(1);
     }
 
     div.jsoneditor-tree button.jsoneditor-button:focus {
-        background: #8e878761;
-        background-image: url("/assets/jsoneditor-icons-STGDAB4I.svg");
+        background-color: rgba(245, 245, 245, 0.2);
     }
 }
