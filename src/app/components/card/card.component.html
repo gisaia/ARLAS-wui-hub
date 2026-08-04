@@ -30,7 +30,7 @@
   <mat-card-content class="card_meta">
     <div class="meta_title-container">
       <div class="meta_title text-ellipsis"> {{card().title | translate}}</div>
-      <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}" [zone]="'config.json'"
+      <arlas-config-menu #configMenu class="config-menu" matTooltip="{{'Menu' | translate}}"
         [actions]="card().actions" (actionExecutedEmitter)="afterAction($event)"></arlas-config-menu>
     </div>
     <mat-card-subtitle class="meta_subtitle">{{ 'Last update:' | translate: {date: card().last_update_date | date} }}</mat-card-subtitle>

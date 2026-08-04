@@ -121,8 +121,8 @@ export class CollectionDetailComponent implements OnInit {
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
-        const isOpenID = this.isAuthentActivated && authSettings.auth_mode !== 'iam';
-        const isIam = this.isAuthentActivated && authSettings.auth_mode === 'iam';
+        const isOpenID = this.isAuthentActivated && authSettings?.auth_mode !== 'iam';
+        const isIam = this.isAuthentActivated && authSettings?.auth_mode === 'iam';
         if (isOpenID) {
             this.authentMode = 'openid';
         }
@@ -142,7 +142,8 @@ export class CollectionDetailComponent implements OnInit {
                     const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
-                        }
+                        },
+                        credentials: 'include'
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
@@ -154,10 +155,11 @@ export class CollectionDetailComponent implements OnInit {
             } else if (this.authentMode === 'openid') {
                 if (this.authenticationService.hasValidAccessToken()) {
                     this.connected = true;
-                    const headers = {
+                    const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.authenticationService.accessToken
-                        }
+                        },
+                        credentials: 'include'
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
@@ -351,7 +353,7 @@ export class CollectionDetailComponent implements OnInit {
         this.collection = c;
         if (this.connected) {
             if (this.authentMode === 'iam') {
-                this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user.roles ?? [], c.params.organisations?.owner);
+                this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user?.roles ?? [], c.params.organisations?.owner);
             } else if (this.authentMode === 'openid') {
                 this.canEdit = this.roles.includes('role/arlas/datasets');
             }

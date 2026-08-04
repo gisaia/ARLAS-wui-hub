@@ -95,8 +95,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
-        const isOpenID = this.isAuthentActivated && authSettings.auth_mode !== 'iam';
-        const isIam = this.isAuthentActivated && authSettings.auth_mode === 'iam';
+        const isOpenID = this.isAuthentActivated && authSettings?.auth_mode !== 'iam';
+        const isIam = this.isAuthentActivated && authSettings?.auth_mode === 'iam';
         if (isOpenID) {
             this.authentMode = 'openid';
         }

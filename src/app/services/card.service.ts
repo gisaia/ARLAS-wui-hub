@@ -19,8 +19,7 @@
 import { Injectable } from '@angular/core';
 import { DataResource, DataWithLinks } from 'arlas-persistence-api';
 import { ArlasColorService } from 'arlas-web-components';
-import { FetchOptions } from 'arlas-web-core';
-import { Config, ConfigAction, ConfigActionEnum, PersistenceService } from 'arlas-wui-toolkit';
+import { Config, ConfigAction, ConfigActionEnum, GetOptions, PersistenceService } from 'arlas-wui-toolkit';
 import { map, mergeMap, Observable, of } from 'rxjs';
 
 export interface Group {
@@ -71,7 +70,7 @@ export class CardService {
             }), map((data: DataResource) => (data.data ?? []).map(d => this.dataWithlinksToCard(d))));
     }
 
-    private getList$(size: number, options?: FetchOptions): Observable<DataResource> {
+    private getList$(size: number, options?: GetOptions): Observable<DataResource> {
         return this.persistenceService.list('config.json', size, 1, 'desc', undefined, options);
     }
 
@@ -79,7 +78,7 @@ export class CardService {
         const organisation = (!!data.doc_organization || data.doc_organization !=='')  ? data.doc_organization : '';
         const actions: Array<ConfigAction> = new Array();
         const config: Config = {
-            id: data.id,
+            id: data.id as string,
             name: data.doc_key,
             value: data.doc_value,
             readers: data.doc_readers ?? [],
@@ -145,7 +144,7 @@ export class CardService {
             });
         }
         const card: Card = {
-            id: data.id,
+            id: data.id as string,
             title: data.doc_key,
             readers,
             writers,
