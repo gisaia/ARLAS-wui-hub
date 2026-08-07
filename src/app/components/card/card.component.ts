@@ -83,9 +83,6 @@ export class CardComponent implements OnInit {
 
     public rights: Array<CardRights> = [];
 
-    public constructor() {
-    }
-
     public ngOnInit(): void {
         if (this.card()) {
             this.initDashboardWright();
@@ -95,16 +92,16 @@ export class CardComponent implements OnInit {
 
     public initDashboardWright() {
         let  writers: CardRights[] = [];
-        if(this.card().writers) {
+        if (this.card().writers) {
             writers = this.card().writers.map(g => ({
                 name: g.name,
                 right: 'Editor'
             }));
         }
         let readers: CardRights[] = [];
-        if(this.card().readers) {
+        if (this.card().readers) {
             readers = this.card().readers
-                .filter(g => !writers.find(w => w.name === g.name))
+                .filter(g => !writers.some(w => w.name === g.name))
                 .map(g => ({
                     name: g.name,
                     right: 'Viewer'

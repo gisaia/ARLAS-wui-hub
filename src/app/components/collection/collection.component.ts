@@ -159,7 +159,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         const iamHeader = {
             Authorization: 'Bearer ' + this.arlasIamService.getAccessToken()
         };
-        const fetchOptions: FetchOptions = { headers: iamHeader, credentials: 'include' };
+        const fetchOptions: FetchOptions = { headers: iamHeader };
         this.collabSearchService.setFetchOptions(fetchOptions);
         this.collectionService.getCollectionsReferenceDescription()
             .pipe(finalize(() => this.isLoading.set(false)))
@@ -207,31 +207,31 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     }
 
     private applyFilters(c: CollectionReferenceDescription) {
-        let keepIt = true;
+        let keepCollection = true;
 
         if (this.authentMode === 'iam') {
             const orgsParam = c.params.organisations;
 
             if (this.connected()) {
                 // If connected, display the collection if its organisations include the ones selected
-                keepIt = !orgsParam?.owner || this.organisationsNames().includes(orgsParam.owner)
+                keepCollection = (orgsParam?.owner && this.organisationsNames().includes(orgsParam.owner))
                     || !!orgsParam?.shared?.some(so => this.organisationsNames().includes(so));
 
 
                 // If not display public collections, then the collection must also be private
                 if (!this.isPublic) {
-                    keepIt = keepIt && !(orgsParam as any).public;
+                    keepCollection = keepCollection && !(orgsParam as any).public;
                 }
             } else if (!this.isPublic) {
-                keepIt = !(orgsParam as any).public;
+                keepCollection = !(orgsParam as any).public;
             }
         }
 
         // filter collections with text
-        if (keepIt && this.searchValue !== '') {
-            keepIt = c.collection_name.includes(this.searchValue) || !!c.params.display_names?.collection?.includes(this.searchValue);
+        if (keepCollection && this.searchValue !== '') {
+            keepCollection = c.collection_name.includes(this.searchValue) || !!c.params.display_names?.collection?.includes(this.searchValue);
         }
-        return keepIt;
+        return keepCollection;
     }
 
     public filterCollections() {

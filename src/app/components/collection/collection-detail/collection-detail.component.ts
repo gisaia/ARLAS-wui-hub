@@ -76,7 +76,7 @@ export interface CollectionDetailRow extends InitialCollectionDetail {
 export class CollectionDetailComponent implements OnInit {
     @ViewChild('fieldTableSort', { static: true }) public sort?: MatSort;
 
-    public collection!: CollectionReferenceDescription;
+    public collection?: CollectionReferenceDescription;
     public collectionName?: string;
     public fields: CollectionField[] = [];
 
@@ -142,8 +142,7 @@ export class CollectionDetailComponent implements OnInit {
                     const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
-                        },
-                        credentials: 'include'
+                        }
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
@@ -158,8 +157,7 @@ export class CollectionDetailComponent implements OnInit {
                     const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.authenticationService.accessToken
-                        },
-                        credentials: 'include'
+                        }
                     };
                     this.collectionService.setOptions(headers);
                     this.collabSearchService.setFetchOptions(headers);
@@ -209,6 +207,10 @@ export class CollectionDetailComponent implements OnInit {
     }
 
     public update() {
+        if (!this.collection) {
+            return;
+        }
+
         this.isLoading.set(true);
         const collectionControl = this.collectionForm.controls.collection_display_name;
         const fieldsControl = this.collectionForm.controls.display_names;
@@ -239,16 +241,17 @@ export class CollectionDetailComponent implements OnInit {
             sharedOrgsBody.shared.push(this.collection.params.organisations?.owner as string);
         }
 
+        const collectionName = this.collection.collection_name;
         // SwitchMap needed to wait the previous observable
         // The same document is updated
         collectionObs.pipe(
             switchMap(
-                () => updateFields ? this.collectionService.updateFields(fieldsBody, this.collection.collection_name) : of({})
+                () => updateFields ? this.collectionService.updateFields(fieldsBody, collectionName) : of({})
             ),
             switchMap(
-                () => updateSharedOrgs ? this.collectionService.updateCollectionOrg(sharedOrgsBody, this.collection.collection_name) : of({})
+                () => updateSharedOrgs ? this.collectionService.updateCollectionOrg(sharedOrgsBody, collectionName) : of({})
             ),
-            mergeMap(() => this.collabSearchService.describe(this.collection.collection_name, false, 0)
+            mergeMap(() => this.collabSearchService.describe(collectionName, false, 0)
                 .pipe(finalize(() => {
                     this.isLoading.set(false);
                     this.editMode.set(false);
