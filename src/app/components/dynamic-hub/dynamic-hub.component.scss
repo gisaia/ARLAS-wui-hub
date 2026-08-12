@@ -24,6 +24,15 @@
     display: block;
     height: 100%;
     overflow: hidden;
+    --arlas-dynamic-hub-bg: var(--mat-sys-surface);
+}
+
+.dark-theme {
+    :host {
+        .add-button {
+            background-color:rgb(255 64 129 / 9%) !important;
+        }
+    }
 }
 
 h2 {
@@ -32,7 +41,7 @@ h2 {
     display: flex;
 
     gap: 0 10px;
-    background-color: white;
+    background-color: var(--arlas-dynamic-hub-bg);
     margin: 10px 0;
     padding: 10px 10px 10px 20px;
 }

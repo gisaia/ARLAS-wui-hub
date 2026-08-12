@@ -160,7 +160,8 @@ export class DynamicHubComponent implements OnInit {
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
-                data: action
+                data: action,
+                width: '300px'
             });
             if (!!org) {
                 dialogRef.componentInstance.currentOrga = org;
@@ -207,7 +208,8 @@ export class DynamicHubComponent implements OnInit {
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
-                data: action
+                data: action,
+                width: '300px'
             });
             if (!!org) {
                 dialogRef.componentInstance.currentOrga = org;

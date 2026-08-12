@@ -46,3 +46,4 @@ arlas_wui_url: "https://localhost/wui"
 arlas_builder_url: "https://localhost/builder"
 links: []
 tab_name: "ARLAS Wui hub Dev"
+dark_theme_enabled: true

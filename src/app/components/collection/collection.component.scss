@@ -27,6 +27,12 @@
     }
 }
 
+.dark-theme{
+    :host .collection__content__table .detail-link {
+        color: #9abbd8;
+    }
+}
+
 .collection {
     display: flex;
     flex-direction: column;
@@ -39,7 +45,7 @@
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        background-color: white;
+        background-color: var(--mat-sys-surface);
         padding: 10px;
 
         border: 1px solid rgba(0, 0, 0, 0.12);

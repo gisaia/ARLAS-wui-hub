@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { MatDivider } from '@angular/material/divider';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -30,6 +30,8 @@ import { filter, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
 import { DashboardSearchComponent } from './components/dashboard-search/dashboard-search.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
+import {MatIcon} from '@angular/material/icon';
+import {MatIconButton} from '@angular/material/button';
 
 @Component({
     selector: 'arlas-root',
@@ -47,7 +49,9 @@ import { LeftMenuComponent } from './components/left-menu/left-menu.component';
         MatSidenavContent,
         RouterOutlet,
         MarkerModule,
-        TranslatePipe
+        TranslatePipe,
+        MatIcon,
+        MatIconButton
     ]
 })
 export class AppComponent implements OnInit, OnDestroy {
