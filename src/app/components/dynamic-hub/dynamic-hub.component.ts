@@ -28,8 +28,8 @@ import { UserOrgData } from 'arlas-iam-api';
 import { Resource } from 'arlas-permissions-api';
 import { GetValuePipe } from 'arlas-web-components';
 import {
-    ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService, ConfigAction,
-    ConfigActionEnum, PermissionService, PersistenceService
+    ActionModalComponent, ArlasIamService, ArlasSettingsService, AuthentificationService,
+    ConfigActionEnum, GetOptions, PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { catchError, debounceTime, filter, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { Card, CardService } from '../../services/card.service';
@@ -56,13 +56,13 @@ import { CardDropdownComponent } from './collapse/card-dropdown.component';
 })
 export class DynamicHubComponent implements OnInit {
 
-    @ViewChildren('checkBox') public checkBox: QueryList<any>;
+    @ViewChildren('checkBox') public checkBox?: QueryList<any>;
 
     public isLoading = signal(false);
-    public cards: Map<string, Card[]>;
-    public cardsFiltered: Map<string, Card[]>;
-    public searchIndex: string[] = []; // indexId: ;research:;
-    public cardsRef: Map<string, Card[]>;
+    public cards: Map<string, Card[]> = new Map();
+    public cardsFiltered: Map<string, Card[]> = new Map();
+    public searchIndex: string[] = [];
+    public cardsRef: Map<string, Card[]> = new Map();
     public allowedOrganisations: string[] = [];
 
     public canCreateDashboard = false;
@@ -71,10 +71,10 @@ export class DynamicHubComponent implements OnInit {
 
     public connected = false;
     public isAuthentActivated: boolean;
-    public authentMode: 'openid' | 'iam';
+    public authentMode?: 'openid' | 'iam';
     public orgs: UserOrgData[] = [];
     private orgsSet = new Set<string>();
-    public currentOrga = '';
+    public currentOrg: string | undefined;
     /** Name of the orpublic organisation */
     public readonly PUBLIC_ORG = 'public';
     /** Name of the organisation in a KC deployment for non-public organisations */
@@ -92,8 +92,8 @@ export class DynamicHubComponent implements OnInit {
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
-        const isOpenID = this.isAuthentActivated && authSettings.auth_mode !== 'iam';
-        const isIam = this.isAuthentActivated && authSettings.auth_mode === 'iam';
+        const isOpenID = this.isAuthentActivated && authSettings?.auth_mode !== 'iam';
+        const isIam = this.isAuthentActivated && authSettings?.auth_mode === 'iam';
         if (isOpenID) {
             this.authentMode = 'openid';
         } else if (isIam) {
@@ -110,13 +110,13 @@ export class DynamicHubComponent implements OnInit {
                     next: (userSubject) => {
                         if (!!userSubject) {
                             this.connected = true;
-                            this.orgs = this.arlasIamService.user.organisations.map(org => {
-                                org.displayName = org.name === this.arlasIamService.user.id ?
-                                    this.arlasIamService.user.email.split('@')[0] : org.name;
+                            this.orgs = this.arlasIamService.user?.organisations?.map(org => {
+                                org.displayName = org.name === this.arlasIamService.user?.id ?
+                                    this.arlasIamService.user?.email?.split('@')[0] : org.name;
                                 return org;
-                            });
-                            this.orgsSet = new Set(this.orgs.map(o => o.name));
-                            this.currentOrga = this.arlasIamService.getOrganisation();
+                            }) ?? [];
+                            this.orgsSet = new Set(this.orgs.map(o => o.name).filter(n => n !== undefined));
+                            this.currentOrg = this.arlasIamService.getOrganisation();
                             this.fetchCards();
                         } else {
                             this.connected = false;
@@ -155,7 +155,7 @@ export class DynamicHubComponent implements OnInit {
             const options = { headers: iamHeader };
             const action: HubAction = {
                 type: HubActionEnum.CREATE,
-                orgs: this.orgs.filter(o => this.allowedOrganisations.includes(o.name)),
+                orgs: this.orgs.filter(o => o.name !== undefined && this.allowedOrganisations.includes(o.name)),
                 options: options
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
@@ -170,31 +170,27 @@ export class DynamicHubComponent implements OnInit {
                 .pipe(filter(result => result !== false))
                 .subscribe(result => {
                     this.fetchCards();
-                    let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(result[0]);
-                    if (!!result[1]) {
-                        url = url.concat(`?org=${result[1]}`);
+                    let url = this.arlasSettingsService.getArlasBuilderUrl()?.concat('/load/').concat(result[0]);
+                    if (result[1]) {
+                        url = url?.concat(`?org=${result[1]}`);
                     }
                     const win = window.open(url, '_blank');
-                    win.focus();
+                    win?.focus();
                 });
         } else {
-            const action: ConfigAction = {
-                type: ConfigActionEnum.CREATE,
-                config: null
-            };
             const dialogRef = this.dialog.open(ActionModalComponent, {
                 disableClose: true,
                 data: {
-                    type: action.type
+                    type: ConfigActionEnum.CREATE
                 }
             });
             dialogRef.afterClosed()
                 .pipe(filter(result => result !== false))
                 .subscribe(id => {
                     this.fetchCards();
-                    const url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/').concat(id);
+                    const url = this.arlasSettingsService.getArlasBuilderUrl()?.concat('/load/').concat(id);
                     const win = window.open(url, '_blank');
-                    win.focus();
+                    win?.focus();
                 });
         }
 
@@ -204,7 +200,7 @@ export class DynamicHubComponent implements OnInit {
         if (this.authentMode === 'iam' && this.connected) {
             const action: HubAction = {
                 type: HubActionEnum.IMPORT,
-                orgs: this.orgs.filter(o => this.allowedOrganisations.includes(o.name)),
+                orgs: this.orgs.filter(o => o.name && this.allowedOrganisations.includes(o.name)),
             };
             const dialogRef = this.dialog.open(HubActionModalComponent, {
                 disableClose: true,
@@ -217,20 +213,20 @@ export class DynamicHubComponent implements OnInit {
             dialogRef.afterClosed()
                 .pipe(filter(result => result !== false))
                 .subscribe(result => {
-                    let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+                    let url = this.arlasSettingsService.getArlasBuilderUrl()?.concat('/load/import');
                     if (this.arlasIamService.getOrganisation()) {
-                        url = url.concat(`?org=${result}`);
+                        url = url?.concat(`?org=${result}`);
                     }
                     const win = window.open(url, '_blank');
-                    win.focus();
+                    win?.focus();
                 });
         } else {
-            let url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/import');
+            let url = this.arlasSettingsService.getArlasBuilderUrl()?.concat('/load/import');
             if (this.arlasIamService.getOrganisation()) {
-                url = url.concat(`?org=${this.arlasIamService.getOrganisation()}`);
+                url = url?.concat(`?org=${this.arlasIamService.getOrganisation()}`);
             }
             const win = window.open(url, '_blank');
-            win.focus();
+            win?.focus();
         }
     }
 
@@ -246,13 +242,15 @@ export class DynamicHubComponent implements OnInit {
 
     private fetchCardsByUserOrganisation() {
         let i = 0;
-        this.orgs.map(o => o.name).forEach(o => {
+        this.orgs.map(o => o.name).filter(n => n !== undefined).forEach(o => {
             const iamHeader = {
                 Authorization: 'Bearer ' + this.arlasIamService.getAccessToken(),
                 'arlas-org-filter': o
             };
 
-            const fetchOptions = { headers: iamHeader };
+            const fetchOptions: GetOptions = {
+                headers: iamHeader
+            };
 
             // Check user rights on each organisation
             this.permissionService.setOptions(fetchOptions);
@@ -271,7 +269,7 @@ export class DynamicHubComponent implements OnInit {
                 .subscribe({
                     next: (cards) => {
                         cards.map(card => card.actions.filter(a => a.type === ConfigActionEnum.EDIT).map(a =>
-                            a.enabled = a.enabled && this.allowedOrganisations.includes(card.organisation)
+                            a.enabled = a.enabled && !!card.organisation && this.allowedOrganisations.includes(card.organisation)
                         ));
                         this.cardsRef.set(o, cards);
                         i++;
@@ -313,7 +311,7 @@ export class DynamicHubComponent implements OnInit {
     private groupCardsPerOrganisation(cards: Card[]) {
         cards.forEach(c => {
             if (this.authentMode === 'iam') {
-                if (this.orgsSet.has(c.organisation)) {
+                if (c.organisation && this.orgsSet.has(c.organisation)) {
                     let cardsOfOrga = this.cardsRef.get(c.organisation);
                     if (!cardsOfOrga) {
                         cardsOfOrga = [];
@@ -326,7 +324,7 @@ export class DynamicHubComponent implements OnInit {
                     if (!publicCards) {
                         publicCards = [];
                     }
-                    c.preview$ = this.getPreview$(c.previewId, {});
+                    c.preview$ = this.getPreview$(c.previewId);
                     this.addCard(c, publicCards);
                     this.cardsRef.set(publicOrg, publicCards);
                 }
@@ -351,23 +349,23 @@ export class DynamicHubComponent implements OnInit {
 
     }
 
-    private enrichCards(cards: Card[], fetchOptions?): Card[] {
+    private enrichCards(cards: Card[], options?: GetOptions): Card[] {
         cards.forEach(c => {
             /** todo concat org ? */
             c.actions.filter(a => a.type === ConfigActionEnum.VIEW)
                 .forEach(a => a.url = this.arlasSettingsService.getArlasWuiUrl());
             c.actions.filter(a => a.type === ConfigActionEnum.EDIT)
-                .forEach(a => a.url = this.arlasSettingsService.getArlasBuilderUrl().concat('/load/'));
+                .forEach(a => a.url = this.arlasSettingsService.getArlasBuilderUrl()?.concat('/load/'));
 
-            c.preview$ = this.getPreview$(c.previewId, fetchOptions);
+            c.preview$ = this.getPreview$(c.previewId, options);
         });
         return cards;
     }
 
-    private getPreview$(previewId: string, fetchOptions?): Observable<string> {
+    private getPreview$(previewId?: string, options?: GetOptions): Observable<string> {
         const assetPreview = 'assets/no_preview.png';
         if (previewId) {
-            return this.persistenceService.get(previewId, fetchOptions)
+            return this.persistenceService.get(previewId, options)
                 .pipe(map(p => p.doc_value))
                 .pipe(catchError(() => of(assetPreview)));
         }
@@ -391,7 +389,7 @@ export class DynamicHubComponent implements OnInit {
         this.filterDashboard(this.dashboardSearch.currentFilter, true);
     }
 
-    public filterDashboard(searchValue: string, preserveEmptyCardList = false) {
+    public filterDashboard(searchValue: string | undefined, preserveEmptyCardList = false) {
         let previous;
         if (searchValue) {
             previous = this.cardsFiltered;
@@ -399,11 +397,13 @@ export class DynamicHubComponent implements OnInit {
             this.dashboardSearch
                 .getMatchingSearchIndices()
                 .forEach(searchIndex => {
-                    if (this.cardsFiltered.has(searchIndex.key)) {
-                        this.cardsFiltered.get(searchIndex.key).push(this.cards.get(searchIndex.key)[searchIndex.cardIndex]);
-                    } else {
-                        this.cardsFiltered.set(searchIndex.key, [this.cards.get(searchIndex.key)[searchIndex.cardIndex]]);
+                    let filtered = this.cardsFiltered.get(searchIndex.key);
+                    filtered ??= [];
+                    const card = this.cards.get(searchIndex.key)?.[searchIndex.cardIndex];
+                    if (card) {
+                        filtered.push(card);
                     }
+                    this.cardsFiltered.set(searchIndex.key, filtered);
                 });
         } else {
             this.cardsFiltered = this.cards;

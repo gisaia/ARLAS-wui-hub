@@ -56,11 +56,10 @@ import {MatIconButton} from '@angular/material/button';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-    public onSideNavChange: boolean;
     public title = 'ARLAS-wui-hub';
     public displayMenu = true;
     public displaySearchBar = true;
-    public version: string;
+    public version = environment.VERSION;
 
     private readonly _onDestroy$ = new Subject<boolean>();
 
@@ -73,7 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.title = this.arlasSettingsService.settings['tab_name'] ?? 'ARLAS-wui-hub';
         this.titleService.setTitle(this.title);
-        this.version = environment.VERSION;
 
         this.router.events
             .pipe(

@@ -209,18 +209,18 @@
 
                 </div>
             </div>
-            @if(canEdit){
+            @if (canEdit && collection) {
             <div class="collection__advanced">
                 <h3>{{'Danger zone' | translate}}</h3>
                 <div>{{'Once you delete a collection, there is no going back. Please be certain.' | translate}}</div>
-                <button matButton="filled" color="warn" class="delete" type="button" (click)="openDelete(collection?.collection_name)">
+                <button matButton="filled" color="warn" class="delete" type="button" (click)="openDelete(collection.collection_name)">
                     {{'Delete collection' | translate}}
                 </button>
             </div>
             }
         </form>
 
-        @if (showSample()) {
+        @if (showSample() && collection) {
             <arlas-sample class="collection__data__sample" [collection]="collection"></arlas-sample>
         }
     </div>
