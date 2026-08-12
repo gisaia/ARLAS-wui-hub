@@ -1,5 +1,13 @@
 # Change Log
 
+## [v29.0.0-rc.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.5) (2026-08-12)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.4...v29.0.0-rc.5)
+
+**New stuff:**
+
+- Align input text for authentication views [\#330](https://github.com/gisaia/ARLAS-wui-hub/issues/330)
+
 ## [v29.0.0-rc.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.4) (2026-07-24)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.3...v29.0.0-rc.4)
