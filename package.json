@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "ang-jsoneditor": "^6.0.0",
-    "arlas-wui-toolkit": "29.0.0-rc.7",
+    "arlas-wui-toolkit": "29.0.0-rc.8",
     "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
@@ -65,7 +65,6 @@
   "overrides": {
     "underscore": "^1.13.8",
     "undici": "7.29.0",
-    "@hono/node-server": "2.0.10",
-    "arlas-web-core": "29.0.0-rc.6"
+    "@hono/node-server": "2.0.10"
   }
 }
