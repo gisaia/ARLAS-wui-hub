@@ -7,6 +7,8 @@
 <json-editor [options]="editorOptions" #editor></json-editor>
 
 <div class="actions">
-    <button matButton="outlined" (click)="getSample(true)" [disabled]="isLoading()">« {{ 'Previous' | translate }}</button>
-    <button matButton="outlined" (click)="getSample()" [disabled]="isLoading()">{{ 'Next' | translate }} »</button>
+    <button matButton="outlined" (click)="getSample(false, true)" [disabled]="isLoading() || currentSampleIndex() === 0">
+        « {{ 'Previous' | translate }}</button>
+    <button matButton="outlined" (click)="getSample(false)" [disabled]="isLoading()">
+        {{ 'Next' | translate }} »</button>
 </div>
