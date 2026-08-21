@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import { Component, computed, inject, input, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, input, OnInit, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -33,11 +33,11 @@ import { ArlasCollaborativesearchService } from 'arlas-wui-toolkit';
     TranslatePipe,
     MatButtonModule,
     MatProgressSpinner
-],
+  ],
   templateUrl: './sample.component.html',
   styleUrl: './sample.component.scss',
 })
-export class SampleComponent implements OnInit {
+export class SampleComponent implements OnInit, AfterViewInit {
   public collection = input.required<CollectionReferenceDescription>();
   private readonly collectionIdPath = computed(() => this.collection().params.id_path);
 
@@ -49,6 +49,11 @@ export class SampleComponent implements OnInit {
 
   public editorOptions = new JsonEditorOptions();
   @ViewChild('editor', { static: false }) public editor?: JsonEditorComponent;
+
+  /**
+   * Stores the index of the sample displayed. When it is 0, the previous button is disabled
+   */
+  public currentSampleIndex = signal(0);
 
   private readonly translate = inject(TranslateService);
   private readonly collaborativeSearchService = inject(ArlasCollaborativesearchService);
@@ -69,10 +74,25 @@ export class SampleComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.getSample();
+    this.getSample(true);
   }
 
-  public getSample(descending?: boolean) {
+  /**
+   * Adds event listener on collapse/expand all buttons
+   */
+  public ngAfterViewInit() {
+    const expandAllButton = document.getElementsByClassName('jsoneditor-expand-all');
+    (expandAllButton.item(0) as HTMLButtonElement).addEventListener('click', (e) => {
+      this.editorOptions.expandAll = true;
+    });
+
+    const collapseAllButton = document.getElementsByClassName('jsoneditor-collapse-all');
+    (collapseAllButton.item(0) as HTMLButtonElement).addEventListener('click', (e) => {
+      this.editorOptions.expandAll = false;
+    });
+  }
+
+  public getSample(isFirstCall: boolean, descending?: boolean) {
     this.isLoading.set(true);
     const sort = (descending ? '-' : '') + this.collectionIdPath();
     this.collaborativeSearchService.getExploreApi().search(this.collection().collection_name, undefined, undefined, undefined, undefined,
@@ -92,10 +112,20 @@ export class SampleComponent implements OnInit {
           return;
         }
 
+        // Update the index of the sample displayed
+        if (!isFirstCall) {
+          this.currentSampleIndex.update(v => v + (descending ? -1 : 1));
+        }
+
         this.data = hits.hits[0].data;
         this.editor?.set(this.data as JSON);
 
         this.searchAfter = hits.hits[0].md?.id;
+
+        // If all objects should be expanded, expand them
+        if (this.editorOptions.expandAll) {
+          this.editor?.expandAll();
+        }
       });
   }
 }

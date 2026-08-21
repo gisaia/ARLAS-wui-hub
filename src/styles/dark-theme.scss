@@ -21,7 +21,7 @@
 @use 'sass:color';
 
 // ---------------------------------------------------------------------------
-// 1) Palette primaire (tech.blue #2F6BFF)
+// 1) Primary palette (tech.blue #2F6BFF)
 // ---------------------------------------------------------------------------
 $tech-blue-palette: (
     50:  #E8EFFF,
@@ -29,7 +29,7 @@ $tech-blue-palette: (
     200: #9FBBFF,
     300: #789FFF,
     400: #5A8AFF,
-    500: #2F6BFF, // <- couleur de base
+    500: #2F6BFF, // <- Base color
     600: #2A61E8,
     700: #2354CC,
     800: #1D47B0,
