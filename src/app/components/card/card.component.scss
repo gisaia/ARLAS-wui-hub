@@ -143,7 +143,8 @@
 .info_item {
     $icon-size: 18px;
 
-    background: #F0F0F0;
+    background: var(--mat-sys-surface-variant);
+    color: var(--mat-sys-on-surface);
     padding: 4px;
     height: $icon-size;
     text-align: center;

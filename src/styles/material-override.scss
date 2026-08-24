@@ -19,7 +19,9 @@
 
 
 .change-dialog .mat-mdc-dialog-surface{
-    background-color: var(--mat-sys-surface-variant);
+    --arlas-iam-form-header-background: none;
+    --arlas-change-password-title-color: var(--mat-sys-on-surface);
+    background-color: var(--mat-sys-surface);
 }
 
 

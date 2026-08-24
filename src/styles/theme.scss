@@ -19,7 +19,7 @@
 
 @use '@angular/material' as mat;
 @use "./ngx-markdown-provider" as ngxMarkDown;
-@use "./dark-theme" as darktheme;
+@use "arlas-wui-toolkit/theme" as darkTheme;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -50,18 +50,40 @@ $app-theme: mat.m2-define-light-theme((
 @include mat.system-classes();
 @include mat.all-component-themes($app-theme);
 
-$dark-primary: darktheme.$tech-blue-palette;
-
-$dark-theme: mat.m2-define-dark-theme((
-    color: (
-        primary: $dark-primary,
-        accent: $app-accent,
-    )
-));
+@include darkTheme.theme-token($app-theme);
+@include darkTheme.m2-dark-theme-custom-override();
 
 
 .dark-theme {
-    @include mat.m2-theme($dark-theme);
-    @include mat.system-classes();
-    @include mat.all-component-colors($dark-theme);
+    div.jsoneditor-tree {
+        background: var(--mat-sys-surface);
+    }
+
+    .jsoneditor-popover, .jsoneditor-schema-error,
+    div.jsoneditor td, div.jsoneditor textarea,
+    div.jsoneditor th, div.jsoneditor-field,
+    div.jsoneditor-value, pre.jsoneditor-preview, div.jsoneditor-readonly {
+        color: var(--mat-sys-on-surface);
+    }
+
+    div.jsoneditor-value.jsoneditor-string{
+        color: #00ba00;
+    }
+
+    .jsoneditor{
+        border: thin solid var(--mat-sys-surface)
+    }
+
+    div.jsoneditor-tree button.jsoneditor-button {
+        filter: brightness(0) invert(1);
+    }
+
+    div.jsoneditor-tree button.jsoneditor-button:hover,
+    div.jsoneditor-tree button.jsoneditor-button:focus {
+        filter: brightness(0) invert(1);
+    }
+
+    div.jsoneditor-tree button.jsoneditor-button:focus {
+        background-color: rgba(245, 245, 245, 0.2);
+    }
 }
