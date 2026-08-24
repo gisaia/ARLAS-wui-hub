@@ -49,6 +49,7 @@
 
     &_meta{
         padding: 6px 6px 12px 6px;
+        background: var(--mat-sys-surface-container)
     }
 
     &_right{
@@ -143,7 +144,7 @@
 .info_item {
     $icon-size: 18px;
 
-    background: var(--mat-sys-surface-variant);
+    background: var(--mat-sys-surface-container);
     color: var(--mat-sys-on-surface);
     padding: 4px;
     height: $icon-size;
