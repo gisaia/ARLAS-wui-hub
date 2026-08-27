@@ -1,5 +1,13 @@
 # Change Log
 
+## [v29.0.0-rc.6](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.6) (2026-08-26)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.5...v29.0.0-rc.6)
+
+**New stuff:**
+
+- Improvement of sample of product in collection view [\#336](https://github.com/gisaia/ARLAS-wui-hub/issues/336)
+
 ## [v29.0.0-rc.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.5) (2026-08-12)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.4...v29.0.0-rc.5)
