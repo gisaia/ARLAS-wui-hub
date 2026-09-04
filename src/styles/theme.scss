@@ -55,23 +55,26 @@ $app-theme: mat.m2-define-light-theme((
 
 
 .dark-theme {
-    div.jsoneditor-tree {
+    div.jsoneditor-tree,
+    div.jsoneditor-frame,
+    .jsoneditor-search input {
         background: var(--mat-sys-surface);
     }
 
     .jsoneditor-popover, .jsoneditor-schema-error,
     div.jsoneditor td, div.jsoneditor textarea,
     div.jsoneditor th, div.jsoneditor-field,
-    div.jsoneditor-value, pre.jsoneditor-preview, div.jsoneditor-readonly {
+    div.jsoneditor-value, pre.jsoneditor-preview, div.jsoneditor-readonly,
+    .jsoneditor-search input {
         color: var(--mat-sys-on-surface);
     }
 
-    div.jsoneditor-value.jsoneditor-string{
+    div.jsoneditor-value.jsoneditor-string {
         color: #00ba00;
     }
 
     .jsoneditor{
-        border: thin solid var(--mat-sys-surface)
+        border: thin solid var(--mat-sys-surface);
     }
 
     div.jsoneditor-tree button.jsoneditor-button {
