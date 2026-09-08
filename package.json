@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "ang-jsoneditor": "^6.0.0",
-    "arlas-wui-toolkit": "29.0.0-rc.13",
+    "arlas-wui-toolkit": "29.0.0-rc.14",
     "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
