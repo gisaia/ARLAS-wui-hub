@@ -1,5 +1,9 @@
 # Change Log
 
+## [v29.0.0-rc.8](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.8) (2026-09-08)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.7...v29.0.0-rc.8)
+
 ## [v29.0.0-rc.7](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.7) (2026-09-07)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.6...v29.0.0-rc.7)
