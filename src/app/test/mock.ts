@@ -38,7 +38,8 @@ export const mockArlasSettingsService = {
     getArlasHubUrl: vi.fn(() => ''),
     getPermissionSettings: vi.fn(() => {}),
     getLinksSettings: vi.fn(() => []),
-    settings: {}
+    settings: {},
+    isDarkThemeEnabled: vi.fn()
 };
 
 export const mockPersistenceService = {

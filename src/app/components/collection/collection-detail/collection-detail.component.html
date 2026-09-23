@@ -131,12 +131,11 @@
             <div class="collection__fields">
                 <div class="collection__fields__title">
                     {{'Fields' | translate}}
-                    <div>
-                        <mat-form-field class="compact filter" [floatLabel]="'auto'" [subscriptSizing]="'dynamic'">
-                            <input (keyup)="applyFilter($event)" matInput class="input-display-name"
-                                [placeholder]="'Filter fields (on identifier, name, type)' | translate">
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field class="compact filter" [class.filter--simplified]="simplifyDisplay()"
+                            [floatLabel]="'auto'" [subscriptSizing]="'dynamic'">
+                        <input (keyup)="applyFilter($event)" matInput class="input-display-name"
+                            [placeholder]="'Filter fields (on identifier, name, type)' | translate">
+                    </mat-form-field>
                 </div>
 
                 <div class="collection__fields__table" [class.collection__fields__table--with-delete]="canEdit()"
