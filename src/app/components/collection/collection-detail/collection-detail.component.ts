@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -42,10 +42,11 @@ import {
     ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService, AuthentificationService
 } from 'arlas-wui-toolkit';
 import jwt_decode from 'jwt-decode';
-import { filter, finalize, mergeMap, of, switchMap } from 'rxjs';
+import { debounceTime, filter, finalize, fromEvent, mergeMap, of, switchMap } from 'rxjs';
 import { BooleanToTextPipe } from '../../../pipes/booleanToText.pipe';
 import { FieldTypeToIconPipe } from '../../../pipes/fieldTypeToIcon.pipe';
 import { FieldTypeToTextPipe } from '../../../pipes/fieldTypeToText.pipe';
+import { ListValuePipe } from '../../../pipes/list-value.pipe';
 import { CollectionService } from '../../../services/collection.service';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
 import { SampleComponent } from '../../sample/sample.component';
@@ -67,7 +68,7 @@ export interface CollectionDetailRow extends InitialCollectionDetail {
     templateUrl: './collection-detail.component.html',
     styleUrl: './collection-detail.component.scss',
     imports: [
-        MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
+        MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton, ListValuePipe,
         MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
         MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe,
         MatSlideToggleModule, SampleComponent
@@ -87,7 +88,7 @@ export class CollectionDetailComponent implements OnInit {
         visibility: new FormControl()
     });
 
-    public displayedColumns = ['name', 'display_name', 'type', 'indexed', 'taggable'];
+    public displayedColumns = signal(['name', 'display_name', 'type', 'indexed', 'taggable']);
     public isLoading = signal(false);
     public filterValue = '';
 
@@ -95,13 +96,17 @@ export class CollectionDetailComponent implements OnInit {
     public authentMode?: 'openid' | 'iam';
     public organisations: WritableSignal<UserOrgData[]> = signal([]);
     public dataSourceFields = new MatTableDataSource<CollectionDetailRow>([]);
-    public canEdit = false;
+    public canEdit = signal(false);
     private connected = false;
 
     public editMode = signal(false);
     public showSample = signal(false);
     public formInitialValues: Record<string, any> = {};
 
+    /** Whether to simplify the displayed information in the view */
+    public simplifyDisplay = signal(false);
+
+    private readonly cdr = inject(ChangeDetectorRef);
     public constructor(
         private readonly destroyRef: DestroyRef,
         private readonly route: ActivatedRoute,
@@ -131,6 +136,12 @@ export class CollectionDetailComponent implements OnInit {
         }
         this.iconRegistry.addSvgIcon('keyword',
             this.sanitizer.bypassSecurityTrustResourceUrl(location.href.split('/collection')[0] + '/assets/keyword.svg'));
+
+        fromEvent(globalThis, 'resize')
+            .pipe(debounceTime(100), takeUntilDestroyed(this.destroyRef))
+            .subscribe((event: Event) => {
+                this.updateTableDisplay();
+            });
     }
 
     public ngOnInit(): void {
@@ -199,6 +210,29 @@ export class CollectionDetailComponent implements OnInit {
                         );
                     }
                 });
+        }
+    }
+
+    /**
+     * Checks with the available space what can be displayed without adding a scroll:
+     * - first, remove the indexed and taggable columns
+     * - if a scroll still appears, then simplify the displayed info (remove type text indication, break field name, limit form width)
+     */
+    protected updateTableDisplay() {
+        const table = document.getElementsByClassName('collection__fields__table').item(0);
+        if (table) {
+            // Check if the columns fit
+            this.displayedColumns.set(['name', 'display_name', 'type', 'indexed', 'taggable']);
+            this.simplifyDisplay.set(false);
+            this.cdr.detectChanges();
+            // If they don't, then remove indexed and taggable
+            if (table.scrollWidth > table.clientWidth) {
+                this.displayedColumns.set(['name', 'display_name', 'type']);
+
+                // Check if there is enough space to display the type keyword
+                this.cdr.detectChanges();
+                this.simplifyDisplay.set(table.scrollWidth > table.clientWidth);
+            }
         }
     }
 
@@ -287,6 +321,7 @@ export class CollectionDetailComponent implements OnInit {
 
     public toggleMode() {
         this.editMode.set(!this.editMode());
+        this.updateTableDisplay();
     }
 
     public cancel() {
@@ -350,15 +385,16 @@ export class CollectionDetailComponent implements OnInit {
 
     public toggleSample() {
         this.showSample.set(!this.showSample());
+        this.updateTableDisplay();
     }
 
     private fillForm(c: CollectionReferenceDescription) {
         this.collection = c;
         if (this.connected) {
             if (this.authentMode === 'iam') {
-                this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user?.roles ?? [], c.params.organisations?.owner);
+                this.canEdit.set(this.checkIfuserCanEdit(this.arlasIamService.user?.roles ?? [], c.params.organisations?.owner));
             } else if (this.authentMode === 'openid') {
-                this.canEdit = this.roles.includes('role/arlas/datasets');
+                this.canEdit.set(this.roles.includes('role/arlas/datasets'));
             }
         }
 
@@ -396,6 +432,8 @@ export class CollectionDetailComponent implements OnInit {
         if (this.filterValue !== '') {
             this.dataSourceFields.filter = this.filterValue.trim().toLowerCase();
         }
+
+        this.updateTableDisplay();
     }
 
     private updateFailed() {

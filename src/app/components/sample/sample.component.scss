@@ -48,7 +48,7 @@ json-editor {
     height: calc(100vh
         - var.$top-menu-height
         - /** next/previous */ 54px
-        - /** header */ 53px
+        - /** header */ 54px
         - /** spacing (padding around .collection + gap before form) */ 30px);
 
     ::ng-deep .jsoneditor-modes {

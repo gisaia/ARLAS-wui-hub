@@ -9,7 +9,7 @@
         <div class="collection__top__content">
             <button class="collection__top__content__btn" matButton="outlined" (click)="back()" type="button">
                 « {{'Collections' | translate}}</button>
-            @if(canEdit){
+            @if (canEdit()) {
             <div class="collection__top__content__actions">
                 @if (!editMode()) {
                 <button matButton="filled" color="primary" (click)="toggleMode()" type="button">
@@ -31,7 +31,7 @@
         <form class="collection__data__form" [class.collection__data__form--small]="showSample()"
                 [formGroup]="collectionForm" autocomplete="off" (ngSubmit)="update()">
             <div class="collection__title">
-                <div class="collection__title__content">
+                <div class="collection__title__content" [class.collection__title__content--edit]="editMode()">
                     <span class="collection__title__content__display-name">
                         @if (editMode()){
                         <mat-form-field class="compact with-label title" [floatLabel]="'auto'" [subscriptSizing]="'dynamic'">
@@ -75,7 +75,7 @@
                                 </mat-form-field>
                                 } @else {
                                 {{ collectionForm.controls['shared_orgs'].value?.length > 0 ?
-                                    collectionForm.controls['shared_orgs'].value : '--' }}
+                                    (collectionForm.controls['shared_orgs'].value | listValue) : '--' }}
                                 }
                             </div>
                         </div>
@@ -139,7 +139,8 @@
                     </div>
                 </div>
 
-                <div class="collection__fields__table" [class.collection__fields__table--with-delete]="canEdit">
+                <div class="collection__fields__table" [class.collection__fields__table--with-delete]="canEdit()"
+                        [class.collection__fields__table--simplified]="simplifyDisplay()">
                     <ng-container formArrayName="display_names">
                         <table #fieldTableSort="matSort" mat-table [dataSource]="dataSourceFields" matSort>
                             <ng-container matColumnDef="name">
@@ -174,7 +175,10 @@
                                             {{ row.type | field_type_to_icon}}
                                         </mat-icon>
                                         }
-                                        {{row.type | field_type_to_text}}
+
+                                        @if (!simplifyDisplay()) {
+                                        {{ row.type | field_type_to_text }}
+                                        }
                                     </div>
                                 </td>
                             </ng-container>
@@ -193,8 +197,8 @@
                                 </td>
                             </ng-container>
 
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                            <tr mat-row *matRowDef="let row; let odd = odd; columns: displayedColumns;"
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns(); sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; let odd = odd; columns: displayedColumns();"
                                 [class.striped-row]="odd"></tr>
 
                             <tr class="mat-row" *matNoDataRow>
@@ -209,7 +213,7 @@
 
                 </div>
             </div>
-            @if (canEdit && collection) {
+            @if (canEdit() && collection) {
             <div class="collection__advanced">
                 <h3>{{'Danger zone' | translate}}</h3>
                 <div>{{'Once you delete a collection, there is no going back. Please be certain.' | translate}}</div>
