@@ -8,6 +8,7 @@ import {
     PermissionService, PersistenceService
 } from 'arlas-wui-toolkit';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { Card } from '../../services/card.service';
 import { mockArlasStartupService, mockPermissionService, mockPersistenceService } from '../../test/mock';
 import { CardComponent } from './card.component';
 
@@ -46,6 +47,18 @@ describe('CardComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(CardComponent);
         component = fixture.componentInstance;
+        const card: Card = {
+            id: 'test',
+            title: 'Test',
+            readers: [],
+            writers: [],
+            updatable: false,
+            last_update_date: new Date(),
+            actions: [],
+            color: '#ffffff',
+            owner: ''
+        };
+        fixture.componentRef.setInput('card', card);
         fixture.detectChanges();
     });
 

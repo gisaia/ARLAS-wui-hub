@@ -16,42 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { Pipe, PipeTransform } from '@angular/core';
 
-@use "variables.scss" as var;
+@Pipe({
+  name: 'listValue',
+})
+export class ListValuePipe implements PipeTransform {
 
-:host {
-    position: relative;
-}
+  public transform<T>(values: T[], joinChar = ', '): string {
+    return values.join(joinChar);
+  }
 
-.actions {
-    padding: 8px 0;
-    display: flex;
-    justify-content: space-between;
-
-    button {
-        background-color: var(--mat-sys-surface);
-    }
-}
-
-.spinner {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    height: calc(100% - /** next/previous */ 54px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.12);
-}
-
-json-editor {
-    height: calc(100vh
-        - var.$top-menu-height
-        - /** next/previous */ 54px
-        - /** header */ 54px
-        - /** spacing (padding around .collection + gap before form) */ 30px);
-
-    ::ng-deep .jsoneditor-modes {
-        display: none;
-    }
 }

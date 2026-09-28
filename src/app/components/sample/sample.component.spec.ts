@@ -20,7 +20,8 @@ describe('SampleComponent', () => {
           useValue: {
             getExploreApi: vi.fn(() => ({
               search: vi.fn(() => Promise.resolve())
-            }))
+            })),
+            getFetchOptions: vi.fn()
           }
         }
       ]
