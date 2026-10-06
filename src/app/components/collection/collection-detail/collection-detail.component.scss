@@ -138,6 +138,8 @@
                         text-transform: lowercase;
                     }
                     .value {
+                        overflow-wrap: anywhere;
+
                         .visibility-chip {
                             background-color: unset;
                             border: 1px solid rgba(0, 0, 0, 0.12);
