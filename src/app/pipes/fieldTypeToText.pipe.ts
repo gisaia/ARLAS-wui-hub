@@ -38,8 +38,8 @@ export class FieldTypeToTextPipe implements PipeTransform {
         return text;
     }
 
-    private capitalizeFirstLetter(value) {
-        return String(value).charAt(0).toUpperCase() + String(value).slice(1);
+    private capitalizeFirstLetter(value: string) {
+        return value.charAt(0).toUpperCase() + String(value).slice(1);
     }
 
 }

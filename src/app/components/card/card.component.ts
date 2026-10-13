@@ -17,13 +17,13 @@
  * under the License.
  */
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, input, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatCard, MatCardContent, MatCardSubtitle } from '@angular/material/card';
 import { MatChip, MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
+import { ConfigAction, ConfigActionEnum, ConfigMenuComponent } from 'arlas-wui-toolkit';
 import { Subject } from 'rxjs';
 import { PreviewPipe } from '../../pipes/preview.pipe';
 import { Card } from '../../services/card.service';
@@ -38,8 +38,8 @@ export enum Action {
 }
 
 export interface CardAction {
-    card?: Card;
-    action?: Action;
+    card: Card;
+    action: ConfigAction;
 }
 
 export interface CardRights {
@@ -69,10 +69,10 @@ export type DashboardStatus = 'private' | 'shared' | 'public';
         ConfigMenuComponent
     ]
 })
-export class CardComponent implements AfterViewInit, OnInit {
+export class CardComponent implements OnInit {
 
-    @ViewChild('configMenu', {static: false}) public configMenu: ConfigMenuComponent;
-    @Input() public card: Card;
+    @ViewChild('configMenu', {static: false}) public configMenu?: ConfigMenuComponent;
+    public card = input.required<Card>();
     @Input() public publicOrg = false;
     @Output() public actionOnCard: Subject<CardAction> = new Subject<CardAction>();
 
@@ -83,11 +83,8 @@ export class CardComponent implements AfterViewInit, OnInit {
 
     public rights: Array<CardRights> = [];
 
-    public constructor() {
-    }
-
     public ngOnInit(): void {
-        if (this.card) {
+        if (this.card()) {
             this.initDashboardWright();
             this.initDashboardVisibility();
         }
@@ -95,16 +92,16 @@ export class CardComponent implements AfterViewInit, OnInit {
 
     public initDashboardWright() {
         let  writers: CardRights[] = [];
-        if(this.card?.writers) {
-            writers = this.card.writers.map(g => ({
+        if (this.card().writers) {
+            writers = this.card().writers.map(g => ({
                 name: g.name,
                 right: 'Editor'
             }));
         }
         let readers: CardRights[] = [];
-        if(this.card?.readers) {
-            readers = this.card.readers
-                .filter(g => !writers.find(w => w.name === g.name))
+        if (this.card().readers) {
+            readers = this.card().readers
+                .filter(g => !writers.some(w => w.name === g.name))
                 .map(g => ({
                     name: g.name,
                     right: 'Viewer'
@@ -121,19 +118,14 @@ export class CardComponent implements AfterViewInit, OnInit {
         return readers.some(g => g.name === 'public');
     }
 
-    public ngAfterViewInit() {
-        if (this.card) {
-            const c = Object.assign(this.card.actions);
-            this.card.actions = [];
-            this.card.actions = c;
-        }
-    }
-
-    public afterAction(e) {
-        this.actionOnCard.next(e);
+    public afterAction(e: ConfigAction) {
+        this.actionOnCard.next({ action: e, card: this.card() });
     }
 
     public open() {
-        this.configMenu.onActionClick(this.card.actions.find(a => a.type === ConfigActionEnum.VIEW));
+        const viewAction = this.card().actions.find(a => a.type === ConfigActionEnum.VIEW);
+        if (viewAction) {
+            this.configMenu?.onActionClick(viewAction);
+        }
     }
 }

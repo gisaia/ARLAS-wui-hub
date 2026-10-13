@@ -18,7 +18,7 @@
  */
 
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -37,20 +37,20 @@ import { DashboardSearchService } from '../../services/dashboard-search.service'
 })
 export class DashboardSearchComponent implements OnInit, OnDestroy{
 
-    @Input() public searchPlaceholder: string;
-    public searchValue = '';
+    public searchPlaceholder = input.required<string>();
+    public searchValue?: string;
 
     /**
      * @description Form for the search
      */
-    public searchCtrl: FormControl = new FormControl<string>(null);
-    private _searchSub: Subscription;
+    public searchCtrl = new FormControl<string>('');
+    private _searchSub?: Subscription;
 
     public constructor(
-        private dashboardSearchService: DashboardSearchService
+        private readonly dashboardSearchService: DashboardSearchService
     ) {
         this.searchValue = this.dashboardSearchService.currentFilter;
-        this.searchCtrl.setValue(this.searchValue);
+        this.searchCtrl.setValue(this.searchValue ?? '');
     }
 
     public ngOnInit(): void {
@@ -72,6 +72,6 @@ export class DashboardSearchComponent implements OnInit, OnDestroy{
     }
 
     public ngOnDestroy(): void {
-        this._searchSub.unsubscribe();
+        this._searchSub?.unsubscribe();
     }
 }

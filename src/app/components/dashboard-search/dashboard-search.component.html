@@ -2,7 +2,7 @@
   <mat-icon class="search">search</mat-icon>
   <div class="search-text"  [class.search-text-empty]="!searchValue">
     <input matInput [formControl]="searchCtrl" [value]="searchCtrl.value" class="full-width-input" autocomplete="off"
-      [placeholder]="searchPlaceholder | translate" name="search">
+      [placeholder]="searchPlaceholder() | translate" name="search">
   </div>
   @if (searchCtrl.value) {
     <button mat-icon-button type="button" class="button"

@@ -18,12 +18,12 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Card } from './card.service';
 import { Subject } from 'rxjs';
+import { Card } from './card.service';
 
 export interface SearchIndexDashboard {
     key: string;
-    cardIndex: string;
+    cardIndex: number;
     search: string;
 }
 
@@ -40,9 +40,9 @@ export class DashboardSearchService {
      */
     public searchIndex: string[] = [];
     public valueChanged$ = new Subject<string>();
-    private _currentValue = '';
+    private _currentValue?: string;
 
-    public get  currentFilter(){
+    public get currentFilter() {
         return this._currentValue;
     }
     public constructor() {
@@ -71,8 +71,7 @@ export class DashboardSearchService {
     public retrieveParamsFromUrl(){
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        this._currentValue = urlParams.get(this.URL_PARAMS);
-        return this._currentValue ?? null;
+        this._currentValue = urlParams.get(this.URL_PARAMS) ?? undefined;
     }
 
     public getMatchingSearchIndices(): SearchIndexDashboard[]{
@@ -87,12 +86,12 @@ export class DashboardSearchService {
                 const key = parts[0].split(':')[1];
                 const cardIndex = parts[1].split(':')[1];
                 const search = parts[2].split(':')[1];
-                return {key, cardIndex, search};
+                return {key, cardIndex: +cardIndex, search};
             });
     }
 
-    public splitSearchToKeywords(value: string){
-        if(value && value.length >= 1){
+    public splitSearchToKeywords(value: string | undefined){
+        if (value && value.length >= 1) {
             return value.split(' ');
         }
         return [];

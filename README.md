@@ -30,7 +30,7 @@ Mount a volume for the [configuration file](#Configuration) and for `assets` fol
 *Exemple :*
 
  ```
-  docker run docker.cloudsmith.io/gisaia/private/arlas-wui-hub:latest \
+  docker run gisaia/arlas-wui-hub:29.0.0 \
   -v [local_config_path]:/usr/share/nginx/html/config.json \
   -v [path_to_assets]:/usr/share/nginx/html/assets/
 ``` 

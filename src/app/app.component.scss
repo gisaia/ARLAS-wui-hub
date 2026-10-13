@@ -26,7 +26,7 @@
 }
 
 .sidenav-content {
-    background-color: whitesmoke;
+    background-color: var(--arlas-sidnav-content-bg, var(--mat-sys-background));
     &.full {
         margin-left: unset !important;
     }
@@ -69,6 +69,13 @@
 
 ::ng-deep .top-menu {
     border-bottom: var.$menu-border;
+}
+
+
+::ng-deep .dark-theme {
+    .top-menu {
+        border-bottom: unset;
+    }
 }
 
 ::ng-deep.mat-mdc-tooltip {

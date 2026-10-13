@@ -28,13 +28,13 @@ import { MatIcon } from '@angular/material/icon';
     imports: [MatIconButton, MatIcon]
 })
 export class CardDropdownComponent {
-    @Input('arlas-card-dropdown') public collapsableElement: HTMLElement;
+    @Input('arlas-card-dropdown') public collapsableElement?: HTMLElement;
     public display = true;
     public constructor(private _r: Renderer2) { }
 
     public collapse() {
         this.display = !this.display;
-        if(this.display){
+        if (this.display) {
             this._r.removeStyle(this.collapsableElement, 'display');
         } else {
             this._r.setStyle(this.collapsableElement, 'display', 'none');

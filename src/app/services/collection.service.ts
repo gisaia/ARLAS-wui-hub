@@ -20,6 +20,7 @@ import { Injectable } from '@angular/core';
 import {
     CollectionReference, CollectionReferenceDescription, CollectionReferenceUpdateOrg, CollectionsApi, Configuration, ExploreApi, Success
 } from 'arlas-api';
+import { FetchOptions } from 'arlas-web-core';
 import { ArlasCollaborativesearchService, ArlasSettingsService } from 'arlas-wui-toolkit';
 import { from, Observable } from 'rxjs';
 
@@ -30,7 +31,7 @@ export class CollectionService {
 
     private readonly arlasCollectionsApi: CollectionsApi;
     private readonly arlasExploreApi: ExploreApi;
-    public options;
+    public options: FetchOptions = {};
 
     public constructor(
         private readonly collabSearchService: ArlasCollaborativesearchService,
@@ -51,7 +52,7 @@ export class CollectionService {
         return this.options;
     }
 
-    public setOptions(options): void {
+    public setOptions(options: FetchOptions): void {
         this.options = options;
     }
 

@@ -109,6 +109,7 @@ set_default_env_variable ARLAS_STATIC_LINKS "[]"
 set_default_env_variable ARLAS_HUB_BASE_HREF ""
 set_default_env_variable ARLAS_HUB_APP_PATH ""
 set_default_env_variable ARLAS_TAB_NAME "ARLAS-wui-hub"
+set_default_env_variable ARLAS_DARK_THEME_ENABLED "false"
 
 # All variables that need to be substituted in settings.yaml
 SETTINGS_VARS="ARLAS_WUI_URL
@@ -145,7 +146,8 @@ SETTINGS_VARS="ARLAS_WUI_URL
   ARLAS_AUTHENT_SIGN_UP_ENABLED
   ARLAS_IAM_SERVER_URL
   ARLAS_STATIC_LINKS
-  ARLAS_TAB_NAME"
+  ARLAS_TAB_NAME
+  ARLAS_DARK_THEME_ENABLED"
 
 SETTINGS_SUBST=$(printf '$%s ' $SETTINGS_VARS)
 envsubst "$SETTINGS_SUBST" < /usr/share/nginx/html/settings.yaml > /usr/share/nginx/html/settings.yaml.tmp

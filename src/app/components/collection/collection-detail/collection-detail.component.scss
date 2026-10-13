@@ -23,11 +23,18 @@
     position: relative;
 }
 
+.dark-theme{
+    :host{
+        --arlas-collection-content-name: lightgrey;
+    }
+}
+
 .collection {
-    padding: 5px 10px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5px 0;
+    gap: 10px 0;
+
     &__top {
         position: sticky;
         top: 0px;
@@ -36,14 +43,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: white;
+            background-color: var(--mat-sys-surface);
             border: 1px solid rgba(0, 0, 0, 0.12);
-            border-top: none;
             padding: 10px 10px;
             height: 32px;
             font-size: 14px;
+
             &__btn {
-                background-color: white;
+                background-color: var(--mat-sys-surface);
             }
 
             &__actions {
@@ -57,20 +64,41 @@
     }
 
     &__title {
+        max-width: 642px;
+        height: 24px;
+        background-color: var(--mat-sys-surface);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+
         &__content {
-            width: 642px;
-            height: 24px;
-            background-color: white;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            padding: 15px;
             display: flex;
             align-items: center;
             gap: 0 10px;
+
             .input-display-name {
                 height: 24px !important;
             }
             &__name {
-                color: rgba(0, 0, 0, 0.65);
+                color: var(--arlas-collection-content-name, rgba(0, 0, 0, 0.6));
+            }
+
+            &__display-name {
+                display: flex;
+                width: 100%;
+            }
+
+            &--edit {
+                flex: 1;
+            }
+        }
+
+        &__action {
+            ::ng-deep .mdc-button__label {
+                white-space: nowrap;
             }
         }
     }
@@ -78,18 +106,24 @@
     &__info {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         gap: 10px;
+        width: 100%;
+
         &__visibility,
         &__params {
-            background-color: white;
+            background-color: var(--mat-sys-surface);
             border: 1px solid rgba(0, 0, 0, 0.12);
             padding: 15px;
-            min-width: 300px;
+            max-width: 300px;
+            flex: 1;
+
             &__title {
                 font-size: 14px;
                 font-weight: 600;
                 padding: 5px 0 10px;
             }
+
             &__items {
                 display: flex;
                 flex-direction: column;
@@ -104,6 +138,8 @@
                         text-transform: lowercase;
                     }
                     .value {
+                        overflow-wrap: anywhere;
+
                         .visibility-chip {
                             background-color: unset;
                             border: 1px solid rgba(0, 0, 0, 0.12);
@@ -112,6 +148,7 @@
                             height: 35px;
                             display: flex;
                             align-items: center;
+                            text-align: end;
                         }
                     }
                 }
@@ -124,7 +161,7 @@
         flex-direction: column;
 
         &__title {
-            background-color: white;
+            background-color: var(--mat-sys-surface);
             padding: 10px 15px;
             font-size: 14px;
             font-weight: 600;
@@ -145,14 +182,24 @@
         &__table {
             border: 1px solid rgba(0, 0, 0, 0.12);
             border-top: unset;
+            height: calc(100vh - var.$top-menu-height
+                - /** header */ 54px
+                - /** collection title */ 56px
+                - /** collection info */ 183px
+                - /** collection field title */ 61px
+                - /** gap between form elements */ 3 * 5px
+                - var(--arlas-hub-collection-delete-height, 0px)
+                - /** spacing (padding around .collection + gap before form) */ 30px);
+            overflow: auto;
+
+            &--with-delete {
+                --arlas-hub-collection-delete-height: 170px;
+            }
+
             .input-display-name {
                 height: 24px !important;
             }
-            ::ng-deep .mat-mdc-table thead {
-                position: sticky;
-                top: 110px;
-                z-index: 1;
-            }
+
             .striped-row {
                 background-color: rgba(0, 0, 0, 0.03);
             }
@@ -160,19 +207,25 @@
             .mat-column-name {
                 width: 450px;
             }
+
             .mat-column-taggable,
             .mat-column-indexed,
             .mat-column-type {
-                width: 150px;
+                width: 130px;
+
                 .field_type {
                     display: flex;
                     align-items: center;
                     justify-content: flex-start;
                     gap: 0 10px;
+
                     .mat-icon{
                         font-size: 18px;
                         width: 18px;
                         height: 18px;
+                        &--keyword {
+                            stroke: var(--mat-sys-on-background);
+                        }
                     }
                 }
             }
@@ -195,11 +248,69 @@
     }
     &__advanced {
         border-top: 1px solid #444c56b3;
-        margin-top: 50px;
+        margin-top: 25px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 15px 0;
+    }
+
+    &__data {
+        display: flex;
+        $collection-gap: 20px;
+        gap: $collection-gap;
+
+        &__form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px 0;
+
+            &--small {
+                width: calc(50% - $collection-gap / 2);
+            }
+        }
+
+        &__sample {
+            width: calc(50% - $collection-gap / 2);
+        }
+    }
+}
+
+@media screen and (max-width: 744px) {
+    // Make the collection parameters take the whole width
+    .collection__info__visibility,
+    .collection__info__params {
+        width: 100%;
+        max-width: unset;
+        white-space: nowrap;
+    }
+}
+
+.collection__data__form--small {
+    @media screen and (max-width: 1100px) {
+        // Make the collection parameters take the whole width
+        .collection__info__visibility,
+        .collection__info__params {
+            width: 100%;
+            max-width: unset;
+            white-space: nowrap;
+        }
+    }
+}
+
+// Break text anywhere for field name to avoid scroll on table
+.collection__fields__table--simplified {
+    .mat-column-type {
+        width: unset;
+    }
+
+    .mat-column-name {
+        line-break: anywhere;
+    }
+
+    .mat-column-display_name .mat-mdc-form-field-infix {
+        width: 100px;
     }
 }
 

@@ -51,3 +51,4 @@ arlas_wui_url: ${ARLAS_WUI_URL}
 arlas_builder_url: ${ARLAS_BUILDER_URL}
 links: ${ARLAS_STATIC_LINKS}
 tab_name:  ${ARLAS_TAB_NAME}
+dark_theme_enabled : ${ARLAS_DARK_THEME_ENABLED}

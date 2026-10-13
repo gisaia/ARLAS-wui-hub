@@ -18,6 +18,18 @@
  */
 
 
+:host {
+    --arlas-search-icon-color: grey;
+    --arlas-search-placeholder-color: grey ;
+}
+
+.dark-theme{
+    :host{
+        --arlas-search-icon-color:var(--mat-sys-on-surface);
+        --arlas-search-placeholder-color: var(--mat-sys-on-surface);
+    }
+}
+
 $search-height: 30px;
 
 .arlas-search-container {
@@ -30,9 +42,18 @@ $search-height: 30px;
     margin-left: -2px;
     box-sizing: border-box;
 
+    ::placeholder {
+        color: var(--arlas-search-placeholder-color);
+        opacity: 1; /* Firefox */
+    }
+
+    ::-ms-input-placeholder { /* Edge 12 -18 */
+        color: var(--arlas-search-placeholder-color);
+    }
+
     .search {
         margin-right: 4px;
-        color: grey;
+        color: var(--arlas-search-icon-color);
     }
 
     .search-text {
@@ -50,7 +71,7 @@ $search-height: 30px;
     }
 
     .search-text-empty {
-        color: grey;
+        color: var(--arlas-search-placeholder-color);
     }
 }
 
@@ -69,7 +90,8 @@ $search-height: 30px;
     width: 100%;
     font-size: 14px;
     margin-left: 4px;
-
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
     &:focus {
         outline: none;
         transition: all 0.2s ease;

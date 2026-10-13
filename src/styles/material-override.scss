@@ -17,16 +17,17 @@
  * under the License.
  */
 
-// Tighten the display of inputs
-.mat-mdc-form-field-infix {
-    padding: 8px;
-    display: flex;
-    width: 200px !important;
+
+.change-dialog .mat-mdc-dialog-surface{
+    --arlas-iam-form-header-background: none;
+    --arlas-change-password-title-color: var(--mat-sys-on-surface);
+    background-color: var(--mat-sys-surface);
 }
+
 
 // Avoid whitesmoke background of input
 .mat-mdc-text-field-wrapper {
-    background-color: white !important;
+    background-color: var(--mat-sys-surface-variant) !important;
     padding: 0 !important;
 }
 .mat-mdc-form-field-focus-overlay {
@@ -86,10 +87,11 @@ mat-form-field.compact {
 
     &.filter {
         width: 300px;
+        max-width: 100%;
     }
     &.title,
     &.field {
-        width: 450px;
+        width: 100%;
     }
 }
 

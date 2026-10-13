@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Component, DestroyRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatChip, MatChipSet } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -35,59 +35,78 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CollectionService } from 'app/services/collection.service';
 import { CollectionReferenceDescription, CollectionReferenceUpdateOrg } from 'arlas-api';
 import { RoleData, UserOrgData } from 'arlas-iam-api';
+import { FetchOptions } from 'arlas-web-core';
 import {
     ArlasCollaborativesearchService, ArlasIamService, ArlasSettingsService, ArlasStartupService, AuthentificationService
 } from 'arlas-wui-toolkit';
 import jwt_decode from 'jwt-decode';
-import { filter, finalize, mergeMap, of, switchMap } from 'rxjs';
+import { debounceTime, filter, finalize, fromEvent, mergeMap, of, switchMap } from 'rxjs';
 import { BooleanToTextPipe } from '../../../pipes/booleanToText.pipe';
 import { FieldTypeToIconPipe } from '../../../pipes/fieldTypeToIcon.pipe';
 import { FieldTypeToTextPipe } from '../../../pipes/fieldTypeToText.pipe';
+import { ListValuePipe } from '../../../pipes/list-value.pipe';
+import { CollectionService } from '../../../services/collection.service';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
-import { CollectionField, extractProp } from './collection-field';
+import { SampleComponent } from '../../sample/sample.component';
+import { CollectionField, CollectionFieldFormGroup, extractProp } from './collection-field';
+
+export interface InitialCollectionDetail {
+    name: string;
+    type: string;
+    taggable: boolean;
+    indexed: boolean;
+}
+
+export interface CollectionDetailRow extends InitialCollectionDetail {
+    control: FormControl<string | null>;
+}
 
 @Component({
     selector: 'arlas-collection-detail',
     templateUrl: './collection-detail.component.html',
     styleUrl: './collection-detail.component.scss',
     imports: [
-    MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton,
-    MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
-    MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe,
-    MatSlideToggleModule
-]
+        MatTableModule, MatProgressSpinner, FormsModule, ReactiveFormsModule, MatButton, ListValuePipe,
+        MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatChipSet, MatChip, MatSort,
+        MatSortHeader, MatIcon, TranslatePipe, BooleanToTextPipe, FieldTypeToTextPipe, FieldTypeToIconPipe,
+        MatSlideToggleModule, SampleComponent
+    ]
 })
 export class CollectionDetailComponent implements OnInit {
-    @ViewChild('fieldTableSort', { static: true }) public sort: MatSort;
+    @ViewChild('fieldTableSort', { static: true }) public sort?: MatSort;
 
-    public collection: CollectionReferenceDescription;
-    public collectionName: string;
-    public fields: CollectionField[];
+    public collection?: CollectionReferenceDescription;
+    public collectionName?: string;
+    public fields: CollectionField[] = [];
 
     public collectionForm = this.formBuilder.group({
         collection_display_name: new FormControl(''),
-        display_names: this.formBuilder.array<FormGroup>([]),
+        display_names: this.formBuilder.array<CollectionFieldFormGroup>([]),
         shared_orgs: new FormControl(),
         visibility: new FormControl()
     });
 
-    public displayedColumns = ['name', 'display_name', 'type', 'indexed', 'taggable'];
+    public displayedColumns = signal(['name', 'display_name', 'type', 'indexed', 'taggable']);
     public isLoading = signal(false);
     public filterValue = '';
 
     public isAuthentActivated: boolean;
-    public authentMode: 'openid' | 'iam';
+    public authentMode?: 'openid' | 'iam';
     public organisations: WritableSignal<UserOrgData[]> = signal([]);
-    public dataSourceFields: MatTableDataSource<any> = new MatTableDataSource([]);
-    public canEdit = false;
+    public dataSourceFields = new MatTableDataSource<CollectionDetailRow>([]);
+    public canEdit = signal(false);
     private connected = false;
 
     public editMode = signal(false);
-    public formInitialValues;
+    public showSample = signal(false);
+    public formInitialValues: Record<string, any> = {};
 
+    /** Whether to simplify the displayed information in the view */
+    public simplifyDisplay = signal(false);
+
+    private readonly cdr = inject(ChangeDetectorRef);
     public constructor(
         private readonly destroyRef: DestroyRef,
         private readonly route: ActivatedRoute,
@@ -107,8 +126,8 @@ export class CollectionDetailComponent implements OnInit {
     ) {
         const authSettings = this.arlasSettingsService.getAuthentSettings();
         this.isAuthentActivated = !!authSettings && authSettings.use_authent;
-        const isOpenID = this.isAuthentActivated && authSettings.auth_mode !== 'iam';
-        const isIam = this.isAuthentActivated && authSettings.auth_mode === 'iam';
+        const isOpenID = this.isAuthentActivated && authSettings?.auth_mode !== 'iam';
+        const isIam = this.isAuthentActivated && authSettings?.auth_mode === 'iam';
         if (isOpenID) {
             this.authentMode = 'openid';
         }
@@ -117,6 +136,12 @@ export class CollectionDetailComponent implements OnInit {
         }
         this.iconRegistry.addSvgIcon('keyword',
             this.sanitizer.bypassSecurityTrustResourceUrl(location.href.split('/collection')[0] + '/assets/keyword.svg'));
+
+        fromEvent(globalThis, 'resize')
+            .pipe(debounceTime(100), takeUntilDestroyed(this.destroyRef))
+            .subscribe((event: Event) => {
+                this.updateTableDisplay();
+            });
     }
 
     public ngOnInit(): void {
@@ -124,8 +149,8 @@ export class CollectionDetailComponent implements OnInit {
             if (this.authentMode === 'iam') {
                 if (this.arlasIamService.user) {
                     this.connected = true;
-                    this.organisations.set(this.arlasIamService.user.organisations);
-                    const headers = {
+                    this.organisations.set(this.arlasIamService.user.organisations ?? []);
+                    const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.arlasIamService.getAccessToken()
                         }
@@ -140,7 +165,7 @@ export class CollectionDetailComponent implements OnInit {
             } else if (this.authentMode === 'openid') {
                 if (this.authenticationService.hasValidAccessToken()) {
                     this.connected = true;
-                    const headers = {
+                    const headers: FetchOptions = {
                         headers: {
                             Authorization: 'bearer ' + this.authenticationService.accessToken
                         }
@@ -161,13 +186,14 @@ export class CollectionDetailComponent implements OnInit {
                 .pipe(
                     takeUntilDestroyed(this.destroyRef),
                     mergeMap((params) => {
-                        this.collectionName = params.get('name');
+                        this.collectionName = params.get('name') ?? undefined;
                         if (this.collectionName) {
                             this.isLoading.set(true);
                             return this.collabSearchService.describe(this.collectionName, false, 0).pipe(
                                 finalize(() => this.isLoading.set(false))
                             );
                         }
+                        return of();
                     })
                 )
                 .subscribe({
@@ -187,11 +213,38 @@ export class CollectionDetailComponent implements OnInit {
         }
     }
 
+    /**
+     * Checks with the available space what can be displayed without adding a scroll:
+     * - first, remove the indexed and taggable columns
+     * - if a scroll still appears, then simplify the displayed info (remove type text indication, break field name, limit form width)
+     */
+    protected updateTableDisplay() {
+        const table = document.getElementsByClassName('collection__fields__table').item(0);
+        if (table) {
+            // Check if the columns fit
+            this.displayedColumns.set(['name', 'display_name', 'type', 'indexed', 'taggable']);
+            this.simplifyDisplay.set(false);
+            this.cdr.detectChanges();
+            // If they don't, then remove indexed and taggable
+            if (table.scrollWidth > table.clientWidth) {
+                this.displayedColumns.set(['name', 'display_name', 'type']);
+
+                // Check if there is enough space to display the type keyword
+                this.cdr.detectChanges();
+                this.simplifyDisplay.set(table.scrollWidth > table.clientWidth);
+            }
+        }
+    }
+
     public back() {
         this.router.navigate(['collection']);
     }
 
     public update() {
+        if (!this.collection) {
+            return;
+        }
+
         this.isLoading.set(true);
         const collectionControl = this.collectionForm.controls.collection_display_name;
         const fieldsControl = this.collectionForm.controls.display_names;
@@ -199,12 +252,11 @@ export class CollectionDetailComponent implements OnInit {
         const visibilityControl = this.collectionForm.controls.visibility;
 
         let collectionObs = of({});
-        if (collectionControl.dirty) {
-            const collectionDisplayName = collectionControl.value;
-            collectionObs = this.collectionService.updateCollectionDisplayName(collectionDisplayName, this.collection.collection_name);
+        if (collectionControl.dirty && collectionControl.value) {
+            collectionObs = this.collectionService.updateCollectionDisplayName(collectionControl.value, this.collection.collection_name);
         }
 
-        const fieldsBody = {};
+        const fieldsBody: Record<string, string> = {};
         let updateFields = false;
         if (fieldsControl.dirty) {
             updateFields = true;
@@ -218,20 +270,22 @@ export class CollectionDetailComponent implements OnInit {
             updateSharedOrgs = true;
             (sharedOrgsBody as any).public = visibilityControl.value;
             sharedOrgsBody.shared = sharedOrgsControl.value;
+            sharedOrgsBody.shared ??= [];
             // always add the owner org in the shared orgs
-            sharedOrgsBody.shared.push(this.collection.params.organisations.owner);
+            sharedOrgsBody.shared.push(this.collection.params.organisations?.owner as string);
         }
 
+        const collectionName = this.collection.collection_name;
         // SwitchMap needed to wait the previous observable
         // The same document is updated
         collectionObs.pipe(
             switchMap(
-                () => updateFields ? this.collectionService.updateFields(fieldsBody, this.collection.collection_name) : of({})
+                () => updateFields ? this.collectionService.updateFields(fieldsBody, collectionName) : of({})
             ),
             switchMap(
-                () => updateSharedOrgs ? this.collectionService.updateCollectionOrg(sharedOrgsBody, this.collection.collection_name) : of({})
+                () => updateSharedOrgs ? this.collectionService.updateCollectionOrg(sharedOrgsBody, collectionName) : of({})
             ),
-            mergeMap(() => this.collabSearchService.describe(this.collection.collection_name, false, 0)
+            mergeMap(() => this.collabSearchService.describe(collectionName, false, 0)
                 .pipe(finalize(() => {
                     this.isLoading.set(false);
                     this.editMode.set(false);
@@ -267,6 +321,7 @@ export class CollectionDetailComponent implements OnInit {
 
     public toggleMode() {
         this.editMode.set(!this.editMode());
+        this.updateTableDisplay();
     }
 
     public cancel() {
@@ -328,32 +383,37 @@ export class CollectionDetailComponent implements OnInit {
 
     }
 
+    public toggleSample() {
+        this.showSample.set(!this.showSample());
+        this.updateTableDisplay();
+    }
+
     private fillForm(c: CollectionReferenceDescription) {
         this.collection = c;
         if (this.connected) {
             if (this.authentMode === 'iam') {
-                this.canEdit = this.checkIfuserCanEdit(this.arlasIamService.user.roles, c.params.organisations.owner);
+                this.canEdit.set(this.checkIfuserCanEdit(this.arlasIamService.user?.roles ?? [], c.params.organisations?.owner));
             } else if (this.authentMode === 'openid') {
-                this.canEdit = this.roles.includes('role/arlas/datasets');
+                this.canEdit.set(this.roles.includes('role/arlas/datasets'));
             }
         }
 
-        this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations.owner));
+        this.organisations.set(this.organisations().filter(o => o.name !== c.params.organisations?.owner));
         this.fields = extractProp(c);
-        this.collectionForm.get('collection_display_name').setValue(this.collection.params.display_names?.collection);
-        this.collectionForm.get('shared_orgs').setValue(
+        this.collectionForm.controls.collection_display_name.setValue(this.collection.params.display_names?.collection as string);
+        this.collectionForm.controls.shared_orgs.setValue(
             this.collection.params?.organisations?.shared?.filter(o => o !== c.params?.organisations?.owner)
         );
         this.collectionForm.setControl('display_names', new FormArray(this.fields.map(CollectionField.asFormGroup)));
         this.collectionForm.setControl('visibility', new FormControl((this.collection.params.organisations as any).public));
         this.formInitialValues = this.collectionForm.value;
         this.dataSourceFields = new MatTableDataSource(
-            (this.collectionForm.get('display_names') as FormArray).controls.map(c => ({
-                name: c.get('name').value,
-                type: c.get('type').value,
-                taggable: c.get('taggable').value,
-                indexed: c.get('indexed').value,
-                control: c.get('display_name')
+            this.collectionForm.controls.display_names.controls.map(c => ({
+                name: c.value.name as string,
+                type: c.value.type as string,
+                taggable: !!c.value.taggable,
+                indexed: !!c.value.indexed,
+                control: c.controls.display_name
             }))
         );
         this.dataSourceFields.sort = this.sort;
@@ -368,10 +428,12 @@ export class CollectionDetailComponent implements OnInit {
         };
         this.dataSourceFields.filterPredicate = (data, filter: string): boolean =>
             data.name.toLowerCase().includes(filter) || data.type.toLowerCase().includes(filter)
-            || data.control.value.toLowerCase().includes(filter);
+            || !!data.control.value?.toLowerCase().includes(filter);
         if (this.filterValue !== '') {
             this.dataSourceFields.filter = this.filterValue.trim().toLowerCase();
         }
+
+        this.updateTableDisplay();
     }
 
     private updateFailed() {
@@ -385,7 +447,7 @@ export class CollectionDetailComponent implements OnInit {
         );
     }
 
-    private checkIfuserCanEdit(roles: RoleData[], orgOnwer: string): boolean {
+    private checkIfuserCanEdit(roles: RoleData[], orgOnwer: string | undefined): boolean {
         return roles.filter(r => !!r.organisation && r.organisation.name === orgOnwer).map(ro => ro.name).includes('role/arlas/datasets');
     }
 

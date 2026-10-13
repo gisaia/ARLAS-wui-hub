@@ -1,5 +1,53 @@
 # Change Log
 
+## [v29.0.0-rc.10](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.10) (2026-09-28)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.9...v29.0.0-rc.10)
+
+## [v29.0.0-rc.9](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.9) (2026-09-28)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.8...v29.0.0-rc.9)
+
+## [v29.0.0-rc.8](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.8) (2026-09-08)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.7...v29.0.0-rc.8)
+
+## [v29.0.0-rc.7](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.7) (2026-09-07)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.6...v29.0.0-rc.7)
+
+## [v29.0.0-rc.6](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.6) (2026-08-27)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.5...v29.0.0-rc.6)
+
+**New stuff:**
+
+- Improvement of sample of product in collection view [\#336](https://github.com/gisaia/ARLAS-wui-hub/issues/336)
+
+## [v29.0.0-rc.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.5) (2026-08-12)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.4...v29.0.0-rc.5)
+
+**New stuff:**
+
+- Align input text for authentication views [\#330](https://github.com/gisaia/ARLAS-wui-hub/issues/330)
+
+## [v29.0.0-rc.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.4) (2026-07-24)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.3...v29.0.0-rc.4)
+
+## [v29.0.0-rc.3](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.3) (2026-07-23)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.2...v29.0.0-rc.3)
+
+## [v29.0.0-rc.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.2) (2026-07-22)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.1...v29.0.0-rc.2)
+
+## [v29.0.0-rc.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.1) (2026-07-21)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.2...v29.0.0-rc.1)
+
 ## [v28.0.2](https://github.com/gisaia/ARLAS-wui-hub/tree/v28.0.2) (2026-06-05)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v28.0.1...v28.0.2)

@@ -34,7 +34,8 @@
             "styles": [
               "src/styles/theme.scss",
               "src/styles.scss",
-              "node_modules/arlas-web-components/assets/styles.css"
+              "node_modules/arlas-web-components/assets/styles.css",
+              "node_modules/jsoneditor/dist/jsoneditor.min.css"
             ],
             "scripts": [],
             "browser": "src/main.ts"

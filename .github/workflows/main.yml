@@ -26,9 +26,11 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts && npm run postinstall
       - name: Lint
         run: npm run lint
+      - name: Audit npm
+        run: npm audit --audit-level=high --omit=dev
       - name: License check
         run: npm run license-check
       - name: Build

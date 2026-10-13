@@ -20,10 +20,11 @@
 @use "variables.scss" as var;
 
 :host {
+
     .mdc-list-item {
         padding: 0 12px !important;
         .mat-icon {
-            color: rgba(0, 0, 0, 0.75);
+            color:  var(--arlas-left-menu-icon, var(--mat-sys-on-surface));
         }
     }
 }

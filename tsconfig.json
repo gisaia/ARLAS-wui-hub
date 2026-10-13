@@ -17,7 +17,8 @@
     ],
     "module": "es2022",
     "baseUrl": "src",
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "strict": true
   },
   "angularCompilerOptions": {
     "strictTemplates": true
