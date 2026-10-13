@@ -1,5 +1,14 @@
 # Change Log
 
+## [v29.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0) (2026-10-13)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.10...v29.0.0)
+
+**New stuff:**
+
+- Improvement of sample of product in collection view [\#336](https://github.com/gisaia/ARLAS-wui-hub/issues/336)
+- Align input text for authentication views [\#330](https://github.com/gisaia/ARLAS-wui-hub/issues/330)
+
 ## [v29.0.0-rc.10](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.10) (2026-09-28)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.9...v29.0.0-rc.10)
@@ -20,17 +29,9 @@
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.5...v29.0.0-rc.6)
 
-**New stuff:**
-
-- Improvement of sample of product in collection view [\#336](https://github.com/gisaia/ARLAS-wui-hub/issues/336)
-
 ## [v29.0.0-rc.5](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.5) (2026-08-12)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.4...v29.0.0-rc.5)
-
-**New stuff:**
-
-- Align input text for authentication views [\#330](https://github.com/gisaia/ARLAS-wui-hub/issues/330)
 
 ## [v29.0.0-rc.4](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.4) (2026-07-24)
 
