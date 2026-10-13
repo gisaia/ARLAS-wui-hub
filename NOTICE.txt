@@ -1,5 +1,5 @@
 ARLAS-wui-hub
-Copyright 2017-2025 and onwards Gisaïa
+Copyright 2017-2026 and onwards Gisaïa
 
 ARLAS-wui-hub embeds all the dependencies in the following link:
 https://github.com/gisaia/ARLAS-wui-hub/network/dependencies
