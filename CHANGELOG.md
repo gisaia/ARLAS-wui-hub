@@ -1,5 +1,13 @@
 # Change Log
 
+## [v29.0.1](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.1) (2026-11-03)
+
+[Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0...v29.0.1)
+
+**Fixed bugs:**
+
+- Rework the layout of the arlas hub/collection view [\#340](https://github.com/gisaia/ARLAS-wui-hub/issues/340)
+
 ## [v29.0.0](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0) (2026-10-13)
 
 [Full Changelog](https://github.com/gisaia/ARLAS-wui-hub/compare/v29.0.0-rc.10...v29.0.0)
@@ -8,6 +16,7 @@
 
 - Improvement of sample of product in collection view [\#336](https://github.com/gisaia/ARLAS-wui-hub/issues/336)
 - Align input text for authentication views [\#330](https://github.com/gisaia/ARLAS-wui-hub/issues/330)
+- Add a dark mode layout [\#327](https://github.com/gisaia/ARLAS-wui-hub/issues/327)
 
 ## [v29.0.0-rc.10](https://github.com/gisaia/ARLAS-wui-hub/tree/v29.0.0-rc.10) (2026-09-28)
 
